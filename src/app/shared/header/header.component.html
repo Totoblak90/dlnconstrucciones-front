@@ -1,1 +1,35 @@
-<p>header works!</p>
+<nav class="menu animate__animated animate__fadeInDownBig">
+  <div class="row">
+    <div class="col-2 menu-brand-logo">
+      <img src="../../../assets/logo.png" alt="logo">
+    </div>
+  </div>
+  <div class="col-7 menu-non-user-navigation">
+    <button mat-button [routerLink]="['/home']" routerLinkActive="router-link-active" >INICIO</button>
+
+    <button mat-button [routerLink]="['/quienes-somos']" routerLinkActive="router-link-active">QUIENES SOMOS</button>
+
+    <button mat-button [matMenuTriggerFor]="serviciosMenu">SERVICIOS</button>
+    <mat-menu #serviciosMenu="matMenu" yPosition="below">
+      <button mat-menu-item [routerLink]="['/servicios']">Vivienda</button>
+      <button mat-menu-item [routerLink]="['/servicios']">Piscina</button>
+      <button mat-menu-item [routerLink]="['/servicios']">Telecomunicaciones</button>
+    </mat-menu>
+
+
+    <button mat-button [routerLink]="['/trabajos-realizados']">TRABAJOS REALIZADOS</button>
+
+    <button mat-button [routerLink]="['/lotes']">LOTES</button>
+
+    <button mat-button [routerLink]="['/contacto']">CONTACTO</button>
+
+  </div>
+  <div class="col-3 menu-user-profile">
+    <mat-icon>person</mat-icon>
+    <button mat-button [matMenuTriggerFor]="profileMenu">MI CUENTA</button>
+    <mat-menu #profileMenu="matMenu" yPosition="below">
+      <button mat-menu-item [routerLink]="['/auth']">INICIAR SESIÓN</button>
+      <button mat-menu-item [routerLink]="['/auth']">REGISTRARSE</button>
+    </mat-menu>
+  </div>
+</nav>

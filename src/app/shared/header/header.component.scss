@@ -1,0 +1,38 @@
+.menu {
+  display: flex;
+  height: 10%;
+  margin: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid lightblue;
+  & .menu-brand-logo {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    & img {
+      width: 80%;
+    }
+  }
+  & .menu-non-user-navigation {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    & button {
+      border: none;
+      background-color: #FFF;
+      padding: 5px;
+    }
+  }
+  & .menu-user-profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & button {
+      border: none;
+      background-color: #FFF;
+      padding: 5px;
+    }
+  }
+}
