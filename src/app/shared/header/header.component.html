@@ -1,35 +1,56 @@
-<nav class="menu animate__animated animate__fadeInDownBig">
-  <div class="row">
-    <div class="col-2 menu-brand-logo">
-      <img src="../../../assets/logo.png" alt="logo">
-    </div>
-  </div>
-  <div class="col-7 menu-non-user-navigation">
-    <button mat-button [routerLink]="['/home']" routerLinkActive="router-link-active" >INICIO</button>
+<nav class="menu" >
+  <p>
+    <mat-toolbar class="menu-brand-logo">
+      <mat-toolbar-row>
+        <div class="col-3">
+          <img src="../../../assets/logo.png" alt="logo">
+        </div>
+        <div>
+          <p><strong >¿Tenés alguna consulta?</strong> Estamos para asesorarte</p>
+          <div>
+            <p>+54 9 2267 531541</p> <mat-icon>whatsapp</mat-icon>
+          </div>
+          <div>
+            <p>info@dlnconstrucciones.com.ar </p> <mat-icon>email</mat-icon>
+          </div>
+          <div>
+            <p>Pinamar, Buenos Aires</p> <mat-icon>place</mat-icon>
+          </div>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </p>
+  <p>
+    <mat-toolbar class="menu-toolbar-second-row">
+      <mat-toolbar-row class="menu-user-navigation">
+        <button class="animate__animated animate__fadeInDown" mat-button [routerLink]="['/home']">INICIO</button>
 
-    <button mat-button [routerLink]="['/quienes-somos']" routerLinkActive="router-link-active">QUIENES SOMOS</button>
+        <button class="animate__animated animate__fadeInDown"  mat-button [routerLink]="['/quienes-somos']">QUIENES SOMOS</button>
 
-    <button mat-button [matMenuTriggerFor]="serviciosMenu">SERVICIOS</button>
-    <mat-menu #serviciosMenu="matMenu" yPosition="below">
-      <button mat-menu-item [routerLink]="['/servicios']">Vivienda</button>
-      <button mat-menu-item [routerLink]="['/servicios']">Piscina</button>
-      <button mat-menu-item [routerLink]="['/servicios']">Telecomunicaciones</button>
-    </mat-menu>
+        <button class="animate__animated animate__fadeInDown" mat-button [matMenuTriggerFor]="serviciosMenu">SERVICIOS</button>
+        <mat-menu #serviciosMenu="matMenu" yPosition="below">
+          <button mat-menu-item [routerLink]="['/servicios']">Vivienda</button>
+          <button mat-menu-item [routerLink]="['/servicios']">Piscina</button>
+          <button mat-menu-item [routerLink]="['/servicios']">Telecomunicaciones</button>
+        </mat-menu>
 
 
-    <button mat-button [routerLink]="['/trabajos-realizados']">TRABAJOS REALIZADOS</button>
+        <button class="animate__animated animate__fadeInDown" mat-button [routerLink]="['/trabajos-realizados']">TRABAJOS REALIZADOS</button>
 
-    <button mat-button [routerLink]="['/lotes']">LOTES</button>
+        <button class="animate__animated animate__fadeInDown" mat-button [routerLink]="['/lotes']">LOTES</button>
 
-    <button mat-button [routerLink]="['/contacto']">CONTACTO</button>
+        <button class="animate__animated animate__fadeInDown" mat-button [routerLink]="['/contacto']">CONTACTO</button>
 
-  </div>
-  <div class="col-3 menu-user-profile">
-    <mat-icon>person</mat-icon>
-    <button mat-button [matMenuTriggerFor]="profileMenu">MI CUENTA</button>
-    <mat-menu #profileMenu="matMenu" yPosition="below">
-      <button mat-menu-item [routerLink]="['/auth']">INICIAR SESIÓN</button>
-      <button mat-menu-item [routerLink]="['/auth']">REGISTRARSE</button>
-    </mat-menu>
-  </div>
+        <div class="menu-user-navigation-profile animate__animated animate__fadeInDown">
+          <mat-icon>person</mat-icon>
+          <button mat-button [matMenuTriggerFor]="profileMenu">MI CUENTA</button>
+          <mat-menu #profileMenu="matMenu" yPosition="below">
+            <button mat-menu-item [routerLink]="['/auth']">INICIAR SESIÓN</button>
+            <button mat-menu-item [routerLink]="['/auth']">REGISTRARSE</button>
+          </mat-menu>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </p>
 </nav>
+

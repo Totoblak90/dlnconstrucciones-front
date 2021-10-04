@@ -1,38 +1,69 @@
 .menu {
-  display: flex;
-  height: 10%;
-  margin: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid lightblue;
   & .menu-brand-logo {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-    & img {
-      width: 80%;
+    background-color: white;
+    & mat-toolbar-row {
+      height: max-content;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      & img {
+        width: 100%;
+      }
+      & p {
+        & strong {
+          color: rgb(35, 150, 189);
+        }
+        font-size: 75%;
+        margin: 0;
+      }
+      & mat-icon:hover {
+        -webkit-animation:spin 1s linear both;
+        -moz-animation:spin 1s linear both;
+        animation:spin 1s linear both;
+      }
+      @-moz-keyframes spin {
+        100% { -moz-transform: rotate(90deg); }
+      }
+      @-webkit-keyframes spin {
+          100% { -webkit-transform: rotate(90deg); }
+      }
+      @keyframes spin {
+          100% {
+              -webkit-transform: rotate(90deg);
+              transform:rotate(90deg);
+          }
+      }
+      & div {
+        & div {
+          width: max-content;
+          display: flex;
+          justify-content: space-between;
+          align-content: center;
+        }
+      }
     }
   }
-  & .menu-non-user-navigation {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    & button {
-      border: none;
-      background-color: #FFF;
-      padding: 5px;
+  & .menu-toolbar-second-row {
+    width: 80%;
+    margin: auto;
+    & .menu-user-navigation {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      & button {
+        border: none;
+        background-color: inherit;
+        padding: 5px;
+
+      }
+      button:hover {
+        background-color: rgb(35, 150, 189);
+      }
+      & .menu-user-navigation-profile {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
     }
   }
-  & .menu-user-profile {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    & button {
-      border: none;
-      background-color: #FFF;
-      padding: 5px;
-    }
   }
-}
