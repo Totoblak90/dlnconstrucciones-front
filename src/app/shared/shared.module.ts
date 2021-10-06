@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComponentsModule } from '../components/components.module';
+import { RouterModule } from '@angular/router';
+
 
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { RouterModule } from '@angular/router';
 import { SplashScreenComponent } from './splash-screen/splash-screen.component';
 
 
@@ -18,7 +19,7 @@ import { SplashScreenComponent } from './splash-screen/splash-screen.component';
   imports: [
     CommonModule,
     ComponentsModule,
-    RouterModule
+    RouterModule,
   ],
   exports: [
     HeaderComponent,

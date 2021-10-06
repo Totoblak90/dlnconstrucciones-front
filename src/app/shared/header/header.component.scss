@@ -38,14 +38,12 @@
           width: max-content;
           display: flex;
           justify-content: space-between;
-          align-content: center;
+          align-content: flex-end;
         }
       }
     }
   }
   & .menu-toolbar-second-row {
-    width: 80%;
-    margin: auto;
     & .menu-user-navigation {
       display: flex;
       justify-content: space-around;
