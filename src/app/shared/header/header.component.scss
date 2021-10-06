@@ -57,7 +57,10 @@
 
       }
       button:hover {
-        background-color: rgb(35, 150, 189);
+        text-decoration: underline;
+      }
+      button:focus {
+        text-decoration: underline;
       }
       & .menu-user-navigation-profile {
         display: flex;

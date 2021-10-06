@@ -5,13 +5,15 @@ import { ComponentsModule } from '../components/components.module';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { RouterModule } from '@angular/router';
+import { SplashScreenComponent } from './splash-screen/splash-screen.component';
 
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    SplashScreenComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +22,8 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    SplashScreenComponent
   ]
 })
 export class SharedModule { }
