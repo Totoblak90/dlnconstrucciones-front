@@ -1,43 +1,47 @@
-<section class="first-section" #firstSection>
-  <div class="slider-container">
-    <mat-tab-group mat-align-tabs="center" animationDuration="2000ms">
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon>home</mat-icon>
-        </ng-template>
-        <img src="../../../assets/slider1.jpg" alt="">
-        <div class="info-container">
-          <h3>
-            Más de 15 años construyendo confianza
-          </h3>
-          <hr>
-          <p>
-            Nuestro éxito se basa en los exigentes controles de calidad a los que sometemos todos los proyectos que realizamos
-          </p>
-        </div>
-      </mat-tab>
-      <mat-tab label="2">
-        <ng-template mat-tab-label>
-          <mat-icon>phone</mat-icon>
-        </ng-template>
-        <img src="../../../assets/slider2.jpg" alt="">
-        <div class="info-container">
-          <h3>
-            Antenas de Telecomunicaciones
-          </h3>
-          <hr>
-          <p>
-            Servicio de ejecución de obras a empresas de telecomunicaciones
-          </p>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
+<div class="row">
+  <div class="col-12">
+    <section class="first-section" #firstSection>
+      <div class="slider-container">
+        <mat-tab-group mat-align-tabs="center" animationDuration="2000ms">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon>home</mat-icon>
+            </ng-template>
+            <img src="../../../assets/slider1.jpg" alt="">
+            <div class="info-container">
+              <h3>
+                Más de 15 años construyendo confianza
+              </h3>
+              <hr>
+              <p>
+                Nuestro éxito se basa en los exigentes controles de calidad a los que sometemos todos los proyectos que realizamos
+              </p>
+            </div>
+          </mat-tab>
+          <mat-tab label="2">
+            <ng-template mat-tab-label>
+              <mat-icon>phone</mat-icon>
+            </ng-template>
+            <img src="../../../assets/slider2.jpg" alt="">
+            <div class="info-container">
+              <h3>
+                Antenas de Telecomunicaciones
+              </h3>
+              <hr>
+              <p>
+                Servicio de ejecución de obras a empresas de telecomunicaciones
+              </p>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+      <div class="masterplan-container">
+        <h3>
+          ¿Ya tenés <strong>tu lote</strong> en Costa Esmeralda?
+        </h3>
+        <button mat-button>Ingresá</button>
+        <a matt-button href="../../../assets/masterplan.pdf" download>MASTERPLAN</a>
+      </div>
+    </section>
   </div>
-  <div class="masterplan-container">
-    <h3>
-      ¿Ya tenés <strong>tu lote</strong> en Costa Esmeralda?
-    </h3>
-    <button mat-button>Ingresá</button>
-    <a matt-button href="../../../assets/masterplan.pdf" download>MASTERPLAN</a>
-  </div>
-</section>
+</div>

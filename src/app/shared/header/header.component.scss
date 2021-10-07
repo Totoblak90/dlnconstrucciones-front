@@ -6,39 +6,50 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 75%;
+      @media (max-width: 768px) {
+        font-size: 60%;
+      }
+      @media (max-width: 425px) {
+        font-size: 40%;
+      }
       & img {
         width: 100%;
       }
-      & p {
-        & strong {
-          color: rgb(35, 150, 189);
-        }
-        font-size: 75%;
-        margin: 0;
-      }
-      & mat-icon:hover {
-        -webkit-animation:spin 1s linear both;
-        -moz-animation:spin 1s linear both;
-        animation:spin 1s linear both;
-      }
-      @-moz-keyframes spin {
-        100% { -moz-transform: rotate(90deg); }
-      }
-      @-webkit-keyframes spin {
-          100% { -webkit-transform: rotate(90deg); }
-      }
-      @keyframes spin {
-          100% {
-              -webkit-transform: rotate(90deg);
-              transform:rotate(90deg);
+      & .contact-info {
+        & p {
+          & strong {
+            color: rgb(35, 150, 189);
           }
-      }
-      & div {
+          margin: 0;
+          padding: 0;
+        }
+        & mat-icon {
+          @media (max-width: 425px) {
+            display: none;
+          }
+        }
+        & mat-icon:hover {
+          -webkit-animation:spin 1s linear both;
+          -moz-animation:spin 1s linear both;
+          animation:spin 1s linear both;
+        }
+        @-moz-keyframes spin {
+          100% { -moz-transform: rotate(90deg); }
+        }
+        @-webkit-keyframes spin {
+            100% { -webkit-transform: rotate(90deg); }
+        }
+        @keyframes spin {
+            100% {
+                -webkit-transform: rotate(90deg);
+                transform:rotate(90deg);
+            }
+        }
         & div {
-          width: max-content;
+          width: 100%;
           display: flex;
-          justify-content: space-between;
-          align-content: flex-end;
+          justify-content: flex-end;
         }
       }
     }
@@ -52,7 +63,18 @@
         border: none;
         background-color: inherit;
         padding: 5px;
-
+        @media (max-width: 1110px) {
+          font-size: 0.7rem;
+        }
+        @media (max-width: 668px) {
+          font-size: 0.5rem;
+        }
+        @media (max-width: 534px) {
+          font-size: 0.4rem;
+        }
+        @media (max-width: 432px) {
+          display: none;
+        }
       }
       button:hover {
         text-decoration: underline;

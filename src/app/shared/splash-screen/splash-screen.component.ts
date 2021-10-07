@@ -24,12 +24,10 @@ export class SplashScreenComponent implements AfterViewInit {
       opacity: 0,
       duration: 2,
     }).from( 'mat-icon', {
-      duration: 0.5,
+      duration: 0.1,
       opacity: 0,
       y: -20,
       stagger: 0.2,
-      delay: 0.5,
-      repeat: 2,
     }).to('section', {
       opacity: 0,
       duration: 1,
