@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { MatMenuModule } from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTabsModule} from '@angular/material/tabs';
+import { MatCarouselModule } from '@ngbmodule/material-carousel';
 
 
 
@@ -14,7 +14,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatMenuModule,
     MatIconModule,
     MatToolbarModule,
-    MatTabsModule
+    MatTabsModule,
+    MatCarouselModule
   ]
 })
 export class AngularMaterialModule { }

@@ -1,4 +1,5 @@
-import { AfterContentChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatCarousel, MatCarouselComponent } from '@ngbmodule/material-carousel';
 
 @Component({
   selector: 'app-home',
@@ -8,10 +9,6 @@ import { AfterContentChecked, AfterViewInit, Component, ElementRef, OnInit, View
 export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
-
-  }
-
-  downloadPDF() {
 
   }
 
