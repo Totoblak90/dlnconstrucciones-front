@@ -48,6 +48,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   animations(): void {
+    gsap.from(this.firstSection, {
+      duration: 0.5,
+      opacity: 0,
+      xPercent: -10,
+      delay: 0.5
+    })
     const tl = gsap.timeline();
     tl
     .from(this.secondSection, {

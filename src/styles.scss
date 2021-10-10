@@ -36,7 +36,14 @@ $dlnconstrucciones-theme: mat-light-theme((
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%;}
-body { margin: auto 10%; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: auto 10%;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  @media (max-width: 575px) {
+    margin: auto;
+  }
+
+}
 .primary {
   color: #4a7cd6 !important;
 }

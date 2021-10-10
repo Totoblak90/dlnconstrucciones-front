@@ -21,7 +21,7 @@ export class HeaderComponent implements AfterViewInit {
     gsap.from(buttons, {
       duration: 0.5,
       opacity: 0,
-      y: -20,
+      y: -1,
       stagger: 0.2,
       delay: 0.5
     })
