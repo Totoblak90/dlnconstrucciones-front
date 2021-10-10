@@ -1,4 +1,4 @@
-<section class="first-section" #firstSection>
+<section class="first-section">
   <div class="slider-container">
     <mat-carousel
       [timings]="'350ms ease-in'"
@@ -16,9 +16,9 @@
       [useMouseWheel]="false"
       [orientation]="'ltr'"
     >
-      <mat-carousel-slide >
-        <img src="../../../assets/slider1.jpg" alt="">
-        <div class="info-container p-2">
+      <mat-carousel-slide>
+        <img data-depth="0.2" src="../../../assets/slider1.jpg" alt="">
+        <div data-depth="0.6" class="info-container p-2">
           <h3>
             Más de 15 años construyendo confianza
           </h3>
@@ -61,7 +61,7 @@
     <div class="col-4">
       <mat-card (click)="openDialog()">
         <mat-card-content>
-          <img src="assets/no-image.jpg" alt="">
+          <img src="assets/slider1.jpg" alt="">
           <h4>Titulo#1</h4>
         </mat-card-content>
       </mat-card>
@@ -69,7 +69,7 @@
     <div class="col-4">
       <mat-card class="card" (click)="openDialog()">
         <mat-card-content>
-          <img src="assets/no-image.jpg" alt="">
+          <img src="assets/slider1.jpg" alt="">
           <h4>Titulo#2</h4>
         </mat-card-content>
       </mat-card>
@@ -77,7 +77,7 @@
     <div class="col-4">
       <mat-card class="card" (click)="openDialog()">
         <mat-card-content>
-          <img src="assets/no-image.jpg" alt="">
+          <img src="assets/slider1.jpg" alt="">
           <h4>Titulo#3</h4>
         </mat-card-content>
       </mat-card>
@@ -85,7 +85,74 @@
   </div>
 </section>
 
-<section>
+<section class="third-section p-3 mt-2 bgc-primary-light">
+  <div class="row">
+    <div class="col-6 xs-12 column1">
 
+      <div class="info m-2">
+        <div class="icon">
+          <img src="assets/safety.png" alt="">
+        </div>
+        <div class="span">
+          <h3 class="m-0 primary-dark"><strong>Seguridad</strong></h3>
+          <p class="m-0 primary-dark">Todas las medidas de seguridad reglamentarias</p>
+        </div>
+      </div>
+
+      <div class="info m-2">
+        <div class="icon">
+          <img src="assets/house.png" alt="">
+        </div>
+        <div class="span">
+          <h3 class="m-0 primary-dark"><strong>+500</strong></h3>
+          <p class="m-0 primary-dark">Productos entregados, llave en mano</p>
+        </div>
+      </div>
+
+      <div class="info m-2">
+        <div class="icon">
+          <img src="assets/obreros.png" alt="">
+        </div>
+        <div class="span">
+          <h3 class="m-0 primary-dark"><strong>Equipo</strong></h3>
+          <p class="m-0 primary-dark">Más de 50 trabajadores profesionales</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-6 column2">
+
+      <div class="info m-2">
+        <div class="icon">
+          <img src="assets/grua.png" alt="">
+        </div>
+        <div class="span">
+          <h3 class="m-0 primary-dark"><strong>Equipamiento</strong></h3>
+          <p class="m-0 primary-dark">Contamos con equipamiento de primera calidad para la obra</p>
+        </div>
+      </div>
+
+      <div class="info m-2">
+        <div class="icon">
+          <img src="assets/pagos.png" alt="">
+        </div>
+        <div class="span">
+          <h3 class="m-0 primary-dark"><strong>Seguimiento</strong></h3>
+          <p class="m-0 primary-dark">de pagos y avance de obra a través de nuestra web</p>
+        </div>
+      </div>
+
+      <div class="info m-2">
+        <div class="icon">
+          <img src="assets/service.png" alt="">
+        </div>
+        <div class="span">
+          <h3 class="m-0 primary-dark"><strong>Servicio punta a punta</strong></h3>
+          <p class="m-0 primary-dark">Para que no te tengas que ocupar de nada</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 

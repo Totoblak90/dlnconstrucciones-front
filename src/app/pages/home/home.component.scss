@@ -97,3 +97,32 @@
     }
   }
 }
+.third-section {
+  width: 100%;
+  .column1, .column2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    .info {
+      display: flex;
+      justify-content: space-around;
+      .icon {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 100%;
+          max-width: 200px;
+          max-height: 150px;
+        }
+      }
+      .span {
+        width: 50%;
+        margin: auto;
+        text-align: center;
+      }
+    }
+  }
+}

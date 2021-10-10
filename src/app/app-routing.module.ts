@@ -12,10 +12,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/quienes-somos/quienes-somos.module').then(m => m.QuienesSomosModule)
   },
   {
-    path: 'contacto',
-    loadChildren: () => import('./pages/contacto/contacto.module').then(m => m.ContactoModule)
-  },
-  {
     path: 'auth',
     loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
   },
