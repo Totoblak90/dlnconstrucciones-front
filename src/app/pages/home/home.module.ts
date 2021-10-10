@@ -5,11 +5,13 @@ import { ComponentsModule } from '../../components/components.module';
 import { HomeRoutingModule } from './home-routing.module';
 
 import { HomeComponent } from './home.component';
+import { ModalComponent } from './modal/modal.component';
 
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    ModalComponent
   ],
   imports: [
     CommonModule,

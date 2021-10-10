@@ -37,3 +37,39 @@ $dlnconstrucciones-theme: mat-light-theme((
 
 html, body { height: 100%;}
 body { margin: auto 10%; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.primary {
+  color: #4a7cd6 !important;
+}
+.bgc-primary {
+  background-color: #4a7cd6 !important;
+}
+.primary-light {
+  color: #81abff !important;
+}
+.bgc-primary-light {
+  background-color: #81abff !important;
+}
+.primary-dark {
+  color: #0051a4 !important;
+}
+.bgc-primary-dark {
+  background-color: #0051a4 !important;
+}
+.secondary {
+  color: #71876d !important;
+}
+.bgc-secondary {
+  background-color: #71876d !important;
+}
+.secondary-light {
+  color: #a0b79b !important;
+}
+.bgc-secondary-light {
+  background-color: #a0b79b !important;
+}
+.secondary-dark {
+  color: #455a42 !important;
+}
+.bgc-secondary-dark {
+  background-color: #455a42 !important;
+}

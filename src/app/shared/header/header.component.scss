@@ -4,53 +4,10 @@
     & mat-toolbar-row {
       height: max-content;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 75%;
-      @media (max-width: 768px) {
-        font-size: 60%;
-      }
-      @media (max-width: 425px) {
-        font-size: 40%;
-      }
+      justify-content: center;
       & img {
         width: 100%;
-      }
-      & .contact-info {
-        & p {
-          & strong {
-            color: rgb(35, 150, 189);
-          }
-          margin: 0;
-          padding: 0;
-        }
-        & mat-icon {
-          @media (max-width: 425px) {
-            display: none;
-          }
-        }
-        & mat-icon:hover {
-          -webkit-animation:spin 1s linear both;
-          -moz-animation:spin 1s linear both;
-          animation:spin 1s linear both;
-        }
-        @-moz-keyframes spin {
-          100% { -moz-transform: rotate(90deg); }
-        }
-        @-webkit-keyframes spin {
-            100% { -webkit-transform: rotate(90deg); }
-        }
-        @keyframes spin {
-            100% {
-                -webkit-transform: rotate(90deg);
-                transform:rotate(90deg);
-            }
-        }
-        & div {
-          width: 100%;
-          display: flex;
-          justify-content: flex-end;
-        }
+        cursor: pointer;
       }
     }
   }

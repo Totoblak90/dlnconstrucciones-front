@@ -1,1 +1,62 @@
-<p>footer works!</p>
+<footer class="bgc-secondary-light">
+  <div class="row">
+    <div class="col-6 logo">
+      <img src="assets/logo.png" alt="" routerLink="/">
+      <div class="social-icons-container">
+        <a href="https://www.facebook.com/dlnconstrucciones/" class="m-1">
+          <img src="assets/icon-facebook.png" alt="Facebook logo">
+        </a>
+        <a href="https://www.instagram.com/dln_construcciones/" class="m-1">
+          <img src="assets/icon-instagram.png" alt="Instagram logo">
+        </a>
+      </div>
+      <div class="copyright">
+        <p><strong>@2021 DLN Construcciones</strong> todos los derechos reservados</p>
+        <p>Pinamar, provincia de Buenos Aires</p>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="row">
+        <div class="col-12">
+          <div class="contact-info">
+            <p><strong class="secondary-dark">¿Tenés alguna consulta?</strong> Estamos para asesorarte</p>
+            <div>
+              <p>+54 9 2267 531541</p> <mat-icon class="spinIcon">whatsapp</mat-icon>
+            </div>
+            <div>
+              <p>info@dlnconstrucciones.com.ar </p> <mat-icon class="spinIcon">email</mat-icon>
+            </div>
+            <div>
+              <p>Pinamar, Buenos Aires</p> <mat-icon class="spinIcon">place</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <form [formGroup]="formularioContacto" (submit)="send($event)">
+            <mat-form-field appearance="fill" class="m-1">
+              <mat-label>Email:</mat-label>
+              <input matInput formControlName="email" placeholder="email@dominio.com">
+              <mat-error *ngIf="formularioContacto.controls.email.hasError('required')">
+                Este campo es requerido
+              </mat-error>
+              <mat-error *ngIf="formularioContacto.controls.email.hasError('pattern')">
+                Asegurate de que el formato sea válido
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="m-1">
+              <mat-label>Dejanos tu comentario:</mat-label>
+              <textarea formControlName="comentario" matInput></textarea>
+              <mat-error *ngIf="formularioContacto.controls.comentario.hasError('required')">
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+            <button [disabled]="formularioContacto.invalid" type="submit" class="btn btn-primary">Enviar consulta</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
