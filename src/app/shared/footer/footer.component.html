@@ -1,21 +1,6 @@
-<footer class="bgc-secondary-light">
+<footer class="bgc-secondary-light container">
   <div class="row">
-    <div class="col-6 logo">
-      <img src="assets/logo.png" alt="" routerLink="/">
-      <div class="social-icons-container">
-        <a href="https://www.facebook.com/dlnconstrucciones/" class="m-1">
-          <img src="assets/icon-facebook.png" alt="Facebook logo">
-        </a>
-        <a href="https://www.instagram.com/dln_construcciones/" class="m-1">
-          <img src="assets/icon-instagram.png" alt="Instagram logo">
-        </a>
-      </div>
-      <div class="copyright">
-        <p><strong>@2021 DLN Construcciones</strong> todos los derechos reservados</p>
-        <p>Pinamar, provincia de Buenos Aires</p>
-      </div>
-    </div>
-    <div class="col-6">
+    <div class="col-sm-6 col-xs-12 mt-2">
       <div class="row">
         <div class="col-12">
           <div class="contact-info">
@@ -56,6 +41,21 @@
             <button [disabled]="formularioContacto.invalid" type="submit" class="btn btn-primary">Enviar consulta</button>
           </form>
         </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xs-12 logo mt-2">
+      <img src="assets/logo.png" alt="" routerLink="/" class="m-2">
+      <div class="social-icons-container">
+        <a href="https://www.facebook.com/dlnconstrucciones/" class="m-2">
+          <img src="assets/icon-facebook.png" alt="Facebook logo">
+        </a>
+        <a href="https://www.instagram.com/dln_construcciones/" class="m-2">
+          <img src="assets/icon-instagram.png" alt="Instagram logo">
+        </a>
+      </div>
+      <div class="copyright m-2">
+        <p><strong>@2021 DLN Construcciones</strong> todos los derechos reservados</p>
+        <p>Pinamar, provincia de Buenos Aires</p>
       </div>
     </div>
   </div>

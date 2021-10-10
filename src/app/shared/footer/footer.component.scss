@@ -33,11 +33,6 @@ footer {
         color: rgb(35, 150, 189);
       }
     }
-    & mat-icon {
-      @media (max-width: 425px) {
-        display: none;
-      }
-    }
     & mat-icon:hover {
       -webkit-animation:spin 1s linear both;
       -moz-animation:spin 1s linear both;
@@ -61,7 +56,12 @@ footer {
       justify-content: flex-end;
     }
   }
-  & mat-form-field {
-    width: 100%;
+  form {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    mat-form-field {
+      width: 100%;
+    }
   }
 }

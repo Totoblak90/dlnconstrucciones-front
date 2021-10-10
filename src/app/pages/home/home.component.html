@@ -1,54 +1,59 @@
 <section class="first-section">
-  <div class="slider-container">
-    <mat-carousel
-      [timings]="'350ms ease-in'"
-      [autoplay]="true"
-      [interval]="5000"
-      [loop]="true"
-      [hideArrows]="false"
-      [hideIndicators]="true"
-      [color]="'accent'"
-      [maxWidth]="'auto'"
-      [maintainAspectRatio]="true"
-      [proportion]="50"
-      [slides]="2"
-      [useKeyboard]="true"
-      [useMouseWheel]="false"
-      [orientation]="'ltr'"
-    >
-      <mat-carousel-slide>
-        <img data-depth="0.2" src="../../../assets/slider1.jpg" alt="">
-        <div data-depth="0.6" class="info-container p-2">
-          <h3>
-            Más de 15 años construyendo confianza
-          </h3>
-          <hr>
-          <p>
-            Nuestro éxito se basa en los exigentes controles de calidad a los que sometemos todos los proyectos que realizamos
-          </p>
-        </div>
-      </mat-carousel-slide>
-      <mat-carousel-slide>
-        <img src="../../../assets/slider2.jpg" alt="">
-        <div class="info-container p-2">
-          <h3>
-            Antenas de Telecomunicaciones
-          </h3>
-          <hr>
-          <p>
-            Servicio de ejecución de obras a empresas de telecomunicaciones
-          </p>
-        </div>
-      </mat-carousel-slide>
-    </mat-carousel>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 col-xs-12">
+        <mat-carousel
+          [timings]="'350ms ease-in'"
+          [autoplay]="true"
+          [interval]="5000"
+          [loop]="true"
+          [hideArrows]="false"
+          [hideIndicators]="true"
+          [color]="'accent'"
+          [maxWidth]="'auto'"
+          [maintainAspectRatio]="true"
+          [proportion]="50"
+          [slides]="2"
+          [useKeyboard]="true"
+          [useMouseWheel]="false"
+          [orientation]="'ltr'"
+        >
+          <mat-carousel-slide>
+            <img src="../../../assets/slider1.jpg" alt="">
+            <div class="info-container p-2">
+              <h3>
+                Más de 15 años construyendo confianza
+              </h3>
+              <hr>
+              <p>
+                Nuestro éxito se basa en los exigentes controles de calidad a los que sometemos todos los proyectos que realizamos
+              </p>
+            </div>
+          </mat-carousel-slide>
+          <mat-carousel-slide>
+            <img src="../../../assets/slider2.jpg" alt="">
+            <div class="info-container p-2">
+              <h3>
+                Antenas de Telecomunicaciones
+              </h3>
+              <hr>
+              <p>
+                Servicio de ejecución de obras a empresas de telecomunicaciones
+              </p>
+            </div>
+          </mat-carousel-slide>
+        </mat-carousel>
+      </div>
+      <div class="col-sm-4 col-xs-12 masterplan-container">
+        <h3 class="primary">
+          ¿Ya tenés <strong>tu lote</strong> en Costa Esmeralda?
+        </h3>
+        <button mat-button routerLink="/auth" class="btn btn-primary">Ingresá</button>
+        <a class="btn btn-primary m-2" matt-button href="../../../assets/masterplan.pdf" download>MASTERPLAN</a>
+      </div>
+    </div>
   </div>
-  <div class="masterplan-container">
-    <h3 class="primary">
-      ¿Ya tenés <strong>tu lote</strong> en Costa Esmeralda?
-    </h3>
-    <button mat-button routerLink="/auth" class="btn btn-primary">Ingresá</button>
-    <a class="btn btn-primary m-2" matt-button href="../../../assets/masterplan.pdf" download>MASTERPLAN</a>
-  </div>
+
 </section>
 
 <section class="second-section p-1">
@@ -57,37 +62,39 @@
       <h2 class="primary">Te puede <strong>interesar</strong></h2>
     </div>
   </div>
-  <div class="row">
-    <div class="col-4">
-      <mat-card (click)="openDialog()">
-        <mat-card-content>
-          <img src="assets/slider1.jpg" alt="">
-          <h4>Titulo#1</h4>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="col-4">
-      <mat-card class="card" (click)="openDialog()">
-        <mat-card-content>
-          <img src="assets/slider1.jpg" alt="">
-          <h4>Titulo#2</h4>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="col-4">
-      <mat-card class="card" (click)="openDialog()">
-        <mat-card-content>
-          <img src="assets/slider1.jpg" alt="">
-          <h4>Titulo#3</h4>
-        </mat-card-content>
-      </mat-card>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 col-xs-12">
+        <mat-card (click)="openDialog()">
+          <mat-card-content>
+            <img src="assets/slider1.jpg" alt="">
+            <h4>Titulo#1</h4>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-4 col-xs-12">
+        <mat-card class="card" (click)="openDialog()">
+          <mat-card-content>
+            <img src="assets/slider1.jpg" alt="">
+            <h4>Titulo#2</h4>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-sm-4 col-xs-12">
+        <mat-card class="card" (click)="openDialog()">
+          <mat-card-content>
+            <img src="assets/slider1.jpg" alt="">
+            <h4>Titulo#3</h4>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="third-section p-3 mt-2 bgc-primary-light">
+<section class="third-section p-3 mt-2 bgc-primary-light container">
   <div class="row">
-    <div class="col-6 xs-12 column1">
+    <div class="col-sm-6 col-xs-12 column1">
 
       <div class="info m-2">
         <div class="icon">
@@ -121,7 +128,7 @@
 
     </div>
 
-    <div class="col-6 column2">
+    <div class="col-sm-6 col-xs-12 column2">
 
       <div class="info m-2">
         <div class="icon">

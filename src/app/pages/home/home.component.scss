@@ -1,18 +1,6 @@
 .first-section {
-  display: flex;
-  justify-content: space-between;
   margin: 10px auto;
-  @media (max-width: 768px) {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-  }
-  & .slider-container {
-    width: 65%;
-    position: relative;
-    @media (max-width: 768px) {
-      width: 100%;
-    }
+  & .container {
     & img {
       width: 100%;
       max-height: 380px;
@@ -25,18 +13,13 @@
       width: 100%;
       color: white;
       text-align: center;
+      max-height: 40%;
       @media (max-width: 425px) {
         font-size: 0.5rem;
       }
       & h3 {
         font-weight: bold;
-        font-size: 2rem;
-        @media (max-width: 1024px) {
-          font-size: 1.5rem;
-        }
-        @media (max-width: 874px) {
-          font-size: 1.2rem;
-        }
+        font-size: 1.2rem;
         @media (max-width: 768px) {
           font-size: 1rem;
         }
@@ -53,9 +36,7 @@
         }
       }
       & p {
-        @media (max-width: 572px) {
-          font-size: 0.7rem;
-        }
+        font-size: 0.7rem;
         @media (max-width: 425px) {
           font-size: 0.5rem;
         }
@@ -63,7 +44,6 @@
     }
   }
   & .masterplan-container {
-    width: 33%;
     height: inherit;
     background-image: url('../../../assets/ejecutivos.jpg');
     background-size: 100% 100%;
@@ -72,14 +52,23 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    @media (max-width: 768px) {
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
+    @media (max-width: 575px) {
+      margin-top: 10px;
     }
     & h3 {
       font-size: 1.5rem;
       text-align: center;
+      @media (max-width: 872px) {
+        font-size: 1rem;
+      }
+      @media (max-width: 611px) {
+        font-size: 0.9rem;
+      }
+    }
+    @media (max-width: 679px) {
+      button, a {
+        font-size: 0.75rem;
+      }
     }
   }
 }

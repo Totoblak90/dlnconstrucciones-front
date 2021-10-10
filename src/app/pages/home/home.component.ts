@@ -54,7 +54,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       scrollTrigger: {
         trigger: this.secondSection,
         scrub: 1,
-        start: "center bottom"
+        start: "top center",
+        end: "top top"
       },
       opacity: 0,
     })
@@ -62,7 +63,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       scrollTrigger: {
         trigger: this.thirdSection,
         scrub: 1,
-        start: "center bottom"
+        start: "top center",
+        end: "top top"
       },
       opacity: 0,
     })
