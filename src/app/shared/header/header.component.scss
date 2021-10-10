@@ -16,10 +16,10 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      & button {
+      & .buttons, button {
         border: none;
         background-color: inherit;
-        padding: 5px;
+        height: 100%;
         @media (max-width: 1110px) {
           font-size: 0.7rem;
         }
@@ -34,10 +34,10 @@
         }
       }
       button:hover {
-        text-decoration: underline;
+        background-color: #0051a4;
       }
       button:focus {
-        text-decoration: underline;
+        background-color: #0051a4;
       }
       & .menu-user-navigation-profile {
         display: flex;
