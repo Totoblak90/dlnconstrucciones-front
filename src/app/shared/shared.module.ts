@@ -4,7 +4,6 @@ import { ComponentsModule } from '../components/components.module';
 import { RouterModule } from '@angular/router';
 
 
-import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SplashScreenComponent } from './splash-screen/splash-screen.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -13,7 +12,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    HeaderComponent,
     FooterComponent,
     SplashScreenComponent,
   ],
@@ -24,7 +22,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
   ],
   exports: [
-    HeaderComponent,
     FooterComponent,
     SplashScreenComponent,
   ]

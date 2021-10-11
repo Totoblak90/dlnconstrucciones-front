@@ -115,3 +115,30 @@
     }
   }
 }
+.section-four {
+  .sociedad {
+    height: 100%;
+    mat-card-header {
+      display: block !important;
+      img {
+        width: 100%;
+      }
+    }
+  }
+  .call-to-action {
+    height: 100%;
+    mat-card-header {
+      display: block !important;
+      img {
+        width: 100%;
+      }
+    }
+    h2 {
+      text-align: center;
+    }
+    mat-card-actions {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

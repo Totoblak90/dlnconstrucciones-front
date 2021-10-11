@@ -1,6 +1,59 @@
-<div>
-  <app-header></app-header>
+
+<mat-drawer-container class="container" autosize>
+  <mat-drawer #drawer class="sidenav p-1" mode="side">
+    <div class="user-image">
+      <img src="../assets/no-image.jpg" alt="user-image" [routerLink]="'/'" class="m-1">
+      <button (click)="drawer.close()"><mat-icon>close</mat-icon></button>
+    </div>
+    <ul>
+      <li class="m-2" [routerLink]="['/home']">
+        <mat-icon>home</mat-icon>
+        <button >INICIO</button>
+      </li>
+      <li class="m-2" [routerLink]="['/quienes-somos']">
+        <mat-icon>copyright</mat-icon>
+        <button >QUIENES SOMOS</button>
+      </li>
+      <li class="m-2" [matMenuTriggerFor]="serviciosMenu">
+        <mat-icon>work</mat-icon>
+        <button >SERVICIOS</button>
+        <mat-menu #serviciosMenu="matMenu" yPosition="below">
+          <button mat-menu-item [routerLink]="['/servicios']">Vivienda</button>
+          <button mat-menu-item [routerLink]="['/servicios']">Piscina</button>
+          <button mat-menu-item [routerLink]="['/servicios']">Telecomunicaciones</button>
+        </mat-menu>
+      </li>
+      <li class="m-2" [routerLink]="['/trabajos-realizados']">
+        <mat-icon>build</mat-icon>
+        <button >TRABAJOS REALIZADOS</button>
+      </li>
+      <li class="m-2"  [routerLink]="['/lotes']">
+        <mat-icon>crop_square</mat-icon>
+        <button>LOTES</button>
+      </li>
+      <li class="m-2" [matMenuTriggerFor]="profileMenu">
+        <mat-icon>person</mat-icon>
+        <button>MI CUENTA</button>
+        <mat-menu #profileMenu="matMenu" yPosition="below">
+          <button mat-menu-item [routerLink]="['/auth']">INICIAR SESIÓN</button>
+          <button mat-menu-item [routerLink]="['/auth']">REGISTRARSE</button>
+        </mat-menu>
+      </li>
+    </ul>
+  </mat-drawer>
+
+  <div class="content">
+    <mat-toolbar >
+      <mat-toolbar-row class="p-3">
+        <button type="button" class="toggleSideNavButton" (click)="drawer.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <img src="../assets/logo.png" alt="logo" [routerLink]="'/'" class="m-1">
+      </mat-toolbar-row>
+    </mat-toolbar>
     <router-outlet></router-outlet>
-  <app-footer></app-footer>
-</div>
+    <app-footer></app-footer>
+  </div>
+
+</mat-drawer-container>
 

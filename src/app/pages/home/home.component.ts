@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   firstSection!: HTMLCollectionOf<Element>;
   secondSection!: HTMLCollectionOf<Element>;
   thirdSection!: HTMLCollectionOf<Element>;
+  sectionFour!: HTMLCollectionOf<Element>;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.firstSection = document.getElementsByClassName('first-section')
     this.secondSection = document.getElementsByClassName('second-section')
     this.thirdSection = document.getElementsByClassName('third-section')
+    this.sectionFour = document.getElementsByClassName('section-four')
   }
 
   ngAfterViewInit(): void {
@@ -48,31 +50,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   animations(): void {
-    gsap.from(this.firstSection, {
+    const tl = gsap.timeline()
+    tl.
+    from(this.firstSection, {
+      duration: 0.5,
+      opacity: 0,
+      xPercent: -10,
+      delay: 0.5,
+    })
+    .from(this.secondSection, {
       duration: 0.5,
       opacity: 0,
       xPercent: -10,
       delay: 0.5
-    })
-    const tl = gsap.timeline();
-    tl
-    .from(this.secondSection, {
-      scrollTrigger: {
-        trigger: this.secondSection,
-        scrub: 1,
-        start: "top center",
-        end: "top top"
-      },
-      opacity: 0,
+
     })
     .from(this.thirdSection, {
-      scrollTrigger: {
-        trigger: this.thirdSection,
-        scrub: 1,
-        start: "top center",
-        end: "top top"
-      },
+      duration: 0.5,
       opacity: 0,
+      xPercent: -10,
+    })
+    .from(this.sectionFour, {
+      duration: 0.5,
+      opacity: 0,
+      xPercent: -10,
+      delay: 0.2
     })
   }
 
