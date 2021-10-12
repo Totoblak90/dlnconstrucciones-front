@@ -72,20 +72,35 @@
     }
   }
 }
+
 .second-section {
-  & h2 {
-    text-align: center;
-  }
-  & mat-card {
-    cursor: pointer;
-    & img {
-      width: 100%;
+  .sociedad {
+    height: 100%;
+    mat-card-header {
+      display: block !important;
+      img {
+        width: 100%;
+      }
     }
-    & h4 {
+  }
+  .call-to-action {
+    height: 100%;
+    mat-card-header {
+      display: block !important;
+      img {
+        width: 100%;
+      }
+    }
+    h2 {
       text-align: center;
+    }
+    mat-card-actions {
+      display: flex;
+      justify-content: center;
     }
   }
 }
+
 .third-section {
   width: 100%;
   .column1, .column2 {
@@ -115,30 +130,18 @@
     }
   }
 }
+
 .section-four {
-  .sociedad {
-    height: 100%;
-    mat-card-header {
-      display: block !important;
-      img {
-        width: 100%;
-      }
-    }
+  & h2 {
+    text-align: center;
   }
-  .call-to-action {
-    height: 100%;
-    mat-card-header {
-      display: block !important;
-      img {
-        width: 100%;
-      }
+  & mat-card {
+    cursor: pointer;
+    & img {
+      width: 100%;
     }
-    h2 {
+    & h4 {
       text-align: center;
-    }
-    mat-card-actions {
-      display: flex;
-      justify-content: center;
     }
   }
 }

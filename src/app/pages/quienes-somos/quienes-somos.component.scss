@@ -1,0 +1,41 @@
+.main {
+  h1 {
+    text-align: center;
+  }
+  .info-1 {
+    border-right: 3px solid #4a7cd6;
+    @media (max-width: 425px) {
+      border-right: none;
+    }
+  }
+  .info-2 {
+    background-image: url('../../../assets/obra.jpg');
+    background-size: 100% 100%;
+    @media (max-width: 425px) {
+      background-image: url('../../../assets/quienes-somos-3.jpg') !important;
+      height: 300px;
+      margin: 5px 0px;
+    }
+  }
+  .info-3 {
+    border-left: 3px solid #4a7cd6;
+    @media (max-width: 425px) {
+      border-left: none;
+    }
+  }
+  mat-accordion {
+    mat-panel-title {
+      color: white;
+    }
+    mat-panel-description {
+      color: white;
+    }
+    p {
+      text-align: justify;
+      color: white;
+    }
+    img {
+      width: 100%;
+    }
+  }
+}

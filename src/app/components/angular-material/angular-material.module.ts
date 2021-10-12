@@ -8,6 +8,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatCardModule,
     MatInputModule,
     MatDialogModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatExpansionModule
   ]
 })
 export class AngularMaterialModule { }
