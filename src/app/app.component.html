@@ -1,52 +1,52 @@
 
-<mat-drawer-container class="container" autosize>
-  <mat-drawer #drawer class="sidenav p-1" mode="side">
+<mat-sidenav-container class="container" autosize>
+  <mat-sidenav #sidenav class="sidenav p-1" mode="side">
     <div class="user-image">
       <img src="../assets/no-image.jpg" alt="user-image" [routerLink]="'/'" class="m-1">
       <h3 class="primary-dark"><strong>nombre de usuario</strong></h3>
-      <button (click)="drawer.close()"><mat-icon>close</mat-icon></button>
+      <button (click)="sidenav.close()"><mat-icon>close</mat-icon></button>
     </div>
     <ul>
       <li class="m-2" [routerLink]="['/home']">
         <mat-icon>home</mat-icon>
-        <button (click)="drawer.close()" >INICIO</button>
+        <button (click)="sidenav.close()" >INICIO</button>
       </li>
       <li class="m-2" [routerLink]="['/quienes-somos']">
         <mat-icon>copyright</mat-icon>
-        <button (click)="drawer.close()" >QUIENES SOMOS</button>
+        <button (click)="sidenav.close()" >QUIENES SOMOS</button>
       </li>
       <li class="m-2" [matMenuTriggerFor]="serviciosMenu">
         <mat-icon>work</mat-icon>
         <button routerLink="/servicios" >SERVICIOS</button>
         <mat-menu #serviciosMenu="matMenu" yPosition="below">
-          <button (click)="drawer.close()" mat-menu-item [routerLink]="['/servicios/viviendas']">Vivienda</button>
-          <button (click)="drawer.close()" mat-menu-item [routerLink]="['/servicios/piscinas']">Piscina</button>
-          <button (click)="drawer.close()" mat-menu-item [routerLink]="['/servicios/antenas']">Telecomunicaciones</button>
+          <button (click)="sidenav.close()" mat-menu-item [routerLink]="['/servicios/viviendas']">Vivienda</button>
+          <button (click)="sidenav.close()" mat-menu-item [routerLink]="['/servicios/piscinas']">Piscina</button>
+          <button (click)="sidenav.close()" mat-menu-item [routerLink]="['/servicios/antenas']">Telecomunicaciones</button>
         </mat-menu>
       </li>
       <li class="m-2" [routerLink]="['/trabajos-realizados']">
         <mat-icon>build</mat-icon>
-        <button (click)="drawer.close()" >TRABAJOS REALIZADOS</button>
+        <button (click)="sidenav.close()" >TRABAJOS REALIZADOS</button>
       </li>
       <li class="m-2"  [routerLink]="['/lotes']">
         <mat-icon>crop_square</mat-icon>
-        <button (click)="drawer.close()">LOTES</button>
+        <button (click)="sidenav.close()">LOTES</button>
       </li>
       <li class="m-2" [matMenuTriggerFor]="profileMenu">
         <mat-icon>person</mat-icon>
         <button>MI CUENTA</button>
         <mat-menu #profileMenu="matMenu" yPosition="below">
-          <button (click)="drawer.close()" mat-menu-item [routerLink]="['/auth']">INICIAR SESIÓN</button>
-          <button (click)="drawer.close()" mat-menu-item [routerLink]="['/auth']">REGISTRARSE</button>
+          <button (click)="sidenav.close()" mat-menu-item [routerLink]="['/auth']">INICIAR SESIÓN</button>
+          <button (click)="sidenav.close()" mat-menu-item [routerLink]="['/auth']">REGISTRARSE</button>
         </mat-menu>
       </li>
     </ul>
-  </mat-drawer>
+  </mat-sidenav>
 
-  <div class="content">
+  <mat-sidenav-content class="content">
     <mat-toolbar >
       <mat-toolbar-row class="p-3">
-        <button type="button" class="toggleSideNavButton" (click)="drawer.toggle()">
+        <button type="button" class="toggleSideNavButton" (click)="sidenav.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
         <img src="../assets/logo.png" alt="logo" [routerLink]="'/'" class="m-1">
@@ -54,7 +54,7 @@
     </mat-toolbar>
     <router-outlet></router-outlet>
     <app-footer></app-footer>
-  </div>
+  </mat-sidenav-content>
 
-</mat-drawer-container>
+</mat-sidenav-container>
 

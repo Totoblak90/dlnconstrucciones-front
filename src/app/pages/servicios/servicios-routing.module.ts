@@ -10,24 +10,18 @@ const routes: Routes = [
     path: '',
     component: ServiciosComponent,
     pathMatch: 'full',
-    children: [
-      {
-        path: 'antenas',
-        component: AntenasComponent
-      },
-      {
-        path: 'piscinas',
-        component: PiscinasComponent
-      },
-      {
-        path: 'viviendas',
-        component: ViviendasComponent
-      },
-      {
-        path: '**',
-        redirectTo: 'servicios'
-      }
-    ]
+  },
+  {
+    path: 'viviendas',
+    loadChildren: () => import('./viviendas/viviendas.module').then(m => m.ViviendasModule)
+  },
+  {
+    path: 'piscinas',
+    loadChildren: () => import('./piscinas/piscinas.module').then(m => m.PiscinasModule)
+  },
+  {
+    path: 'antenas',
+    loadChildren: () => import('./antenas/antenas.module').then(m => m.AntenasModule)
   },
   {
     path: '**',

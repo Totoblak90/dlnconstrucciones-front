@@ -1,194 +1,167 @@
 <section class="first-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-8 col-xs-12">
-        <mat-carousel
-          [timings]="'350ms ease-in'"
-          [autoplay]="true"
-          [interval]="5000"
-          [loop]="true"
-          [hideArrows]="false"
-          [hideIndicators]="true"
-          [color]="'accent'"
-          [maxWidth]="'auto'"
-          [maintainAspectRatio]="true"
-          [proportion]="50"
-          [slides]="2"
-          [useKeyboard]="true"
-          [useMouseWheel]="false"
-          [orientation]="'ltr'"
-        >
-          <mat-carousel-slide>
-            <img src="../../../assets/slider1.jpg" alt="">
-            <div class="info-container p-2">
-              <h3>
-                Más de 15 años construyendo confianza
-              </h3>
-              <hr>
-              <p>
-                Nuestro éxito se basa en los exigentes controles de calidad a los que sometemos todos los proyectos que realizamos
-              </p>
-            </div>
-          </mat-carousel-slide>
-          <mat-carousel-slide>
-            <img src="../../../assets/slider2.jpg" alt="">
-            <div class="info-container p-2">
-              <h3>
-                Antenas de Telecomunicaciones
-              </h3>
-              <hr>
-              <p>
-                Servicio de ejecución de obras a empresas de telecomunicaciones
-              </p>
-            </div>
-          </mat-carousel-slide>
-        </mat-carousel>
-      </div>
-      <div class="col-sm-4 col-xs-12 masterplan-container">
-        <h3 class="primary">
-          ¿Ya tenés <strong>tu lote</strong> en Costa Esmeralda?
-        </h3>
-        <button mat-button routerLink="/auth" class="btn btn-primary">Ingresá</button>
-        <a class="btn btn-primary m-2" matt-button href="../../../assets/masterplan.pdf" download>MASTERPLAN</a>
-      </div>
-    </div>
+  <div class="carousel">
+    <mat-carousel
+      [timings]="'350ms ease-in'"
+      [autoplay]="true"
+      [interval]="5000"
+      [loop]="true"
+      [hideArrows]="false"
+      [hideIndicators]="true"
+      [color]="'accent'"
+      [maxWidth]="'auto'"
+      [maintainAspectRatio]="true"
+      [proportion]="50"
+      [slides]="2"
+      [useKeyboard]="true"
+      [useMouseWheel]="false"
+      [orientation]="'ltr'"
+    >
+      <mat-carousel-slide>
+        <img src="../../../assets/slider1.jpg" alt="">
+        <div class="info-container">
+          <h3>
+            Más de 15 años construyendo confianza
+          </h3>
+          <hr>
+          <p>
+            Nuestro éxito se basa en los exigentes controles de calidad a los que sometemos todos los proyectos que realizamos
+          </p>
+        </div>
+      </mat-carousel-slide>
+      <mat-carousel-slide>
+        <img src="../../../assets/slider2.jpg" alt="">
+        <div class="info-container">
+          <h3>
+            Antenas de Telecomunicaciones
+          </h3>
+          <hr>
+          <p>
+            Servicio de ejecución de obras a empresas de telecomunicaciones
+          </p>
+        </div>
+      </mat-carousel-slide>
+    </mat-carousel>
   </div>
-
-</section>
-
-<section class="second-section m-2 container">
-  <div class="row">
-    <div class="col-sm-6 col-xs-12">
-      <mat-card class="sociedad">
-        <mat-card-header>
-          <img src="../../../assets/no-image.jpg" alt="logo">
-        </mat-card-header>
-        <mat-card-content class="mt-2">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Porro omnis in magnam, cum nobis, alias libero reiciendis laudantium numquam officia, est dignissimos qui sequi?
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="col-sm-6 col-xs-12">
-      <mat-card class="call-to-action">
-        <mat-card-header>
-          <img src="../../../assets/lote.jpg" alt="">
-        </mat-card-header>
-        <mat-card-content class="mt-2">
-          <h2 class="primary-dark">Lotes en <strong>venta</strong></h2>
-        </mat-card-content>
-        <mat-card-actions>
-          <button class="btn btn-primary" routerLink="/lotes" >Ver más</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
+  <div class="masterplan-container">
+    <h3 class="primary-dark">
+      ¿Ya tenés <strong>tu lote</strong> en Costa Esmeralda?
+    </h3>
+    <a routerLink="/auth" class="btn btn-primary btn-a-bgc">Ingresá</a>
+    <a class="btn btn-primary btn-a-bgc" href="../../../assets/masterplan.pdf" download>MASTERPLAN</a>
   </div>
 </section>
 
-<section class="third-section p-3 m-2 bgc-primary-light container">
-  <div class="row">
-    <div class="col-sm-6 col-xs-12 column1">
-
-      <div class="info m-2">
-        <div class="icon">
-          <img src="assets/safety.png" alt="">
-        </div>
-        <div class="span">
-          <h3 class="m-0 primary-dark"><strong>Seguridad</strong></h3>
-          <p class="m-0 primary-dark">Todas las medidas de seguridad reglamentarias</p>
-        </div>
-      </div>
-
-      <div class="info m-2">
-        <div class="icon">
-          <img src="assets/house.png" alt="">
-        </div>
-        <div class="span">
-          <h3 class="m-0 primary-dark"><strong>+500</strong></h3>
-          <p class="m-0 primary-dark">Productos entregados, llave en mano</p>
-        </div>
-      </div>
-
-      <div class="info m-2">
-        <div class="icon">
-          <img src="assets/obreros.png" alt="">
-        </div>
-        <div class="span">
-          <h3 class="m-0 primary-dark"><strong>Equipo</strong></h3>
-          <p class="m-0 primary-dark">Más de 50 trabajadores profesionales</p>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="col-sm-6 col-xs-12 column2">
-
-      <div class="info m-2">
-        <div class="icon">
-          <img src="assets/grua.png" alt="">
-        </div>
-        <div class="span">
-          <h3 class="m-0 primary-dark"><strong>Equipamiento</strong></h3>
-          <p class="m-0 primary-dark">Contamos con equipamiento de primera calidad para la obra</p>
-        </div>
-      </div>
-
-      <div class="info m-2">
-        <div class="icon">
-          <img src="assets/pagos.png" alt="">
-        </div>
-        <div class="span">
-          <h3 class="m-0 primary-dark"><strong>Seguimiento</strong></h3>
-          <p class="m-0 primary-dark">de pagos y avance de obra a través de nuestra web</p>
-        </div>
-      </div>
-
-      <div class="info m-2">
-        <div class="icon">
-          <img src="assets/service.png" alt="">
-        </div>
-        <div class="span">
-          <h3 class="m-0 primary-dark"><strong>Servicio punta a punta</strong></h3>
-          <p class="m-0 primary-dark">Para que no te tengas que ocupar de nada</p>
-        </div>
-      </div>
-    </div>
-  </div>
+<section class="second-section">
+  <mat-card class="sociedad">
+    <mat-card-header>
+      <img src="../../../assets/no-image.jpg" alt="logo">
+    </mat-card-header>
+    <mat-card-content class="mt-2">
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Porro omnis in magnam, cum nobis, alias libero reiciendis laudantium numquam officia, est dignissimos qui sequi?
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="call-to-action">
+    <mat-card-header>
+      <img src="../../../assets/lote.jpg" alt="">
+    </mat-card-header>
+    <mat-card-content class="mt-2">
+      <h2 class="primary-dark">Lotes en <strong>venta</strong></h2>
+    </mat-card-content>
+    <mat-card-actions>
+      <button class="btn btn-primary btn-a-bgc" routerLink="/lotes" >Ver más</button>
+    </mat-card-actions>
+  </mat-card>
 </section>
 
-<section class="section-four p-1 m-2">
-  <div class="row">
-    <div class="col-12">
-      <h2 class="primary">Te puede <strong>interesar</strong></h2>
+<!-- <section class="third-section bgc-primary-light">
+  <div class="info">
+    <div class="icon">
+      <img src="assets/safety.png" alt="">
+    </div>
+    <div class="span">
+      <h3 class=" primary-dark"><strong>Seguridad</strong></h3>
+      <p class=" primary-dark">Todas las medidas de seguridad reglamentarias</p>
     </div>
   </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-4 col-xs-12">
-        <mat-card (click)="openDialog()">
-          <mat-card-content>
-            <img src="assets/slider1.jpg" alt="">
-            <h4>Titulo#1</h4>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="col-sm-4 col-xs-12">
-        <mat-card class="card" (click)="openDialog()">
-          <mat-card-content>
-            <img src="assets/slider1.jpg" alt="">
-            <h4>Titulo#2</h4>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="col-sm-4 col-xs-12">
-        <mat-card class="card" (click)="openDialog()">
-          <mat-card-content>
-            <img src="assets/slider1.jpg" alt="">
-            <h4>Titulo#3</h4>
-          </mat-card-content>
-        </mat-card>
-      </div>
+
+  <div class="info">
+    <div class="icon">
+      <img src="assets/house.png" alt="">
+    </div>
+    <div class="span">
+      <h3 class=" primary-dark"><strong>+500</strong></h3>
+      <p class=" primary-dark">Productos entregados, llave en mano</p>
     </div>
   </div>
+
+  <div class="info">
+    <div class="icon">
+      <img src="assets/obreros.png" alt="">
+    </div>
+    <div class="span">
+      <h3 class=" primary-dark"><strong>Equipo</strong></h3>
+      <p class=" primary-dark">Más de 50 trabajadores profesionales</p>
+    </div>
+  </div>
+
+  <div class="info">
+    <div class="icon">
+      <img src="assets/grua.png" alt="">
+    </div>
+    <div class="span">
+      <h3 class=" primary-dark"><strong>Equipamiento</strong></h3>
+      <p class=" primary-dark">Contamos con equipamiento de primera calidad para la obra</p>
+    </div>
+  </div>
+
+  <div class="info">
+    <div class="icon">
+      <img src="assets/pagos.png" alt="">
+    </div>
+    <div class="span">
+      <h3 class=" primary-dark"><strong>Seguimiento</strong></h3>
+      <p class=" primary-dark">de pagos y avance de obra a través de nuestra web</p>
+    </div>
+  </div>
+
+  <div class="info">
+    <div class="icon">
+      <img src="assets/service.png" alt="">
+    </div>
+    <div class="span">
+      <h3 class="primary-dark"><strong>Servicio punta a punta</strong></h3>
+      <p class="primary-dark">Para que no te tengas que ocupar de nada</p>
+    </div>
+  </div>
+
+</section> -->
+
+<section class="section-four">
+  <h2 class="primary-dark">Te puede <strong>interesar</strong></h2>
+
+  <div class="cards">
+    <mat-card (click)="openDialog()">
+      <mat-card-content>
+        <img src="assets/slider1.jpg" alt="">
+        <h4>Titulo#1</h4>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="card" (click)="openDialog()">
+      <mat-card-content>
+        <img src="assets/slider1.jpg" alt="">
+        <h4>Titulo#2</h4>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="card" (click)="openDialog()">
+      <mat-card-content>
+        <img src="assets/slider1.jpg" alt="">
+        <h4>Titulo#3</h4>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
 </section>
 
 
