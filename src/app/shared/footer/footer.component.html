@@ -12,7 +12,7 @@
       <p>Pinamar, Buenos Aires</p> <mat-icon class="spinIcon">place</mat-icon>
     </div>
     <form [formGroup]="formularioContacto" (submit)="send($event)">
-      <mat-form-field appearance="fill" class="m-1">
+      <mat-form-field appearance="fill">
         <mat-label>Email:</mat-label>
         <input matInput formControlName="email" placeholder="email@dominio.com">
         <mat-error *ngIf="formularioContacto.controls.email.hasError('required')">
@@ -23,26 +23,26 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="m-1">
+      <mat-form-field appearance="fill">
         <mat-label>Dejanos tu comentario:</mat-label>
         <textarea formControlName="comentario" matInput></textarea>
         <mat-error *ngIf="formularioContacto.controls.comentario.hasError('required')">
           Este campo es requerido
         </mat-error>
       </mat-form-field>
-      <button [disabled]="formularioContacto.invalid" type="submit" class="btn btn-primary">Enviar consulta</button>
+      <button mat-raised-button [disabled]="formularioContacto.invalid" type="submit" class="bgc-primary-dark">Enviar consulta</button>
     </form>
   </div>
 
 
 
   <div class="logo">
-    <img src="assets/logo.png" alt="" routerLink="/" class="m-2">
+    <img src="assets/logo.png" alt="" routerLink="/">
     <div class="social-icons-container">
-      <a href="https://www.facebook.com/dlnconstrucciones/" class="m-2">
+      <a href="https://www.facebook.com/dlnconstrucciones/">
         <img src="assets/icon-facebook.png" alt="Facebook logo">
       </a>
-      <a href="https://www.instagram.com/dln_construcciones/" class="m-2">
+      <a href="https://www.instagram.com/dln_construcciones/">
         <img src="assets/icon-instagram.png" alt="Instagram logo">
       </a>
     </div>

@@ -85,6 +85,7 @@
     }
     a {
       margin: 5px;
+      color: white;
       @media (max-width: 679px) {
         font-size: 0.75rem;
       }
@@ -134,28 +135,31 @@
     mat-card-actions {
       display: flex;
       justify-content: center;
+      button {
+        color: white;
+      }
     }
   }
 }
 
-.third-section {
-  width: 100%;
-  margin-bottom: 10px;
-  .info {
-    .icon {
-      img {
-        width: 100%;
-        max-width: 200px;
-        max-height: 150px;
-      }
-    }
-    .span {
-      margin: auto;
-      text-align: center;
-      vertical-align: middle;
-    }
-  }
-}
+// .third-section {
+//   width: 100%;
+//   margin-bottom: 10px;
+//   .info {
+//     .icon {
+//       img {
+//         width: 100%;
+//         max-width: 200px;
+//         max-height: 150px;
+//       }
+//     }
+//     .span {
+//       margin: auto;
+//       text-align: center;
+//       vertical-align: middle;
+//     }
+//   }
+// }
 
 .section-four {
   h2 {

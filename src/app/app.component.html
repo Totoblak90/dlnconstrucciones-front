@@ -1,21 +1,21 @@
 
 <mat-sidenav-container class="container" autosize>
-  <mat-sidenav #sidenav class="sidenav p-1" mode="side">
+  <mat-sidenav #sidenav class="sidenav" mode="side">
     <div class="user-image">
-      <img src="../assets/no-image.jpg" alt="user-image" [routerLink]="'/'" class="m-1">
+      <img src="../assets/no-image.jpg" alt="user-image" [routerLink]="'/'" >
       <h3 class="primary-dark"><strong>nombre de usuario</strong></h3>
       <button (click)="sidenav.close()"><mat-icon>close</mat-icon></button>
     </div>
     <ul>
-      <li class="m-2" [routerLink]="['/home']">
+      <li [routerLink]="['/home']">
         <mat-icon>home</mat-icon>
         <button (click)="sidenav.close()" >INICIO</button>
       </li>
-      <li class="m-2" [routerLink]="['/quienes-somos']">
+      <li [routerLink]="['/quienes-somos']">
         <mat-icon>copyright</mat-icon>
         <button (click)="sidenav.close()" >QUIENES SOMOS</button>
       </li>
-      <li class="m-2" [matMenuTriggerFor]="serviciosMenu">
+      <li [matMenuTriggerFor]="serviciosMenu">
         <mat-icon>work</mat-icon>
         <button routerLink="/servicios" >SERVICIOS</button>
         <mat-menu #serviciosMenu="matMenu" yPosition="below">
@@ -24,15 +24,15 @@
           <button (click)="sidenav.close()" mat-menu-item [routerLink]="['/servicios/antenas']">Telecomunicaciones</button>
         </mat-menu>
       </li>
-      <li class="m-2" [routerLink]="['/trabajos-realizados']">
+      <li [routerLink]="['/trabajos-realizados']">
         <mat-icon>build</mat-icon>
         <button (click)="sidenav.close()" >TRABAJOS REALIZADOS</button>
       </li>
-      <li class="m-2"  [routerLink]="['/lotes']">
+      <li  [routerLink]="['/lotes']">
         <mat-icon>crop_square</mat-icon>
         <button (click)="sidenav.close()">LOTES</button>
       </li>
-      <li class="m-2" [matMenuTriggerFor]="profileMenu">
+      <li [matMenuTriggerFor]="profileMenu">
         <mat-icon>person</mat-icon>
         <button>MI CUENTA</button>
         <mat-menu #profileMenu="matMenu" yPosition="below">
@@ -49,7 +49,7 @@
         <button type="button" class="toggleSideNavButton" (click)="sidenav.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
-        <img src="../assets/logo.png" alt="logo" [routerLink]="'/'" class="m-1">
+        <img src="../assets/logo.png" alt="logo" [routerLink]="'/'" >
       </mat-toolbar-row>
     </mat-toolbar>
     <router-outlet></router-outlet>
