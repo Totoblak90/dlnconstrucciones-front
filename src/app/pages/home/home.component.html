@@ -1,6 +1,20 @@
 <div class="home-main">
+  <div class="banner-img">
+    <h1><strong>Tu casa en costa esmeralda, más cerca</strong></h1>
+  </div>
   <section class="first-section">
-    <div class="carousel">
+
+    <app-presentation-card
+      class="presentation-card"
+      *ngFor="let card of cardsList"
+      [imagePath]="card.imagePath"
+      [title]="card.title"
+      [description]="card.description"
+      [routerAnchor]="card.routerAnchor"
+      [downloadAnchor]="card.downloadAnchor"
+    ></app-presentation-card>
+
+    <!-- <div class="carousel">
       <mat-carousel
         [timings]="'350ms ease-in'"
         [autoplay]="true"
@@ -49,11 +63,22 @@
       </h3>
       <a mat-raised-button routerLink="/auth" class="bgc-primary-dark">Ingresá</a>
       <a mat-raised-button class="bgc-primary-dark" href="../../../assets/masterplan.pdf" download>MASTERPLAN</a>
-    </div>
+    </div> -->
   </section>
 
   <section class="second-section">
-    <mat-card class="sociedad">
+    <div class="nosotros">
+      <div class="box2">
+        <img src="../../../assets/quienes-somos-2.jpg" alt="">
+      </div>
+      <div class="box1">
+        <h2>Nosotros</h2>
+        <p class="text-justify">DLN Construcciones es una joven empresa dedicada a la construccion de hogares modernos, confortables, seguros y respetuosos del medio ambiente, donde vos y tu familia puedan tener la descanso y la recreación que merecen. Cubrimos toda la región de la Costa Atlántica, pero la mayor parte de nuestros trabajos se han realizado en el barrio Costa Esmeralda. Nos ocupamos de todos los aspectos: desde el anteproyecto, estudio de suelo, la realización de planos, imágenes digitales, los trámites municipales, compra de materiales, la dirección de obra y la ejecución, hasta el posterior mantenimiento y la compra de mobiliario, si así lo deseas. Ponemos a tu disposición toda nuestra experiencia, asesorándote desde la idea inicial y la adquisición del terreno, pasando por el diseño y desarrollo hasta la ejecución y posterior mantenimiento de tu nuevo hogar, de la mano de nuestro equipo de profesionales, técnicos y operarios de primera línea. <strong>Decenas de clientes satisfechos nos avalan.</strong></p>
+        <p>Contactanos, podemos asesorarte</p>
+      </div>
+    </div>
+
+    <!-- <mat-card class="sociedad">
       <mat-card-header>
         <img src="../../../assets/no-image.jpg" alt="logo">
       </mat-card-header>
@@ -71,7 +96,7 @@
       <mat-card-actions>
         <button mat-raised-button class="bgc-primary-dark" routerLink="/lotes" >Ver más</button>
       </mat-card-actions>
-    </mat-card>
+    </mat-card> -->
   </section>
 
   <!-- <section class="third-section bgc-primary-light">
