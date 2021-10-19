@@ -34,11 +34,17 @@ $dlnconstrucciones-theme: mat-light-theme((
 @include angular-material-theme($dlnconstrucciones-theme);
 
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
 
 html, body { height: 100%;}
 body {
   margin: auto;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  // font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'Oswald', sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6, span, label, p, button, a {
+  font-family: 'Oswald', sans-serif !important;
+
 }
 .primary {
   color: #4bb0d0 !important;
