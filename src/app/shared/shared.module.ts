@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
 import { SplashScreenComponent } from './splash-screen/splash-screen.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HeaderComponent } from './header/header.component';
 
 
 
@@ -14,16 +15,19 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     FooterComponent,
     SplashScreenComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
     ComponentsModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ComponentsModule
   ],
   exports: [
     FooterComponent,
     SplashScreenComponent,
+    HeaderComponent,
   ]
 })
 export class SharedModule { }

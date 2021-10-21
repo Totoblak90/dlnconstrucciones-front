@@ -1,12 +1,10 @@
 import { DOCUMENT } from '@angular/common';
-import { AfterContentInit, AfterViewInit, Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 import {gsap} from 'gsap'
 import {ScrollTrigger} from 'gsap/ScrollTrigger'
-import { PresentationCard } from 'src/app/interfaces/presentation-card.interface';
 import { ModalComponent } from './modal/modal.component';
-import { DownloadAnchor } from '../../interfaces/presentation-card.interface';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,40 +18,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   secondSection!: HTMLCollectionOf<Element>;
   thirdSection!: HTMLCollectionOf<Element>;
   sectionFour!: HTMLCollectionOf<Element>;
-
-  cardsList: PresentationCard[] = [
-    {
-      imagePath: '../../../assets/slider1.jpg',
-      title: `Más de 15 años construyendo confianza`,
-      description: 'Nuestro éxito se basa en los exigentes controles de calidad a los que sometemos todos los proyectos que realizamos'
-    },
-    {
-      imagePath: '../../../assets/llave-en-mano.jpg',
-      title: 'Proyectos llave en mano',
-      description: 'Te entregamos la casa lista para usar'
-    },
-    {
-      imagePath: '../../../assets/lote.jpg',
-      title: `Lotes en venta`,
-      routerAnchor: { route: '/lotes', innerText: 'Ver más' }
-    },
-    {
-      imagePath: '../../../assets/plano.png',
-      title: '¿Ya tenés tu lote en Costa Esmeralda?',
-      routerAnchor: {route: '/auth', innerText: "Ingresá"},
-      downloadAnchor: {href: '../../../assets/masterplan.pdf', innerText: 'MASTERPLAN'}
-    },
-    {
-      imagePath: '../../../assets/quienes-somos-3.jpg',
-      title: 'Proyecto, ejecución y dirección de obra',
-      description: 'Nos ocupamos de todo para que vos no te ocupes de nada'
-    },
-    {
-      imagePath: '../../../assets/slider2.jpg',
-      title: 'Antenas de Telecomunicaciones',
-      description: 'Servicio de ejecución de obras a empresas de telecomunicaciones'
-    }
-  ]
 
 
   constructor(

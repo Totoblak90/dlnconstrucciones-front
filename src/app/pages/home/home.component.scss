@@ -2,7 +2,7 @@
   .banner-img {
     width: 100%;
     height: 70vh;
-    background-image: url('../../../assets/home-page-banner.webp');
+    background-image: url('../../../assets/quienes-somos-2.jpg');
     background-size: 100% 100%;
     background-attachment: fixed;
     background-position: center;
@@ -13,128 +13,180 @@
     align-items: center;
     justify-content: center;
     color: white;
-    @media (max-width: 575px) {
+    @media (max-width: 575pt) {
       height: 50vh;
-      margin-bottom: 10px;
+      margin-bottom: 10pt;
     }
     h1 {
       font-size: 3rem;
-      @media (max-width: 575px) {
+      @media (max-width: 575pt) {
         font-size: 1.5rem;
       }
     }
   }
-  // .first-section {
-
-    // margin: 10px auto;
-    // width: 100%;
-    // display: flex;
-    // flex-wrap: nowrap;
-    // justify-content: space-between;
-    // @media (max-width: 575px) {
-    //   flex-direction: column;
-    //   align-items: center;
-    // }
-    // .carousel {
-    //   width: 65%;
-    //   @media (max-width: 575px) {
-    //     width: 100%;
-    //     max-width: 100%;
-    //     margin-bottom: 10px;
-    //   }
-    //   & img {
-    //     width: 100%;
-    //   }
-    //   & .info-container {
-    //     background-color: black;
-    //     opacity: 0.7;
-    //     position: absolute;
-    //     bottom: 0;
-    //     width: 100%;
-    //     color: white;
-    //     text-align: center;
-    //     max-height: 40%;
-    //     padding: 10px;
-    //     @media (max-width: 425px) {
-    //       font-size: 0.5rem;
-    //     }
-    //     & h3 {
-    //       font-weight: bold;
-    //       font-size: 1.2rem;
-    //       display: inline;
-    //       @media (max-width: 768px) {
-    //         font-size: 1rem;
-    //       }
-    //       @media (max-width: 425px) {
-    //         font-size: 0.7rem;
-    //         margin: auto;
-    //       }
-    //     }
-    //     & hr {
-    //       width: 80%;
-    //       margin: 10px auto;
-    //       @media (max-width: 425px) {
-    //         margin: 1px auto;
-    //       }
-    //     }
-    //     & p {
-    //       font-size: 0.7rem;
-    //       margin: auto;
-    //       display: inline;
-    //       @media (max-width: 425px) {
-    //         font-size: 0.5rem;
-    //       }
-    //     }
-    //   }
-    // }
-    // & .masterplan-container {
-    //   display: flex;
-    //   flex-direction: column;
-    //   align-items: center;
-    //   justify-content: center;
-    //   background-image: url('../../../assets/ejecutivos.jpg');
-    //   background-size: 100% 100%;
-    //   background-repeat: no-repeat;
-    //   width: 32%;
-    //   @media (max-width: 575px) {
-    //     margin-bottom: 10px;
-    //     width: 100%;
-    //     max-width: 100%;
-    //   }
-    //   & h3 {
-    //     font-size: 1.5rem;
-    //     text-align: center;
-    //     @media (max-width: 872px) {
-    //       font-size: 1rem;
-    //     }
-    //     @media (max-width: 611px) {
-    //       font-size: 0.9rem;
-    //     }
-    //   }
-    //   a {
-    //     margin: 5px;
-    //     color: white;
-    //     @media (max-width: 679px) {
-    //       font-size: 0.75rem;
-    //     }
-    //   }
-    // }
-  // }
+  .first-section {
+    margin: 10pt auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    @media (max-width: 575pt) {
+      flex-direction: column;
+      align-items: center;
+    }
+    .carousel {
+      width: 65%;
+      @media (max-width: 575pt) {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 10pt;
+      }
+      & img {
+        width: 100%;
+      }
+      & .info-container {
+        background-color: black;
+        opacity: 0.7;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        color: white;
+        text-align: center;
+        max-height: 40%;
+        padding: 10pt;
+        @media (max-width: 425pt) {
+          font-size: 0.5rem;
+        }
+        & h3 {
+          font-weight: bold;
+          font-size: 1.2rem;
+          display: inline;
+          @media (max-width: 768pt) {
+            font-size: 1rem;
+          }
+          @media (max-width: 425pt) {
+            font-size: 0.7rem;
+            margin: auto;
+          }
+        }
+        & hr {
+          width: 80%;
+          margin: 10pt auto;
+          @media (max-width: 425pt) {
+            margin: 1pt auto;
+          }
+        }
+        & p {
+          font-size: 0.7rem;
+          margin: auto;
+          display: inline;
+          @media (max-width: 425pt) {
+            font-size: 0.5rem;
+          }
+        }
+      }
+    }
+    & .masterplan-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-image: url('../../../assets/ejecutivos.jpg');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      width: 32%;
+      @media (max-width: 575pt) {
+        margin-bottom: 10pt;
+        width: 100%;
+        max-width: 100%;
+      }
+      & h3 {
+        font-size: 1.5rem;
+        text-align: center;
+        @media (max-width: 872pt) {
+          font-size: 1rem;
+        }
+        @media (max-width: 611pt) {
+          font-size: 0.9rem;
+        }
+      }
+      a {
+        margin: 5pt;
+        color: white;
+        @media (max-width: 679pt) {
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
 
   .second-section {
+    display: flex;
+    justify-content: space-between;
+    mat-card {
+      max-width: 100%;
+      margin: 10pt 0pt;
+    }
+    @media (max-width: 575pt) {
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+    }
+    .sociedad {
+      width: 48.5%;
+      @media (max-width: 575pt) {
+        width: 100%;
+        margin-bottom: 5pt;
+      }
+      mat-card-header {
+        display: block !important;
+        img {
+          width: 100%;
+        }
+      }
+      @media (max-width: 575pt) {
+        margin: 10pt auto !important;
+      }
+    }
+    .call-to-action {
+      width: 48.5%;
+      @media (max-width: 575pt) {
+        width: 100%;
+        margin-bottom: 5pt;
+      }
+      mat-card-header {
+        display: block !important;
+        img {
+          width: 100%;
+        }
+      }
+      h2 {
+        text-align: center;
+      }
+      mat-card-actions {
+        display: flex;
+        justify-content: center;
+        button {
+          color: white;
+        }
+      }
+    }
+  }
+
+  .third-section {
     display: block;
     background-color: #c9e5ef;
     width: 100%;
     height: 100vh;
-    @media (max-width: 575px) {
+    @media (max-width: 575pt) {
       height: inherit;
-      margin: 10px 0;
+      margin: 10pt 0;
     }
     .nosotros {
       width: 80%;
       height: inherit;
       margin: auto;
-      @media (max-width: 575px) {
+      @media (max-width: 575pt) {
         display: flex;
         flex-direction: column;
         align-content: center;
@@ -150,8 +202,8 @@
         bottom: 10%;
         left: 10%;
         z-index: 90;
-        padding: 10px;
-        @media (max-width: 575px) {
+        padding: 10pt;
+        @media (max-width: 575pt) {
           position: static;
           bottom: none;
           left: none;
@@ -166,7 +218,7 @@
         position: absolute;
         right: 10%;
         bottom: 10%;
-        @media (max-width: 575px) {
+        @media (max-width: 575pt) {
           position: static;
           bottom: none;
           right: none;
@@ -177,68 +229,7 @@
         }
       }
     }
-    // mat-card {
-    //   max-width: 100%;
-    // }
-    // .sociedad {
-    //   width: 48.5%;
-    //   @media (max-width: 575px) {
-    //     width: 100%;
-    //     margin-bottom: 5px;
-    //   }
-    //   mat-card-header {
-    //     display: block !important;
-    //     img {
-    //       width: 100%;
-    //     }
-    //   }
-    //   @media (max-width: 575px) {
-    //     margin: 10px auto !important;
-    //   }
-    // }
-    // .call-to-action {
-    //   width: 48.5%;
-    //   @media (max-width: 575px) {
-    //     width: 100%;
-    //     margin-bottom: 5px;
-    //   }
-    //   mat-card-header {
-    //     display: block !important;
-    //     img {
-    //       width: 100%;
-    //     }
-    //   }
-    //   h2 {
-    //     text-align: center;
-    //   }
-    //   mat-card-actions {
-    //     display: flex;
-    //     justify-content: center;
-    //     button {
-    //       color: white;
-    //     }
-    //   }
-    // }
   }
-
-  // .third-section {
-  //   width: 100%;
-  //   margin-bottom: 10px;
-  //   .info {
-  //     .icon {
-  //       img {
-  //         width: 100%;
-  //         max-width: 200px;
-  //         max-height: 150px;
-  //       }
-  //     }
-  //     .span {
-  //       margin: auto;
-  //       text-align: center;
-  //       vertical-align: middle;
-  //     }
-  //   }
-  // }
 
   .section-four {
     h2 {
@@ -247,17 +238,17 @@
     .cards {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
-      @media (max-width: 575px) {
+      margin-bottom: 10pt;
+      @media (max-width: 575pt) {
         flex-direction: column;
         align-items: center;
       }
       mat-card {
         cursor: pointer;
         width: 30%;
-        @media (max-width: 575px) {
+        @media (max-width: 575pt) {
           width: 100%;
-          margin-bottom: 5px;
+          margin-bottom: 5pt;
         }
         & img {
           width: 100%;
