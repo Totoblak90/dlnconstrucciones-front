@@ -32,7 +32,7 @@
 
     <!-- Para mobile -->
     <mat-icon class="mobile-menu bgc-primary" [matMenuTriggerFor]="mobileMenu" >menu</mat-icon>
-    <mat-menu #mobileMenu="matMenu" yPosition="below">
+    <mat-menu #mobileMenu="matMenu" yPosition="below" class="mobile-menu-container">
       <button mat-menu-item class="bgc-primary" [routerLink]="['/home']">INICIO</button>
       <button mat-menu-item class="bgc-primary" routerLink="/servicios" [matMenuTriggerFor]="serviciosMenuMobile">SERVICIOS</button>
         <mat-menu #serviciosMenuMobile="matMenu" yPosition="below">

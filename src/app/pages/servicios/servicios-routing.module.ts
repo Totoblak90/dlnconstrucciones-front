@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ServiciosComponent } from './servicios.component';
-import { AntenasComponent } from './antenas/antenas.component';
-import { PiscinasComponent } from './piscinas/piscinas.component';
-import { ViviendasComponent } from './viviendas/viviendas.component';
 
 const routes: Routes = [
   {
@@ -12,16 +9,8 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'viviendas',
-    loadChildren: () => import('./viviendas/viviendas.module').then(m => m.ViviendasModule)
-  },
-  {
-    path: 'piscinas',
-    loadChildren: () => import('./piscinas/piscinas.module').then(m => m.PiscinasModule)
-  },
-  {
-    path: 'antenas',
-    loadChildren: () => import('./antenas/antenas.module').then(m => m.AntenasModule)
+    path: ':tipo-servicio',
+    loadChildren: () => import('./tipo-servicio/tipo-servicio.module').then(m => m.TipoServicioModule)
   },
   {
     path: '**',

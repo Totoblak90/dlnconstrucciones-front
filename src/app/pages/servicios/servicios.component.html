@@ -1,1 +1,12 @@
-<p>servicios works!</p>
+<div class="main-servicios">
+  <h1 class="primary-dark">Servicios</h1>
+  <hr>
+  <mat-grid-list [cols]="breakpoint" rows="1" rowHeight="400px" (window:resize)="onResize($event)">
+    <mat-grid-tile *ngFor="let servicio of servicios">
+      <div class="tile-content" [routerLink]="servicio?.ruta">
+        <img [src]="servicio?.foto">
+        <h2 class="primary">{{ servicio?.nombre }}</h2>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

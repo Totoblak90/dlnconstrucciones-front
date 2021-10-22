@@ -1,5 +1,6 @@
 mat-toolbar {
   margin-bottom: 10pt;
+  color: white !important;
   .logo {
     padding: 10pt;
     height: max-content;
@@ -37,6 +38,7 @@ mat-toolbar {
       display: none;
       margin: auto;
     }
+
     @media (max-width: 575pt) {
       .desktop-menu {
         display: none;
