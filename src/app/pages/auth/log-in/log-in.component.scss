@@ -1,0 +1,26 @@
+.login-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .box {
+    margin: 24px 0px;
+    padding: 16px;
+    border-radius: 24px;
+    // border: 1px solid #4bb0d0;
+    form {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      input {
+        width: 100%;
+      }
+      mat-checkbox {
+        margin-top: 8px;
+      }
+      button {
+        margin-top: 16px;
+      }
+    }
+  }
+}

@@ -24,8 +24,8 @@
       <li class="animated-list" [matMenuTriggerFor]="profileMenu">
         <button mat-button class="bgc-primary">MI CUENTA</button>
         <mat-menu #profileMenu="matMenu" yPosition="below">
-          <button mat-menu-item [routerLink]="['/auth']" class="bgc-primary">INICIAR SESIÓN</button>
-          <button mat-menu-item [routerLink]="['/auth']" class="bgc-primary">REGISTRARSE</button>
+          <button mat-menu-item [routerLink]="['/auth/login']" class="bgc-primary">INICIAR SESIÓN</button>
+          <button mat-menu-item [routerLink]="['/auth/register']" class="bgc-primary">REGISTRARSE</button>
         </mat-menu>
       </li>
     </ul>
@@ -44,8 +44,8 @@
       <button mat-menu-item class="bgc-primary" [routerLink]="['/lotes']">LOTES</button>
       <button mat-menu-item class="bgc-primary" [matMenuTriggerFor]="profileMenuMobile">MI CUENTA</button>
         <mat-menu #profileMenuMobile="matMenu" yPosition="below">
-          <button mat-menu-item [routerLink]="['/auth']" class="bgc-primary">INICIAR SESIÓN</button>
-          <button mat-menu-item [routerLink]="['/auth']" class="bgc-primary">REGISTRARSE</button>
+          <button mat-menu-item [routerLink]="['/auth/login']" class="bgc-primary">INICIAR SESIÓN</button>
+          <button mat-menu-item [routerLink]="['/auth/register']" class="bgc-primary">REGISTRARSE</button>
         </mat-menu>
     </mat-menu>
   </mat-toolbar-row>

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatCarouselModule} from '@ngbmodule/material-carousel';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -18,6 +19,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatButtonModule,
     MatCardModule,
     MatCarouselModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatGridListModule,
     MatExpansionModule,

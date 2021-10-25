@@ -1,0 +1,19 @@
+<div class="login-container">
+  <div class="box" >
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput autocomplete="email">
+        <mat-error *ngIf="loginForm.controls.email.errors?.required" >Este dato es requerido</mat-error>
+        <mat-error *ngIf="loginForm.controls.email.errors?.pattern" >Por favor ingresá un email válido</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Contraseña</mat-label>
+        <input formControlName="password" matInput type="password" autocomplete="current-password">
+        <mat-error *ngIf="loginForm.controls.password.errors?.required" >Este dato es requerido</mat-error>
+      </mat-form-field>
+      <mat-checkbox formControlName="rememberMe" class="primary-dark">Recordarme</mat-checkbox>
+      <button mat-button type="submit" class="primary-dark">Iniciar sesión</button>
+    </form>
+  </div>
+</div>

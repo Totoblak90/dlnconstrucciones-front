@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpService } from '../../services/http.service';
 
 interface serviciosInt {
   foto: string;
@@ -17,7 +18,7 @@ export class ServiciosComponent implements OnInit {
   breakpoint: number = 0;
 
 
-  constructor() { }
+  constructor(private httpService: HttpService) { }
 
   ngOnInit(): void {
 
