@@ -2,13 +2,16 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TrabajosRealizadosRoutingModule } from './trabajos-realizados-routing.module';
+import { ComponentsModule } from '../../components/components.module';
+import { TrabajosRealizadosComponent } from './trabajos-realizados.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [TrabajosRealizadosComponent],
   imports: [
     CommonModule,
-    TrabajosRealizadosRoutingModule
+    TrabajosRealizadosRoutingModule,
+    ComponentsModule
   ]
 })
 export class TrabajosRealizadosModule { }

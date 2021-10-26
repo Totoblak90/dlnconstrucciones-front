@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { ServicesData } from 'src/app/interfaces/http/services.interface';
 import { HttpService } from '../../services/http.service';
 
 interface serviciosInt {
@@ -14,46 +15,49 @@ interface serviciosInt {
 })
 export class ServiciosComponent implements OnInit {
 
-  servicios: serviciosInt[] = [];
+  servicios: ServicesData[] = [];
   breakpoint: number = 0;
+  rowHeight: string = "";
 
 
   constructor(private httpService: HttpService) { }
 
   ngOnInit(): void {
 
-    this.breakpoint = (window.innerWidth <= 726) ? 1 : 2;
-
+    this.breakpoint = (window.innerWidth <= 575) ? 1 : 2;
+    this.rowHeight = (window.innerWidth <= 575) ? "1:1" : "90vh"
     this.servicios = [
       {
-        foto: '../../../assets/servicios-1.jpg',
-        nombre: 'Viviendas unifamiliares',
-        ruta: ''
+        image: '/assets/servicios-1.jpg',
+        title: 'Viviendas unifamiliares',
+        url: ''
       },
       {
-        foto: '.../../../assets/servicios-2.jpg',
-        nombre: 'Sitios para antenas de telecomunicaciones',
-        ruta: ''
+        image: '/assets/servicios-2.jpg',
+        title: 'Sitios para antenas de telecomunicaciones',
+        url: ''
       },
       {
-        foto: '../../../assets/servicios-3.jpg',
-        nombre: 'Piscinas',
-        ruta: ''
+        image: '/assets/servicios-3.jpg',
+        title: 'Piscinas',
+        url: ''
       },
       {
-        foto: '../../../assets/lote.jpg',
-        nombre: 'Lotes',
-        ruta: ''
+        image: '/assets/lote.jpg',
+        title: 'Lotes',
+        url: ''
       },
     ]
 
     this.servicios.forEach(servicio => {
-      servicio.ruta = `/servicios/${servicio.nombre.toLowerCase().trim().replace(/\s/g,'')}`
+      servicio.url = `/servicios/${servicio.title.toLowerCase().trim().replace(/\s/g,'')}`
     })
+
   }
 
   onResize(event: any) {
-    this.breakpoint = (event?.target?.innerWidth <= 726) ? 1 : 2;
+    this.breakpoint = (event?.target?.innerWidth <= 575) ? 1 : 2;
+    this.rowHeight = (event?.target?.innerWidth <= 575) ? "1:1" : "90vh"
   }
 
 }

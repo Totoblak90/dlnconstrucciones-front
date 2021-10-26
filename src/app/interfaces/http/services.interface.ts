@@ -4,13 +4,14 @@ export interface Services {
 }
 
 export interface ServicesData {
-  id:          number;
+  id?:          number;
   title:       string;
-  description: null | string;
+  description?: null | string;
   image:       string;
-  created_at:  Date;
-  updated_at:  Date;
-  deleted_at:  null;
+  url?:         string;
+  created_at?:  Date;
+  updated_at?:  Date;
+  deleted_at?:  null;
 }
 
 export interface Meta {
