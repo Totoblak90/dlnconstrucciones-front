@@ -4,9 +4,9 @@
   <mat-grid-list [cols]="breakpoint" rows="1" [rowHeight]="rowHeight" (window:resize)="onResize($event)">
     <mat-grid-tile *ngFor="let trabajo of trabajosData">
       <app-presentation-card
-        [urlFoto]="trabajo.image"
-        [ruta]="trabajo.url!"
-        [titulo]="trabajo.title"
+        [urlFoto]="trabajo?.image"
+        [ruta]="trabajo?.url!"
+        [titulo]="trabajo?.title"
       ></app-presentation-card>
     </mat-grid-tile>
   </mat-grid-list>

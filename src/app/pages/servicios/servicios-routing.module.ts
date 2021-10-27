@@ -9,7 +9,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: ':tipo-servicio',
+    path: ':servicioId',
     loadChildren: () => import('./tipo-servicio/tipo-servicio.module').then(m => m.TipoServicioModule)
   },
   {

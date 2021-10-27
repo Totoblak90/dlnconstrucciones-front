@@ -7,13 +7,8 @@
       <li class="animated-list" [routerLink]="['/home']">
         <button mat-button class="bgc-primary">INICIO</button>
       </li>
-      <li class="animated-list" [matMenuTriggerFor]="serviciosMenu">
+      <li class="animated-list">
         <button mat-button class="bgc-primary" routerLink="/servicios" >SERVICIOS</button>
-        <mat-menu #serviciosMenu="matMenu" yPosition="below">
-          <button mat-menu-item [routerLink]="['/servicios/viviendas']">Vivienda</button>
-          <button mat-menu-item [routerLink]="['/servicios/piscinas']">Piscina</button>
-          <button mat-menu-item [routerLink]="['/servicios/antenas']">Telecomunicaciones</button>
-        </mat-menu>
       </li>
       <li class="animated-list" [routerLink]="['/trabajos-realizados']">
         <button mat-button class="bgc-primary" >TRABAJOS REALIZADOS</button>
@@ -34,12 +29,7 @@
     <mat-icon class="mobile-menu bgc-primary" [matMenuTriggerFor]="mobileMenu" >menu</mat-icon>
     <mat-menu #mobileMenu="matMenu" yPosition="below" class="mobile-menu-container">
       <button mat-menu-item class="bgc-primary" [routerLink]="['/home']">INICIO</button>
-      <button mat-menu-item class="bgc-primary" routerLink="/servicios" [matMenuTriggerFor]="serviciosMenuMobile">SERVICIOS</button>
-        <mat-menu #serviciosMenuMobile="matMenu" yPosition="below">
-          <button mat-menu-item class="bgc-primary" [routerLink]="['/servicios/viviendas']">Vivienda</button>
-          <button mat-menu-item class="bgc-primary" [routerLink]="['/servicios/piscinas']">Piscina</button>
-          <button mat-menu-item class="bgc-primary" [routerLink]="['/servicios/antenas']">Telecomunicaciones</button>
-        </mat-menu>
+      <button mat-menu-item class="bgc-primary" routerLink="/servicios">SERVICIOS</button>
       <button mat-menu-item class="bgc-primary" [routerLink]="['/trabajos-realizados']">TRABAJOS REALIZADOS</button>
       <button mat-menu-item class="bgc-primary" [routerLink]="['/lotes']">LOTES</button>
       <button mat-menu-item class="bgc-primary" [matMenuTriggerFor]="profileMenuMobile">MI CUENTA</button>

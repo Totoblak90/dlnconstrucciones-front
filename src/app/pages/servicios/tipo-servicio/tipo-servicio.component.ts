@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-tipo-servicio',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TipoServicioComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private httpService: HttpService,
+    private activeRoute: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
+    const serviceId = this.activeRoute.snapshot.params.servicioId;
+    this.httpService.getOneService(serviceId)
+      .subscribe(serv => console.log(serv))
+
   }
 
 }

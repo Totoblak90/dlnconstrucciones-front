@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: TrabajosRealizadosComponent
+  },
+  {
+    path: ':idTipoTrabajo',
+    loadChildren: () => import('./tipo-trabajo/tipo-trabajo.module').then(m => m.TipoTrabajoModule)
   }
 ];
 

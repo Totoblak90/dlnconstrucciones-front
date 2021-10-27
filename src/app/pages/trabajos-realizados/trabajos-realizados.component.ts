@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Jobs, JobsData } from 'src/app/interfaces/http/jobs.interface';
 import { HttpService } from 'src/app/services/http.service';
+import { TypesOfJobs, TypesOfJobsData } from '../../interfaces/http/jobs.interface';
 
 @Component({
   selector: 'app-trabajos-realizados',
@@ -9,35 +9,25 @@ import { HttpService } from 'src/app/services/http.service';
 })
 export class TrabajosRealizadosComponent implements OnInit {
 
-  trabajosComplete!: Jobs;
-  trabajosData: JobsData[] = [];
-  breakpoint: number = 0;
-  rowHeight: string = "";
+  public trabajosComplete!: TypesOfJobs;
+  public trabajosData: TypesOfJobsData[] = [];
+  public breakpoint: number = 0;
+  public rowHeight: string = "";
 
 
   constructor(private httpService: HttpService) { }
 
   ngOnInit(): void {
-
     this.breakpoint = (window.innerWidth <= 575) ? 1 : 2;
     this.rowHeight = (window.innerWidth <= 575) ? "1:1" : "90vh"
-    this.trabajosData = [
-      {
-        image: '/assets/quienes-somos-3.jpg',
-        title: 'Construcción',
-        url: ''
-      },
-      {
-        image: '/assets/servicios-2.jpg',
-        title: 'Antenas de telecomunicaciones',
-        url: ''
-      }
-    ]
-
-    this.trabajosData.forEach(trabajo => {
-      trabajo.url = `/trabajos-realizados/${trabajo.title.toLowerCase().trim().replace(/\s/g,'')}`
-    })
-
+    this.httpService.getTypesOfJob()
+      .subscribe((jobCategories: TypesOfJobs) => {
+        this.trabajosComplete = jobCategories;
+        this.trabajosData = jobCategories?.data;
+        this.trabajosData?.forEach(trabajo => {
+          trabajo.url = `/trabajos-realizados/${trabajo.id}`
+        })
+      })
   }
 
   onResize(event: any) {
