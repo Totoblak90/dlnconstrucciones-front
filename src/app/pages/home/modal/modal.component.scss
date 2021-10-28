@@ -1,16 +1,21 @@
-mat-card {
-  mat-card-header {
-    display: block !important;
+.modal-container {
+  h1 {
+    text-align: center;
+  }
+  mat-dialog-content {
     img {
       width: 100%;
       margin: auto;
     }
+    text-align: justify;
   }
-  mat-card-content {
-    text-align: center;
-  }
-  mat-card-actions {
+
+  mat-dialog-actions {
     display: flex;
     justify-content: center;
+    button {
+      color: white;
+    }
   }
+
 }

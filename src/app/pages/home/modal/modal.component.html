@@ -1,14 +1,16 @@
-<mat-card>
-  <mat-card-header>
-    <img src="assets/logo.png" alt="">
-  </mat-card-header>
-  <mat-card-content>
-    <mat-card-title>
-      Titulo
-    </mat-card-title>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, qui. Dolores quod saepe expedita nulla magnam.</p>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button class="" (click)="closeDialog()">Cerrar</button>
-  </mat-card-actions>
-</mat-card>
+	<div class="modal-container">
+    <h1 mat-dialog-title class="primary-dark">  {{ data.title }}</h1>
+    <hr>
+    <mat-dialog-content>
+      <img [src]="data.image" alt="">
+      <p>{{ data.description }}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button mat-dialog-close class="bgc-primary-dark">Cerrar</button>
+    </mat-dialog-actions>
+  </div>
+
+
+
+
+

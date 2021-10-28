@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Interests } from '../interfaces/http/interests.interface';
 import { Job, TypesOfJobs } from '../interfaces/http/jobs.interface';
 import { Services } from '../interfaces/http/services.interface';
 
@@ -26,6 +27,11 @@ export class HttpService {
   }
   public getOneTypeOfJob(typeID: string): Observable<Job> {
     return this.http.get<Job>(`${environment.API_BASE_URL}/types/${typeID}`)
+  }
+  // ---------------------------------------------------------------------------
+  // Pido los intereses para la Home page
+  public getInterests(): Observable<Interests> {
+    return this.http.get<Interests>(`${environment.API_BASE_URL}/interests`);
   }
 
 }

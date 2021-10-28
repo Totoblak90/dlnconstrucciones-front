@@ -97,24 +97,10 @@
   <section class="section-four">
     <h2 class="primary-dark">Te puede <strong>interesar</strong></h2>
     <div class="cards">
-      <mat-card (click)="openDialog()">
+      <mat-card (click)="openDialog(index)" *ngFor="let interest of interestsData; let index = index">
         <mat-card-content>
-          <img src="assets/slider1.jpg" alt="">
-          <h4>Titulo#1</h4>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="card" (click)="openDialog()">
-        <mat-card-content>
-          <img src="assets/slider1.jpg" alt="">
-          <h4>Titulo#2</h4>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="card" (click)="openDialog()">
-        <mat-card-content>
-          <img src="assets/slider1.jpg" alt="">
-          <h4>Titulo#3</h4>
+          <img [src]="interest.image" alt="">
+          <h4>{{ interest.title }}</h4>
         </mat-card-content>
       </mat-card>
     </div>
