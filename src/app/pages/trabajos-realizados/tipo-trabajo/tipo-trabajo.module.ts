@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { TipoTrabajoRoutingModule } from './tipo-trabajo-routing.module';
 import { TipoTrabajoComponent } from './tipo-trabajo.component';
-
+import { GalleryModule } from 'ng-gallery';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,8 @@ import { TipoTrabajoComponent } from './tipo-trabajo.component';
   ],
   imports: [
     CommonModule,
-    TipoTrabajoRoutingModule
-  ]
+    TipoTrabajoRoutingModule,
+    GalleryModule
+  ],
 })
 export class TipoTrabajoModule { }

@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Job, JobBaseData, JobMoreInfo } from 'src/app/interfaces/http/jobs.interface';
 import { HttpService } from '../../../services/http.service';
+import { Gallery, GalleryRef, GalleryConfig, ImageItem } from 'ng-gallery';
 
 @Component({
   selector: 'app-tipo-trabajo',
@@ -14,11 +15,13 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
   public trabajoCompleto!: Job;
   public trabajoBaseInfo!: JobBaseData;
   public trabajoInfo!: JobMoreInfo[];
+  public  galleryId:string = 'mixedExample';
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(
     private httpService: HttpService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private gallery: Gallery
   ) { }
 
   ngOnInit(): void {
@@ -31,7 +34,33 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
         this.trabajoCompleto = jobFull;
         this.trabajoBaseInfo = jobFull.data;
         this.trabajoInfo = jobFull.data.Jobs;
+        this.trabajoInfo.forEach(() => {
+          const galleryRef: GalleryRef = this.gallery.ref(this.galleryId , {
+            autoPlay: true,
+            loop: true,
+            counter: true,
+            counterPosition: 'top',
+            dots: true,
+            dotsPosition: 'bottom',
+            dotsSize: 16,
+            gestures: true,
+            imageSize: 'contain',
+            loadingStrategy: 'lazy',
+            nav: true,
+            panSensitivity: 1,
+            playerInterval: 1,
+            slidingDirection: 'horizontal',
+            thumbMode: 'free',
+            thumbPosition: 'bottom',
+          });
+          galleryRef.addImage({
+            src: '../../../../assets/slider1.jpg',
+            thumb: '../../../../assets/slider1.jpg',
+            title: 'Un título'
+          });
+        })
       })
+
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,21 @@
-<ng-container>
-  <h1 class="primary">{{ trabajoBaseInfo?.title }}</h1>
-  <hr>
-
-</ng-container>
+<div class="main-trabajo">
+  <h1 class="primary-dark">{{ trabajoBaseInfo?.title }}</h1>
+  <hr class="primary-dark">
+  <p class="primary">Chequeá nuestra galería de trabajos realizados:</p>
+  <gallery id="mixedExample"
+          [itemTemplate]="itemTemplate"
+          class="gallery"
+  ></gallery>
+  <ng-template #itemTemplate
+              let-index="index"
+              let-type="type"
+              let-data="data"
+              let-currIndex="currIndex">
+    <span *ngIf="type === 'image' && index === currIndex"
+          [@slideAnimation]
+          class="item-text">
+      {{data?.title}}
+    </span>
+  </ng-template>
+</div>
 
