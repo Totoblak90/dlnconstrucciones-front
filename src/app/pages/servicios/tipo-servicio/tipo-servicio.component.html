@@ -1,1 +1,20 @@
-<p>tipo-servicio works!</p>
+<div class="main-tipo-servicio">
+  <h1 class="primary-dark text-center">{{ tipoServicio?.title }}</h1>
+  <hr>
+  <div class="description" *ngFor="let content of tipoServicioContents">
+    <h3 *ngIf="content.subtitle" class="primary">{{ content.subtitle }}</h3>
+    <p *ngIf="content.text">{{ content.text }}</p>
+  </div>
+  <gallery
+    id="mixedExample"
+    [itemTemplate]="itemTemplate"
+    class="gallery"
+  ></gallery>
+  <ng-template
+    #itemTemplate
+    let-index="index"
+    let-type="type"
+    let-data="data"
+    let-currIndex="currIndex">
+  </ng-template>
+</div>

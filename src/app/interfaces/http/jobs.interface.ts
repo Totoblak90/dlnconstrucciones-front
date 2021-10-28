@@ -28,7 +28,7 @@ export interface JobBaseData {
   image:        string;
   created_at:   Date;
   updated_at:   Date;
-  deleted_at:   null;
+  deleted_at:   null | Date;
   Jobs:        JobMoreInfo[];
 }
 
@@ -38,7 +38,7 @@ export interface JobMoreInfo {
   image:        string;
   created_at:   Date;
   updated_at:   Date;
-  deleted_at:   null;
+  deleted_at:   null | Date;
   description: string;
   types_id:    number;
 }

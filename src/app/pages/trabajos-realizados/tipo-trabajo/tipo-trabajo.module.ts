@@ -12,7 +12,7 @@ import { GalleryModule } from 'ng-gallery';
   imports: [
     CommonModule,
     TipoTrabajoRoutingModule,
-    GalleryModule
+    GalleryModule,
   ],
 })
 export class TipoTrabajoModule { }

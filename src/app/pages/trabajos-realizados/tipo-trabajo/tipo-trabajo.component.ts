@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Job, JobBaseData, JobMoreInfo } from 'src/app/interfaces/http/jobs.interface';
 import { HttpService } from '../../../services/http.service';
-import { Gallery, GalleryRef, GalleryConfig, ImageItem } from 'ng-gallery';
+import { Gallery, GalleryRef } from 'ng-gallery';
 
 @Component({
   selector: 'app-tipo-trabajo',
@@ -32,9 +32,9 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
       )
       .subscribe((jobFull: Job) => {
         this.trabajoCompleto = jobFull;
-        this.trabajoBaseInfo = jobFull.data;
-        this.trabajoInfo = jobFull.data.Jobs;
-        this.trabajoInfo.forEach(() => {
+        this.trabajoBaseInfo = jobFull?.data;
+        this.trabajoInfo = jobFull?.data?.Jobs;
+        this.trabajoInfo?.forEach((trabajo: JobMoreInfo) => {
           const galleryRef: GalleryRef = this.gallery.ref(this.galleryId , {
             autoPlay: true,
             loop: true,
@@ -54,9 +54,9 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
             thumbPosition: 'bottom',
           });
           galleryRef.addImage({
-            src: '../../../../assets/slider1.jpg',
-            thumb: '../../../../assets/slider1.jpg',
-            title: 'Un título'
+            src: trabajo.image,
+            thumb: trabajo.image,
+            title: trabajo.title
           });
         })
       })

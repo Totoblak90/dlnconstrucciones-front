@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Interests } from '../interfaces/http/interests.interface';
 import { Job, TypesOfJobs } from '../interfaces/http/jobs.interface';
-import { Services } from '../interfaces/http/services.interface';
+import { Services, TipoServicio } from '../interfaces/http/services.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,8 @@ export class HttpService {
   public getAllServices(): Observable<Services> {
     return this.http.get<Services>(`${environment.API_BASE_URL}/services`);
   }
-  public getOneService(id: string): Observable<unknown> {
-    return this.http.get<unknown>(`${environment.API_BASE_URL}/services/${id}`)
+  public getOneService(id: string): Observable<TipoServicio> {
+    return this.http.get<TipoServicio>(`${environment.API_BASE_URL}/services/${id}`)
   }
   // --------------------------------------------------------------------------
   // Pido los trabajos realizados
@@ -32,6 +32,11 @@ export class HttpService {
   // Pido los intereses para la Home page
   public getInterests(): Observable<Interests> {
     return this.http.get<Interests>(`${environment.API_BASE_URL}/interests`);
+  }
+  // ---------------------------------------------------------------------------
+  // Formulario de contacto
+  public sendContactForm(): unknown {
+    return;
   }
 
 }

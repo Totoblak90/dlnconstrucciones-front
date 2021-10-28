@@ -2,9 +2,10 @@
   <h1 class="primary-dark">{{ trabajoBaseInfo?.title }}</h1>
   <hr class="primary-dark">
   <p class="primary">Chequeá nuestra galería de trabajos realizados:</p>
-  <gallery id="mixedExample"
-          [itemTemplate]="itemTemplate"
-          class="gallery"
+  <gallery
+    id="mixedExample"
+    [itemTemplate]="itemTemplate"
+    class="gallery"
   ></gallery>
   <ng-template #itemTemplate
               let-index="index"
@@ -12,7 +13,6 @@
               let-data="data"
               let-currIndex="currIndex">
     <span *ngIf="type === 'image' && index === currIndex"
-          [@slideAnimation]
           class="item-text">
       {{data?.title}}
     </span>

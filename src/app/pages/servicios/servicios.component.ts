@@ -5,12 +5,6 @@ import { ServicesData } from 'src/app/interfaces/http/services.interface';
 import { HttpService } from '../../services/http.service';
 import { Services } from '../../interfaces/http/services.interface';
 
-interface serviciosInt {
-  foto: string;
-  nombre: string;
-  ruta: string;
-}
-
 @Component({
   selector: 'app-servicios',
   templateUrl: './servicios.component.html',
@@ -20,7 +14,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
   public servicios: ServicesData[] = [];
   public serviciosComplete!: Services;
-  public breakpoint: number = 0;
+  public numberOfColumns: number = 0;
   public rowHeight: string = "";
   private destroy$: Subject<any> = new Subject();
 
@@ -29,7 +23,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.breakpoint = (window.innerWidth <= 575) ? 1 : 2;
+    this.numberOfColumns = (window.innerWidth <= 575) ? 1 : 2;
     this.rowHeight = (window.innerWidth <= 575) ? "1:1" : "90vh"
     this.httpService.getAllServices()
       .pipe(
@@ -48,7 +42,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   }
 
   onResize(event: any) {
-    this.breakpoint = (event?.target?.innerWidth <= 575) ? 1 : 2;
+    this.numberOfColumns = (event?.target?.innerWidth <= 575) ? 1 : 2;
     this.rowHeight = (event?.target?.innerWidth <= 575) ? "1:1" : "90vh"
   }
 

@@ -7,21 +7,11 @@ import { InterestsData } from '../../../interfaces/http/interests.interface';
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
-export class ModalComponent implements OnInit {
-
+export class ModalComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: InterestsData
   ) {}
-
-
-  ngOnInit(): void {
-    console.log(this.data)
-  }
-
-  closeDialog() {
-    this.dialogRef.close()
-  }
 
 }

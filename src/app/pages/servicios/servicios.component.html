@@ -1,7 +1,7 @@
 <div class="main-servicios">
   <h1 class="primary-dark">Servicios</h1>
   <hr>
-  <mat-grid-list [cols]="breakpoint" rows="1" [rowHeight]="rowHeight" (window:resize)="onResize($event)">
+  <mat-grid-list [cols]="numberOfColumns" rows="1" [rowHeight]="rowHeight" (window:resize)="onResize($event)">
     <mat-grid-tile *ngFor="let servicio of servicios">
       <app-presentation-card
         [urlFoto]="servicio.image"
