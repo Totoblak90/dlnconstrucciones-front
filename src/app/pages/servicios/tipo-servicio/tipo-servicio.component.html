@@ -1,11 +1,14 @@
 <div class="main-tipo-servicio">
   <h1 class="primary-dark text-center">{{ tipoServicio?.title }}</h1>
   <hr>
-  <div class="description" *ngFor="let content of tipoServicioContents">
-    <h3 *ngIf="content.subtitle" class="primary">{{ content.subtitle }}</h3>
-    <p *ngIf="content.text">{{ content.text }}</p>
-  </div>
+  <ng-container *ngIf="tipoServicioContents">
+    <div class="description" *ngFor="let content of tipoServicioContents">
+      <h3 *ngIf="content.subtitle" class="primary">{{ content.subtitle }}</h3>
+      <p *ngIf="content.text">{{ content.text }}</p>
+    </div>
+  </ng-container>
   <gallery
+    *ngIf="tipoServicioPictures?.length"
     id="mixedExample"
     [itemTemplate]="itemTemplate"
     class="gallery"

@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-
-
 import { ModalComponent } from './modal/modal.component';
 import { HttpService } from '../../services/http.service';
 import { Interests, InterestsData } from '../../interfaces/http/interests.interface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-home',
@@ -14,7 +13,6 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
   public interestsComplete!: Interests;
   public interestsData: InterestsData[] = [];
   private destroy$: Subject<boolean> = new Subject();

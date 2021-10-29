@@ -56,11 +56,11 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
           galleryRef.addImage({
             src: trabajo.image,
             thumb: trabajo.image,
-            title: trabajo.title
+            title: trabajo.title,
+            description: trabajo.description
           });
         })
       })
-
   }
 
   ngOnDestroy(): void {
