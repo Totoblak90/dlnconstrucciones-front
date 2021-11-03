@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Interests } from '../interfaces/http/interests.interface';
 import { Job, TypesOfJobs } from '../interfaces/http/jobs.interface';
 import { Services, TipoServicio } from '../interfaces/http/services.interface';
+import { PostalZones } from '../interfaces/http/batches.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,10 @@ import { Services, TipoServicio } from '../interfaces/http/services.interface';
 export class HttpService {
 
   constructor( private http: HttpClient) { }
-
+  // Pido las localidades y los lotes.
+  public getAllZones(): Observable<PostalZones> {
+    return this.http.get<PostalZones>(`${environment.API_BASE_URL}/categories`)
+  }
   // Pido los servicios
   public getAllServices(): Observable<Services> {
     return this.http.get<Services>(`${environment.API_BASE_URL}/services`);
