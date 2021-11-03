@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+/server/node_modules
 # Only exists if Bazel was run
 /bazel-out
 
