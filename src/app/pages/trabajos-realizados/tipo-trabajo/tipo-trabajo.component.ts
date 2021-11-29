@@ -54,8 +54,10 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
             thumbPosition: 'bottom',
           });
           galleryRef.addImage({
-            src: trabajo.image,
-            thumb: trabajo.image,
+            src: '../../../assets/servicios-1.jpg',
+            thumb: '../../../assets/servicios-1.jpg',
+            // src: trabajo.image,
+            // thumb: trabajo.image,
             title: trabajo.title,
             description: trabajo.description
           });

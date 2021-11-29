@@ -55,8 +55,10 @@ export class TipoServicioComponent implements OnInit, OnDestroy {
             thumbPosition: 'bottom',
           });
           galleryRef.addImage({
-            src: picture.picture,
-            thumb: picture.picture,
+            src: '../../../assets/servicios-1.jpg',
+            thumb: '../../../assets/servicios-1.jpg'
+            // src: picture.picture,
+            // thumb: picture.picture,
           });
         })
       })

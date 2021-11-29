@@ -4,7 +4,7 @@
   <mat-grid-list [cols]="numberOfColumns" rows="1" [rowHeight]="rowHeight" (window:resize)="onResize($event)">
     <mat-grid-tile *ngFor="let trabajo of trabajosData">
       <app-presentation-card
-        [urlFoto]="trabajo?.image"
+        [urlFoto]="'../../../assets/servicios-1.jpg'"
         [ruta]="trabajo?.url!"
         [titulo]="trabajo?.title"
       ></app-presentation-card>

@@ -1,6 +1,6 @@
 <mat-toolbar>
   <mat-toolbar-row class="logo">
-    <img src="../assets/logo.png" alt="logo" [routerLink]="'/'" >
+    <img src="../assets/logo.png" alt="logo" [routerLink]="'/'" />
   </mat-toolbar-row>
   <mat-toolbar-row class="navbar bgc-primary">
     <ul class="desktop-menu">
@@ -8,35 +8,85 @@
         <button mat-button class="bgc-primary">INICIO</button>
       </li>
       <li class="animated-list">
-        <button mat-button class="bgc-primary" routerLink="/servicios" >SERVICIOS</button>
+        <button mat-button class="bgc-primary" routerLink="/servicios">
+          SERVICIOS
+        </button>
       </li>
       <li class="animated-list" [routerLink]="['/trabajos-realizados']">
-        <button mat-button class="bgc-primary" >TRABAJOS REALIZADOS</button>
+        <button mat-button class="bgc-primary">TRABAJOS REALIZADOS</button>
       </li>
       <li class="animated-list" [routerLink]="['/lotes']">
-        <button mat-button class="bgc-primary" >LOTES</button>
+        <button mat-button class="bgc-primary">LOTES</button>
       </li>
       <li class="animated-list" [matMenuTriggerFor]="profileMenu">
         <button mat-button class="bgc-primary">MI CUENTA</button>
         <mat-menu #profileMenu="matMenu" yPosition="below">
-          <button mat-menu-item [routerLink]="['/auth/login']" class="bgc-primary">INICIAR SESIÓN</button>
-          <button mat-menu-item [routerLink]="['/auth/register']" class="bgc-primary">REGISTRARSE</button>
+          <button
+            mat-menu-item
+            [routerLink]="['/auth/login']"
+            class="bgc-primary"
+          >
+            INICIAR SESIÓN
+          </button>
+          <button
+            mat-menu-item
+            [routerLink]="['/auth/register']"
+            class="bgc-primary"
+          >
+            REGISTRARSE
+          </button>
         </mat-menu>
       </li>
     </ul>
 
     <!-- Para mobile -->
-    <mat-icon class="mobile-menu bgc-primary" [matMenuTriggerFor]="mobileMenu" >menu</mat-icon>
-    <mat-menu #mobileMenu="matMenu" yPosition="below" class="mobile-menu-container">
-      <button mat-menu-item class="bgc-primary" [routerLink]="['/home']">INICIO</button>
-      <button mat-menu-item class="bgc-primary" routerLink="/servicios">SERVICIOS</button>
-      <button mat-menu-item class="bgc-primary" [routerLink]="['/trabajos-realizados']">TRABAJOS REALIZADOS</button>
-      <button mat-menu-item class="bgc-primary" [routerLink]="['/lotes']">LOTES</button>
-      <button mat-menu-item class="bgc-primary" [matMenuTriggerFor]="profileMenuMobile">MI CUENTA</button>
-        <mat-menu #profileMenuMobile="matMenu" yPosition="below">
-          <button mat-menu-item [routerLink]="['/auth/login']" class="bgc-primary">INICIAR SESIÓN</button>
-          <button mat-menu-item [routerLink]="['/auth/register']" class="bgc-primary">REGISTRARSE</button>
-        </mat-menu>
+    <mat-icon class="mobile-menu bgc-primary" [matMenuTriggerFor]="mobileMenu"
+      >menu</mat-icon
+    >
+    <mat-menu
+      #mobileMenu="matMenu"
+      yPosition="below"
+      class="mobile-menu-container"
+    >
+      <button mat-menu-item class="bgc-primary" [routerLink]="['/home']">
+        INICIO
+      </button>
+      <button mat-menu-item class="bgc-primary" routerLink="/servicios">
+        SERVICIOS
+      </button>
+      <button
+        mat-menu-item
+        class="bgc-primary"
+        [routerLink]="['/trabajos-realizados']"
+      >
+        TRABAJOS REALIZADOS
+      </button>
+      <button mat-menu-item class="bgc-primary" [routerLink]="['/lotes']">
+        LOTES
+      </button>
+      <button
+        mat-menu-item
+        class="bgc-primary"
+        [matMenuTriggerFor]="profileMenuMobile"
+      >
+        MI CUENTA
+      </button>
+      <mat-menu #profileMenuMobile="matMenu" yPosition="below">
+        <button
+          mat-menu-item
+          [routerLink]="['/auth/login']"
+          class="bgc-primary"
+        >
+          INICIAR SESIÓN
+        </button>
+        <button
+          mat-menu-item
+          [routerLink]="['/auth/register']"
+          class="bgc-primary"
+        >
+          REGISTRARSE
+        </button>
+      </mat-menu>
     </mat-menu>
   </mat-toolbar-row>
 </mat-toolbar>

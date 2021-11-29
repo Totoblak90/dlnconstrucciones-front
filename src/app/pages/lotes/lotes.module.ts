@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { LotesRoutingModule } from './lotes-routing.module';
 import { LotesComponent } from './lotes.component';
+import { ComponentsModule } from '../../components/components.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { LotesComponent } from './lotes.component';
   ],
   imports: [
     CommonModule,
-    LotesRoutingModule
+    LotesRoutingModule,
+    ComponentsModule
   ]
 })
 export class LotesModule { }

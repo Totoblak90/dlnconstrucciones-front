@@ -1,14 +1,14 @@
-<div class="container">
-  <div class="row">
-    <div class="col-6">
-      <div class="card" *ngFor="let zone of postalZones.data">
-        <div class="card-header">
-          <h3>{{ zone.title }}</h3>
-        </div>
-        <div class="card-body">
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<mat-grid-list
+  [cols]="numberOfColumns"
+  rows="1"
+  [rowHeight]="rowHeight"
+  (window:resize)="onResize($event)"
+>
+  <mat-grid-tile *ngFor="let servicio of [1, 2, 3, 4, 5, 6]">
+    <app-presentation-card
+    [urlFoto]="'../../../assets/servicios-1.jpg'"
+    [ruta]="'/lotes'"
+    [titulo]="'Un titulo'"
+  ></app-presentation-card>
+  </mat-grid-tile>
+</mat-grid-list>

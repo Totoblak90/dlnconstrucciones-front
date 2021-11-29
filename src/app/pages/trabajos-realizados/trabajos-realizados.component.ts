@@ -21,7 +21,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.numberOfColumns = (window.innerWidth <= 575) ? 1 : 2;
-    this.rowHeight = (window.innerWidth <= 575) ? "1:1" : "90vh"
+    this.rowHeight = (window.innerWidth <= 575) ? "2:1" : "90vh"
     this.httpService.getTypesOfJob()
       .pipe(takeUntil(this.destroy$))
       .subscribe((jobCategories: TypesOfJobs) => {
@@ -35,7 +35,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
 
   onResize(event: any) {
     this.numberOfColumns = (event?.target?.innerWidth <= 575) ? 1 : 2;
-    this.rowHeight = (event?.target?.innerWidth <= 575) ? "1:1" : "90vh"
+    this.rowHeight = (event?.target?.innerWidth <= 575) ? "2:1" : "90vh"
   }
 
   ngOnDestroy(): void {
