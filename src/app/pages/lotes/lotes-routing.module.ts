@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: LotesComponent
+  },
+  {
+    path: ':loteId',
+    loadChildren: () => import('./lote/lote.module').then(m => m.LoteModule)
   }
 ];
 

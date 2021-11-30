@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="col-4" *ngFor="let lote of lotes">
+    <app-presentation-card
+      [urlFoto]="'../../../assets/servicios-1.jpg'"
+      [ruta]="lote.url!"
+      [titulo]="lote.title"
+    ></app-presentation-card>
+  </div>
+</div>

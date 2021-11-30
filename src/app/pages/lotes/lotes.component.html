@@ -4,11 +4,13 @@
   [rowHeight]="rowHeight"
   (window:resize)="onResize($event)"
 >
-  <mat-grid-tile *ngFor="let servicio of [1, 2, 3, 4, 5, 6]">
+  <mat-grid-tile *ngFor="let lote of postalZones">
     <app-presentation-card
-    [urlFoto]="'../../../assets/servicios-1.jpg'"
-    [ruta]="'/lotes'"
-    [titulo]="'Un titulo'"
-  ></app-presentation-card>
+      [urlFoto]="'../../../assets/servicios-1.jpg'"
+      [ruta]="lote.url!"
+      [titulo]="lote.title"
+      [sendDataByRoute]="true"
+      [urlData]="{data: lote.id}"
+    ></app-presentation-card>
   </mat-grid-tile>
 </mat-grid-list>

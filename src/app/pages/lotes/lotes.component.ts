@@ -1,36 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpService } from '../../services/http.service';
-import { PostalZones } from '../../interfaces/http/batches.interface';
+import { PostalZonesData } from '../../interfaces/http/batches.interface';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lotes',
   templateUrl: './lotes.component.html',
-  styleUrls: ['./lotes.component.scss']
+  styleUrls: ['./lotes.component.scss'],
 })
-export class LotesComponent implements OnInit {
-
-  public postalZones!: PostalZones;
-  public src: string = `../../../../server/public/assets/`
+export class LotesComponent implements OnInit, OnDestroy {
+  public postalZones!: PostalZonesData[];
   public numberOfColumns: number = 0;
-  public rowHeight: string = "";
+  public rowHeight: string = '';
   private destroy$: Subject<boolean> = new Subject();
 
-  constructor(private http: HttpService) { }
+  constructor(private http: HttpService) {}
 
   ngOnInit(): void {
-    this.numberOfColumns = (window.innerWidth <= 575) ? 1 : 3;
-    this.rowHeight = "2:1"
-    this.http.getAllZones()
-    .subscribe(
-      pz => {this.postalZones = pz; console.log(pz)},
-      err => console.warn(err, 'Error en el pedido de las categorías')
-    )
+    this.numberOfColumns = window.innerWidth <= 575 ? 1 : 2;
+    this.rowHeight = window.innerWidth <= 575 ? '2:1' : '90vh';
+    this.http
+      .getAllZones()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (pz) => {
+          this.postalZones = pz?.data;
+          this.postalZones.forEach((postalZone) => {
+            postalZone.url = `/lotes/${postalZone.id}`;
+          });
+        },
+        (err) => console.warn(err, 'Error en el pedido de las categorías')
+      );
   }
 
   onResize(event: any) {
-    this.numberOfColumns = (event?.target?.innerWidth <= 575) ? 1 : 3;
-    // this.rowHeight = (event?.target?.innerWidth <= 575) ? "1:1" : "90vh"
+    this.numberOfColumns = event?.target?.innerWidth <= 575 ? 1 : 2;
+    this.rowHeight = event?.target?.innerWidth <= 575 ? '2:1' : '90vh';
   }
 
   ngOnDestroy(): void {
