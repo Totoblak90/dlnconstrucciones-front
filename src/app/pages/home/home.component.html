@@ -141,7 +141,7 @@
         *ngFor="let interest of interestsData; let index = index"
       >
         <mat-card-content>
-          <img [src]="'../../../assets/servicios-1.jpg'" alt="" />
+          <img [src]="interest.image" alt="" />
           <h4>{{ interest.title }}</h4>
         </mat-card-content>
       </mat-card>

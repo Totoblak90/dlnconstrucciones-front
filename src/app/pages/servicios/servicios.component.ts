@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { ServicesData } from 'src/app/interfaces/http/services.interface';
 import { HttpService } from '../../services/http.service';
 import { Services } from '../../interfaces/http/services.interface';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-servicios',
@@ -37,6 +38,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
         this.servicios = servData;
         this.servicios.forEach(servicio => {
           servicio.url = `/servicios/${servicio.id}`
+          servicio.image = `${environment.API_IMAGE_URL}/${servicio.image}`
         })
       })
   }

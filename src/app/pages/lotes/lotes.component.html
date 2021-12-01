@@ -6,7 +6,7 @@
 >
   <mat-grid-tile *ngFor="let lote of postalZones">
     <app-presentation-card
-      [urlFoto]="'../../../assets/servicios-1.jpg'"
+      [urlFoto]="lote.image"
       [ruta]="lote.url!"
       [titulo]="lote.title"
       [sendDataByRoute]="true"

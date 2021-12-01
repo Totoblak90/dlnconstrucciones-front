@@ -5,6 +5,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { TipoServicioData, TipoServicioDataContent, TipoServicioDataPictures } from '../../../interfaces/http/services.interface';
 import { Gallery, GalleryRef } from 'ng-gallery';
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-tipo-servicio',
@@ -36,6 +37,9 @@ export class TipoServicioComponent implements OnInit, OnDestroy {
         this.tipoServicioPictures = serv?.data?.Pictures;
 
         this.tipoServicioPictures?.forEach(picture => {
+
+          const picturePath = `${environment.API_IMAGE_URL}/${picture.picture}`
+
           const galleryRef: GalleryRef = this.gallery.ref(this.galleryId , {
             autoPlay: true,
             loop: true,
@@ -55,10 +59,8 @@ export class TipoServicioComponent implements OnInit, OnDestroy {
             thumbPosition: 'bottom',
           });
           galleryRef.addImage({
-            src: '../../../assets/servicios-1.jpg',
-            thumb: '../../../assets/servicios-1.jpg'
-            // src: picture.picture,
-            // thumb: picture.picture,
+            src: picturePath,
+            thumb: picturePath
           });
         })
       })

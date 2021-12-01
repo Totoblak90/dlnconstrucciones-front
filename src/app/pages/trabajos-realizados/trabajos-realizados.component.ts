@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { HttpService } from 'src/app/services/http.service';
 import { TypesOfJobs, TypesOfJobsData } from '../../interfaces/http/jobs.interface';
 import { takeUntil } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-trabajos-realizados',
@@ -29,6 +30,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
         this.trabajosData = jobCategories?.data;
         this.trabajosData?.forEach(trabajo => {
           trabajo.url = `/trabajos-realizados/${trabajo.id}`
+          trabajo.image = `${environment.API_IMAGE_URL}/${trabajo.image}`
         })
       })
   }

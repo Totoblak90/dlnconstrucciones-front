@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Job, JobBaseData, JobMoreInfo } from 'src/app/interfaces/http/jobs.interface';
 import { HttpService } from '../../../services/http.service';
 import { Gallery, GalleryRef } from 'ng-gallery';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-tipo-trabajo',
@@ -35,6 +36,9 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
         this.trabajoBaseInfo = jobFull?.data;
         this.trabajoInfo = jobFull?.data?.Jobs;
         this.trabajoInfo?.forEach((trabajo: JobMoreInfo) => {
+
+          const imagePath = `${environment.API_IMAGE_URL}/${trabajo.image}`
+
           const galleryRef: GalleryRef = this.gallery.ref(this.galleryId , {
             autoPlay: true,
             loop: true,
@@ -54,12 +58,8 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
             thumbPosition: 'bottom',
           });
           galleryRef.addImage({
-            src: '../../../assets/servicios-1.jpg',
-            thumb: '../../../assets/servicios-1.jpg',
-            // src: trabajo.image,
-            // thumb: trabajo.image,
-            title: trabajo.title,
-            description: trabajo.description
+            src: imagePath,
+            thumb: imagePath,
           });
         })
       })

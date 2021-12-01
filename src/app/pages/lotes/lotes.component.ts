@@ -3,6 +3,7 @@ import { HttpService } from '../../services/http.service';
 import { PostalZonesData } from '../../interfaces/http/batches.interface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-lotes',
@@ -28,6 +29,7 @@ export class LotesComponent implements OnInit, OnDestroy {
           this.postalZones = pz?.data;
           this.postalZones.forEach((postalZone) => {
             postalZone.url = `/lotes/${postalZone.id}`;
+            postalZone.image = `${environment.API_IMAGE_URL}/${postalZone.image}`
           });
         },
         (err) => console.warn(err, 'Error en el pedido de las categorías')

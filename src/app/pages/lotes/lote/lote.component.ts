@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Batch, Lotes } from 'src/app/interfaces/http/batches.interface';
 import { HttpService } from '../../../services/http.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-lote',
@@ -20,7 +21,10 @@ export class LoteComponent implements OnInit {
     this.httpService.getLotes(this.localidadID).subscribe(
       (res: Lotes) => {
         this.lotes = res?.data?.Batches;
-        this.lotes.forEach(lote => lote.url = '/')
+        this.lotes?.forEach(lote => {
+          lote.url = '/'
+          lote.image = `${environment.API_IMAGE_URL}/${lote.image}`
+        })
       },
       (err) => console.log(err)
     );
