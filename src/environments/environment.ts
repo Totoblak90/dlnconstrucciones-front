@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   API_BASE_URL: 'http://localhost:3000/api',
-  API_IMAGE_URL: 'http://localhost:3000'
+  API_IMAGE_URL: 'http://localhost:3000/images'
 };
 
 /*
