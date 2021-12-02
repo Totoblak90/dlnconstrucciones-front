@@ -1,6 +1,14 @@
-<div class="tile-content" (click)="ruta ? navigate(ruta) : null">
-  <img #image [src]="urlFoto" [ngClass]="imageSizeInRelationOfCols === 2 ? 'fiftyvw' : 'one-hundred'" />
-  <div class="title-container bgc-primary-dark">
+<div
+  class="tile-content"
+  [ngClass]="imageSizeInRelationOfCols === 2 ? 'fourtyvw-container' : 'one-hundred-container'"
+  (click)="ruta ? navigate(ruta) : null"
+>
+  <img
+    #image
+    [src]="urlFoto"
+    [ngClass]="imageSizeInRelationOfCols === 2 ? 'fourtyvw-img' : 'one-hundred-img'"
+  />
+  <div *ngIf="titulo" class="title-container bgc-primary-dark">
     <h2 class="primary-light">{{ titulo }}</h2>
   </div>
 </div>

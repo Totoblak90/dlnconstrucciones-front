@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { TipoServicioRoutingModule } from './tipo-servicio-routing.module';
 import { TipoServicioComponent } from './tipo-servicio.component';
-import { GalleryModule } from 'ng-gallery';
+import { ComponentsModule } from '../../../components/components.module';
 
 
 @NgModule({
@@ -13,7 +13,7 @@ import { GalleryModule } from 'ng-gallery';
   imports: [
     CommonModule,
     TipoServicioRoutingModule,
-    GalleryModule
+    ComponentsModule
   ]
 })
 export class TipoServicioModule { }

@@ -5,7 +5,7 @@ import { ComponentsModule } from '../../components/components.module';
 import { HomeRoutingModule } from './home-routing.module';
 
 import { HomeComponent } from './home.component';
-import { ModalComponent } from './modal/modal.component';
+import { ModalComponent } from './components/modal/modal.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
 
 
@@ -20,6 +20,6 @@ import { CarouselComponent } from './components/carousel/carousel.component';
     HomeRoutingModule,
     ComponentsModule,
   ],
-  exports: [CarouselComponent]
+  exports: [CarouselComponent, ModalComponent]
 })
 export class HomeModule { }

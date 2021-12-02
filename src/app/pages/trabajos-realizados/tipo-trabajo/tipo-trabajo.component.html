@@ -1,21 +1,18 @@
 <div class="main-trabajo">
   <h1 class="primary-dark">{{ trabajoBaseInfo?.title }}</h1>
-  <hr class="primary-dark">
+  <hr class="primary-dark" />
   <p class="primary">Chequeá nuestra galería de trabajos realizados:</p>
-  <gallery
-    id="mixedExample"
-    [itemTemplate]="itemTemplate"
-    class="gallery"
-  ></gallery>
-  <ng-template
-    #itemTemplate
-    let-index="index"
-    let-type="type"
-    let-data="data"
-    let-currIndex="currIndex"
-  >
-    <span *ngIf="type === 'image' && index === currIndex" class="item-text"> {{data?.title}} </span>
-    <span *ngIf="type === 'image' && index === currIndex" class="item-text"> {{data?.description}} </span>
-  </ng-template>
 </div>
-
+<mat-grid-list
+  [cols]="numberOfColumns"
+  [rowHeight]="rowHeight"
+  (window:resize)="onResize($event)"
+>
+  <mat-grid-tile *ngFor="let trabajo of trabajoInfo">
+    <app-presentation-card
+      [urlFoto]="trabajo.image"
+      [titulo]="trabajo.title"
+      [imageSizeInRelationOfCols]="3"
+    ></app-presentation-card>
+  </mat-grid-tile>
+</mat-grid-list>

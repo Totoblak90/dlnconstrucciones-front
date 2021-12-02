@@ -5,9 +5,14 @@
   mat-dialog-content {
     img {
       width: 100%;
-      margin: auto;
+      height: 300px;
+      margin: 10px auto;
+      @media (max-width: 575px) {
+        height: auto;
+      }
     }
     text-align: justify;
+    font-size: 20px;
   }
 
   mat-dialog-actions {

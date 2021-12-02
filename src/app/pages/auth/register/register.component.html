@@ -2,9 +2,14 @@
   <div class="box" >
     <form [formGroup]="registerForm" (ngSubmit)="register()">
       <mat-form-field>
-        <mat-label>Nombre completo</mat-label>
+        <mat-label>Nombre</mat-label>
         <input formControlName="nombre" type="text" matInput>
         <mat-error *ngIf="registerForm.controls.nombre.errors?.required" >Este dato es requerido</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Apellido</mat-label>
+        <input formControlName="apellido" type="text" matInput>
+        <mat-error *ngIf="registerForm.controls.apellido.errors?.required" >Este dato es requerido</mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>DNI</mat-label>

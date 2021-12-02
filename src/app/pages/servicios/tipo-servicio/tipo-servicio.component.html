@@ -1,23 +1,24 @@
 <div class="main-tipo-servicio">
   <h1 class="primary-dark text-center">{{ tipoServicio?.title }}</h1>
-  <hr>
+  <hr />
   <ng-container *ngIf="tipoServicioContents">
     <div class="description" *ngFor="let content of tipoServicioContents">
       <h3 *ngIf="content.subtitle" class="primary">{{ content.subtitle }}</h3>
       <p *ngIf="content.text">{{ content.text }}</p>
     </div>
   </ng-container>
-  <gallery
-    *ngIf="tipoServicioPictures?.length"
-    id="mixedExample"
-    [itemTemplate]="itemTemplate"
-    class="gallery"
-  ></gallery>
-  <ng-template
-    #itemTemplate
-    let-index="index"
-    let-type="type"
-    let-data="data"
-    let-currIndex="currIndex">
-  </ng-template>
+  <ng-container *ngIf="tipoServicioPictures.length">
+    <mat-grid-list
+      [cols]="numberOfColumns"
+      [rowHeight]="rowHeight"
+      (window:resize)="onResize($event)"
+    >
+      <mat-grid-tile *ngFor="let picture of tipoServicioPictures">
+        <app-presentation-card
+          [urlFoto]="picture.picture"
+          [imageSizeInRelationOfCols]="3"
+        ></app-presentation-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </ng-container>
 </div>

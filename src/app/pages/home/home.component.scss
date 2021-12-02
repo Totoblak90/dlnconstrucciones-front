@@ -30,7 +30,7 @@
       flex-direction: column;
       align-items: center;
     }
-    .carousel-component {
+    & .carousel-component {
       width: 65%;
       @media (max-width: 575px) {
         width: 100%;
@@ -185,6 +185,7 @@
         }
         & img {
           width: 100%;
+          height: 200px;
         }
         & h4 {
           text-align: center;
