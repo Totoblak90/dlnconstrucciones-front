@@ -9,45 +9,8 @@
   </div>
 
   <section class="first-section">
-    <div class="carousel">
-      <mat-carousel
-        [timings]="'350ms ease-in'"
-        [autoplay]="true"
-        [interval]="5000"
-        [loop]="true"
-        [hideArrows]="false"
-        [hideIndicators]="true"
-        [color]="'accent'"
-        [maxWidth]="'auto'"
-        [maintainAspectRatio]="true"
-        [proportion]="50"
-        [slides]="2"
-        [useKeyboard]="true"
-        [useMouseWheel]="false"
-        [orientation]="'ltr'"
-      >
-        <mat-carousel-slide>
-          <img src="../../../assets/slider1.jpg" alt="" />
-          <div class="info-container">
-            <h3>Más de 15 años construyendo confianza</h3>
-            <hr />
-            <p>
-              Nuestro éxito se basa en los exigentes controles de calidad a los
-              que sometemos todos los proyectos que realizamos
-            </p>
-          </div>
-        </mat-carousel-slide>
-        <mat-carousel-slide>
-          <img src="../../../assets/slider2.jpg" alt="" />
-          <div class="info-container">
-            <h3>Antenas de Telecomunicaciones</h3>
-            <hr />
-            <p>
-              Servicio de ejecución de obras a empresas de telecomunicaciones
-            </p>
-          </div>
-        </mat-carousel-slide>
-      </mat-carousel>
+    <div class="carousel-component">
+      <app-carousel></app-carousel>
     </div>
     <div class="masterplan-container">
       <h3 class="primary-dark">
