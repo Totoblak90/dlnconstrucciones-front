@@ -22,14 +22,25 @@ export class PresentationCardComponent {
   @Input() urlData?: {
     data: any;
   };
+  @Input() imageSizeInRelationOfCols?: number = 2;
 
   constructor(private router: Router) {}
 
-  navigate(ruta: string) {
+  public navigate(ruta: string) {
     if (!this.sendDataByRoute) {
       this.router.navigateByUrl(ruta);
     } else {
-      this.router.navigateByUrl(ruta, {state: this.urlData})
+      this.router.navigateByUrl(ruta, { state: this.urlData });
     }
+  }
+
+  public setImageWidth(): string {
+    let classSelected: string = '';
+    this.imageSizeInRelationOfCols === 2
+      ? (classSelected = 'fiftyvw')
+      : this.imageSizeInRelationOfCols === 3
+      ? (classSelected = 'one-hundred')
+      : null;
+    return classSelected;
   }
 }

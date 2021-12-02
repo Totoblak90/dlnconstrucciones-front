@@ -5,16 +5,25 @@
   width: 100%;
   justify-content: center;
   align-content: center;
-  padding: 10pt;
   transition: transform .2s; /* Animation */
   position: relative;
   img {
-    width: 50vw;
-    height: 80vh;
     z-index: 0;
-    @media (max-width: 575px) {
+    &.one-hundred {
       width: 100%;
-      height: auto;
+      height: 50vh;
+      @media (max-width: 575px) {
+        width: 100%;
+        height: auto;
+      }
+    }
+    &.fiftyvw {
+      width: 40vw;
+      height: 80vh;
+      @media (max-width: 575px) {
+        width: 100%;
+        height: auto;
+      }
     }
   }
   .title-container {
@@ -31,7 +40,7 @@
       text-align: center;
     }
   }
-}
-.tile-content:hover {
-  transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  &:hover {
+    transform: scale(1.05); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  }
 }

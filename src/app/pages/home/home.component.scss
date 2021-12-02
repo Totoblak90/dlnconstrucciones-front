@@ -32,6 +32,9 @@
     }
     .carousel-component {
       width: 65%;
+      @media (max-width: 575px) {
+        width: 100%;
+      }
     }
     & .masterplan-container {
       display: flex;

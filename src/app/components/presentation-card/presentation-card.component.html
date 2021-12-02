@@ -1,5 +1,5 @@
 <div class="tile-content" (click)="ruta ? navigate(ruta) : null">
-  <img #image [src]="urlFoto" />
+  <img #image [src]="urlFoto" [ngClass]="imageSizeInRelationOfCols === 2 ? 'fiftyvw' : 'one-hundred'" />
   <div class="title-container bgc-primary-dark">
     <h2 class="primary-light">{{ titulo }}</h2>
   </div>
