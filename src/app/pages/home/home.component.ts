@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.interestsComplete = interestsFull;
         this.interestsData = interestsFull.data;
         this.interestsData?.forEach(interest => interest.image = `${environment.API_IMAGE_URL}/${interest.image}`)
-      })
+      }, err => console.log(err))
   }
 
   openDialog(index: number): void {
