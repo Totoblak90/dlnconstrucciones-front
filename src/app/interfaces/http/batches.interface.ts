@@ -4,9 +4,9 @@ export interface PostalZones {
 }
 
 export interface PostalZonesData {
-  id:         number;
-  title:      string;
-  image:      string;
+  id: number;
+  title: string;
+  image: string;
   created_at: Date;
   updated_at: Date;
   deleted_at: null;
@@ -23,25 +23,30 @@ export interface Lotes {
 }
 
 export interface LotesData {
-  id:         number;
-  title:      string;
-  image:      string;
+  id: number;
+  title: string;
+  image: string;
   created_at: Date;
   updated_at: Date;
   deleted_at: null;
-  Batches:    Batch[];
+  Batches: Batch[];
 }
 
 export interface Batch {
-  id:            number;
-  title:         string;
-  description:   string;
-  image:         string;
-  price:         number | null;
-  sold:          string;
-  created_at:    Date;
-  updated_at:    Date;
-  deleted_at:    null;
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  price: number | null;
+  sold: string;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: null;
   categories_id: number;
-  url?:          string;
+  url?: string;
+}
+
+export interface BatchComplete {
+  meta: Meta;
+  data: Batch
 }

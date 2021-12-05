@@ -1,16 +1,21 @@
-<mat-grid-list
-  [cols]="numberOfColumns"
-  rows="1"
-  [rowHeight]="rowHeight"
-  (window:resize)="onResize($event)"
->
-  <mat-grid-tile *ngFor="let lote of postalZones">
-    <app-presentation-card
-      [urlFoto]="lote.image"
-      [ruta]="lote.url!"
-      [titulo]="lote.title"
-      [sendDataByRoute]="true"
-      [urlData]="{data: lote.id}"
-    ></app-presentation-card>
-  </mat-grid-tile>
-</mat-grid-list>
+<div class="main-lotes">
+  <h1 class="primary-dark">Lotes</h1>
+  <hr>
+  <mat-grid-list
+    [cols]="numberOfColumns"
+    rows="1"
+    [rowHeight]="rowHeight"
+    (window:resize)="onResize($event)"
+  >
+    <mat-grid-tile *ngFor="let lote of postalZones">
+      <app-presentation-card
+        [urlFoto]="lote.image"
+        [ruta]="lote.url!"
+        [titulo]="lote.title"
+        [sendDataByRoute]="true"
+        [urlData]="{data: lote.id}"
+      ></app-presentation-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+

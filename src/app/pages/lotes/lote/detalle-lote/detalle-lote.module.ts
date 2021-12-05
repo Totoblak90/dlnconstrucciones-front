@@ -11,7 +11,7 @@ import { DetalleLoteComponent } from './detalle-lote.component';
   ],
   imports: [
     CommonModule,
-    DetalleLoteRoutingModule
+    DetalleLoteRoutingModule,
   ]
 })
 export class DetalleLoteModule { }

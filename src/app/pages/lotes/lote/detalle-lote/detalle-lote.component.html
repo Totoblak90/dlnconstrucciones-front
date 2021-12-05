@@ -1,1 +1,15 @@
-<p>detalle-lote works!</p>
+<div class="text-center">
+  <h1 class="primary-dark">Detalle</h1>
+  <hr>
+  <div class="lote">
+    <div *ngIf="lote?.image" class="image">
+      <img [src]="lote?.image" alt="Imagen del lote">
+    </div>
+    <div class="info">
+      <h2 class="primary-dark">{{ lote?.title }}</h2>
+      <p class="primary">{{ lote?.description }}</p>
+      <p *ngIf="lote?.price" class="primary-dark">Precio: USD {{ lote?.price }}</p>
+    </div>
+  </div>
+  <button mat-raised-button class="bgc-primary-dark" (click)="navigateBack()">Volver</button>
+</div>

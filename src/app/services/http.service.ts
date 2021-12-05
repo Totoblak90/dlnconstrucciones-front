@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Interests } from '../interfaces/http/interests.interface';
 import { Job, TypesOfJobs } from '../interfaces/http/jobs.interface';
 import { Services, TipoServicio } from '../interfaces/http/services.interface';
-import { Lotes, PostalZones } from '../interfaces/http/batches.interface';
+import { Lotes, PostalZones, Batch, BatchComplete } from '../interfaces/http/batches.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,10 @@ export class HttpService {
   }
   public getLotes(categoryID: string): Observable<Lotes> {
     return this.http.get<Lotes>(`${environment.API_BASE_URL}/categories/${categoryID}`)
+  }
+
+  public getDetalleLote(loteId: string): Observable<BatchComplete> {
+    return this.http.get<BatchComplete>(`${environment.API_BASE_URL}/batches/${loteId}`)
   }
   // Pido los servicios
   public getAllServices(): Observable<Services> {
