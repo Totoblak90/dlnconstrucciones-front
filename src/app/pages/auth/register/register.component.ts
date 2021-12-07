@@ -2,6 +2,9 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
+import { User } from '../../../models/user.model';
+import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -16,8 +19,16 @@ export class RegisterComponent implements OnDestroy {
 
   public registerForm: FormGroup = this.fb.group(
     {
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      apellido: ['', [Validators.required, Validators.minLength(3)]],
+      first_name: ['', [Validators.required, Validators.minLength(3)]],
+      last_name: ['', [Validators.required, Validators.minLength(3)]],
+      dni: [
+        '',
+        [
+          Validators.required,
+          Validators.max(99999999),
+          Validators.minLength(8),
+        ],
+      ],
       email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
       password: [
         '',
@@ -26,21 +37,43 @@ export class RegisterComponent implements OnDestroy {
           // Validators.pattern(this.passwordPattern)
         ],
       ],
-      passwordRepeat: [''],
+      passwordRepeat: ['', [Validators.required]],
       terminosYCondiciones: [false, [Validators.required]],
     },
     {
       validator: this.passwordMatchFormValidator('password', 'passwordRepeat'),
     }
   );
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   register(): void {
     this.registerForm.markAllAsTouched();
     if (this.registerForm.valid) {
       this.authService
         .register(this.registerForm.value)
-        .subscribe((res) => console.log(res));
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          (res) => {
+            const user: User = new User(
+              res?.data.user?.first_name,
+              res?.data?.user?.last_name,
+              res?.data?.user?.email,
+              res?.data?.user?.role,
+              res?.data?.user?.avatar,
+              res?.data?.user?.phone
+            );
+            this.authService.setUser(user);
+            if (res?.data?.token) {
+              localStorage.setItem('token', res?.data?.token);
+            }
+            this.router.navigateByUrl('/auth/profile');
+          },
+          (err) => console.log(err)
+        );
     }
   }
 

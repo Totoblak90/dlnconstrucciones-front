@@ -1,7 +1,8 @@
 import { Meta } from './batches.interface';
+
 export interface LoginRes {
-  meta: Meta
-  data: LoginResData
+  meta: Meta;
+  data: LoginResData;
 }
 
 export interface LoginResData {
@@ -17,12 +18,13 @@ export interface LoginForm {
 }
 
 export interface RegisterRes {
-
+  meta: Meta;
+  data: LoginResData;
 }
 
 export interface RegisterForm {
-  nombre: string;
-  apellido: string;
+  first_name: string;
+  last_name: string;
   dni: number;
   email: string;
   password: string;
@@ -43,5 +45,12 @@ export interface UserData {
   deleted_at?: string;
 }
 
-export type setUserProp = 'nombre' | 'apellido' | 'email' | 'avatar' | 'role' | 'phone'
+export type setUserProp =
+  | 'nombre'
+  | 'apellido'
+  | 'email'
+  | 'avatar'
+  | 'role'
+  | 'phone';
+
 export type userRole = 'user' | 'admin';

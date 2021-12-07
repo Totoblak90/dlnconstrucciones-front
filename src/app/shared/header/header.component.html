@@ -18,19 +18,19 @@
       <li class="animated-list" [routerLink]="['/lotes']">
         <button mat-button class="bgc-primary">LOTES</button>
       </li>
-      <ng-container *ngIf="userIsLogged; else userIsNotLoggedTemplate">
-        <li
-        class="animated-list"
-      >
-        <img [src]="getUserImg()" alt="Avatar del usuario">
-        {{ user.nombre }} {{ user.apellido }}
-    </li>
+      <ng-container *ngIf="user; else userIsNotLoggedTemplate">
+        <li class="animated-list" routerLink="/auth/profile">
+          <button mat-button class="bgc-primary">
+            <img
+              src="http://localhost:3000/api/images/Usuario-1_1610562779647.jfif"
+              alt="Avatar"
+            />
+            {{ user?.nombre }} {{ user?.apellido }}
+          </button>
+        </li>
       </ng-container>
       <ng-template #userIsNotLoggedTemplate>
-        <li
-          class="animated-list"
-          [matMenuTriggerFor]="profileMenu"
-        >
+        <li class="animated-list" [matMenuTriggerFor]="profileMenu">
           <button mat-button class="bgc-primary">ACREDITARSE</button>
           <mat-menu #profileMenu="matMenu" yPosition="below">
             <button
@@ -50,7 +50,6 @@
           </mat-menu>
         </li>
       </ng-template>
-
     </ul>
 
     <!-- Para mobile -->
@@ -82,7 +81,7 @@
         mat-menu-item
         class="bgc-primary"
         [matMenuTriggerFor]="profileMenuMobile"
-        *ngIf="!userIsLogged"
+        *ngIf="!user"
       >
         ACREDITARSE
       </button>

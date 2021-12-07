@@ -14,8 +14,11 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
   @ViewChild('desktopNavbar') desktopNavbar!: ElementRef<HTMLUListElement>;
   public userIsLogged: boolean = false;
-  public user!: User;
   constructor(private authService: AuthService, private router: Router) { }
+
+  public get user(): User {
+    return this.authService.getUser();
+  }
 
   ngOnInit(): void {
     this.animations();

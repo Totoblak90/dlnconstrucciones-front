@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { getToken } from '../../../helpers/functions.helper';
 import { User } from '../../../models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-log-in',
@@ -19,7 +20,7 @@ export class LogInComponent implements OnDestroy {
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   private destroy$: Subject<boolean> = new Subject();
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.createForm();
   }
 
@@ -49,6 +50,7 @@ export class LogInComponent implements OnDestroy {
               res?.data?.user?.phone,
             )
             this.authService.setUser(loggedUser);
+            this.router.navigateByUrl('/auth/profile')
           },
           (err) => console.log(err)
         );
