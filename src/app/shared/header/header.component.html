@@ -18,25 +18,39 @@
       <li class="animated-list" [routerLink]="['/lotes']">
         <button mat-button class="bgc-primary">LOTES</button>
       </li>
-      <li class="animated-list" [matMenuTriggerFor]="profileMenu">
-        <button mat-button class="bgc-primary">MI CUENTA</button>
-        <mat-menu #profileMenu="matMenu" yPosition="below">
-          <button
-            mat-menu-item
-            [routerLink]="['/auth/login']"
-            class="bgc-primary"
-          >
-            INICIAR SESIÓN
-          </button>
-          <button
-            mat-menu-item
-            [routerLink]="['/auth/register']"
-            class="bgc-primary"
-          >
-            REGISTRARSE
-          </button>
-        </mat-menu>
-      </li>
+      <ng-container *ngIf="userIsLogged; else userIsNotLoggedTemplate">
+        <li
+        class="animated-list"
+      >
+        <img [src]="getUserImg()" alt="Avatar del usuario">
+        {{ user.nombre }} {{ user.apellido }}
+    </li>
+      </ng-container>
+      <ng-template #userIsNotLoggedTemplate>
+        <li
+          class="animated-list"
+          [matMenuTriggerFor]="profileMenu"
+        >
+          <button mat-button class="bgc-primary">ACREDITARSE</button>
+          <mat-menu #profileMenu="matMenu" yPosition="below">
+            <button
+              mat-menu-item
+              [routerLink]="['/auth/login']"
+              class="bgc-primary"
+            >
+              INICIAR SESIÓN
+            </button>
+            <button
+              mat-menu-item
+              [routerLink]="['/auth/register']"
+              class="bgc-primary"
+            >
+              REGISTRARSE
+            </button>
+          </mat-menu>
+        </li>
+      </ng-template>
+
     </ul>
 
     <!-- Para mobile -->
@@ -68,8 +82,9 @@
         mat-menu-item
         class="bgc-primary"
         [matMenuTriggerFor]="profileMenuMobile"
+        *ngIf="!userIsLogged"
       >
-        MI CUENTA
+        ACREDITARSE
       </button>
       <mat-menu #profileMenuMobile="matMenu" yPosition="below">
         <button

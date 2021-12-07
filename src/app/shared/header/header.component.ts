@@ -1,6 +1,10 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { gsap } from 'gsap'
 import { DOCUMENT } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user.model';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,14 +13,15 @@ import { DOCUMENT } from '@angular/common';
 })
 export class HeaderComponent implements OnInit {
   @ViewChild('desktopNavbar') desktopNavbar!: ElementRef<HTMLUListElement>;
-
-  constructor() { }
+  public userIsLogged: boolean = false;
+  public user!: User;
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.animations();
   }
 
-  animations() {
+  private animations(): void {
     const toAnimate = document.getElementsByClassName('animated-list')
     gsap.from(toAnimate ,{
       duration: 0.5,
@@ -25,6 +30,16 @@ export class HeaderComponent implements OnInit {
       delay: 0.5,
       ease: 'fadeIn'
     })
+  }
+
+  public getUserImg() {
+    return this.user?.getAvatar()
+  }
+
+  public openProfile(): void {
+    if (this.userIsLogged) {
+      this.router.navigateByUrl('/auth/profile')
+    }
   }
 
 }

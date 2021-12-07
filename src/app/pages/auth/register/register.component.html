@@ -1,41 +1,76 @@
 <div class="register-container">
-  <div class="box" >
-    <form [formGroup]="registerForm" (ngSubmit)="register()">
+  <div class="box">
+    <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
       <mat-form-field>
         <mat-label>Nombre</mat-label>
-        <input formControlName="nombre" type="text" matInput>
-        <mat-error *ngIf="registerForm.controls.nombre.errors?.required" >Este dato es requerido</mat-error>
+        <input formControlName="nombre" type="text" matInput />
+          <mat-error *ngIf="registerForm.controls.nombre.errors?.required"
+            >Este dato es requerido</mat-error
+          >
+          <mat-error *ngIf="registerForm.controls.nombre.errors?.minlength"
+            >Debe tener al menos 3 caracteres</mat-error
+          >
       </mat-form-field>
       <mat-form-field>
         <mat-label>Apellido</mat-label>
-        <input formControlName="apellido" type="text" matInput>
-        <mat-error *ngIf="registerForm.controls.apellido.errors?.required" >Este dato es requerido</mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>DNI</mat-label>
-        <input formControlName="dni" type="number" matInput>
-        <mat-error *ngIf="registerForm.controls.dni.errors?.required" >Este dato es requerido</mat-error>
-        <mat-error *ngIf="registerForm.controls.dni.hasError('max')" >Número máximo 99.999.999</mat-error>
-        <mat-error *ngIf="registerForm.controls.dni.hasError('min-length')" >Debe contenter al menos 8 caracteres</mat-error>
+        <input formControlName="apellido" type="text" matInput />
+          <mat-error *ngIf="registerForm.controls.apellido.errors?.required"
+            >Este dato es requerido</mat-error
+          >
+          <mat-error *ngIf="registerForm.controls.apellido.errors?.minlength"
+            >Debe tener al menos 3 caracteres</mat-error
+          >
       </mat-form-field>
       <mat-form-field>
         <mat-label>Email</mat-label>
-        <input formControlName="email" matInput autocomplete="email">
-        <mat-error *ngIf="registerForm.controls.email.errors?.required" >Este dato es requerido</mat-error>
-        <mat-error *ngIf="registerForm.controls.email.errors?.pattern" >Por favor ingresá un email válido</mat-error>
+        <input formControlName="email" matInput autocomplete="email" />
+          <mat-error *ngIf="registerForm.controls.email.errors?.required"
+            >Este dato es requerido</mat-error
+          >
+          <mat-error *ngIf="registerForm.controls.email.errors?.pattern"
+            >Por favor ingresá un email válido</mat-error
+          >
       </mat-form-field>
       <mat-form-field>
         <mat-label>Contraseña</mat-label>
-        <input formControlName="password" matInput type="password" autocomplete="new-password">
-        <mat-error *ngIf="registerForm.controls.password.errors?.required" >Este dato es requerido</mat-error>
+        <input
+          formControlName="password"
+          matInput
+          type="password"
+          autocomplete="new-password"
+        />
+          <mat-error *ngIf="registerForm.controls.password.errors?.required"
+            >Este dato es requerido</mat-error
+          >
+          <mat-error *ngIf="registerForm.controls.password.errors?.pattern"
+            >La contraseña debe tener un mínimo de 8 caracteres, incluyendo una
+            minúscula, una mayúscula, un número y un símbolo</mat-error
+          >
       </mat-form-field>
       <mat-form-field>
         <mat-label>Repetir contraseña</mat-label>
-        <input formControlName="confirmPassword" matInput type="password" autocomplete="new-password">
-        <mat-error *ngIf="registerForm.controls.confirmPassword.errors?.required">Este dato es requerido</mat-error>
+        <input
+          formControlName="passwordRepeat"
+          matInput
+          type="password"
+          autocomplete="new-password"
+        />
+
+          <mat-error
+            *ngIf="registerForm.controls.passwordRepeat.errors?.notMatch"
+            >Las contraseñas no coinciden</mat-error
+          >
       </mat-form-field>
-      <mat-checkbox formControlName="terminosYCondiciones" class="primary-dark">Acepto <a routerLink="/" >términos y condiciones</a></mat-checkbox>
-      <span *ngIf="!registerForm.controls.terminosYCondiciones.value && registerForm.controls.terminosYCondiciones.touched" >Este dato es requerido</span>
+      <mat-checkbox formControlName="terminosYCondiciones" class="primary-dark"
+        >Acepto <a routerLink="/">términos y condiciones</a></mat-checkbox
+      >
+      <span
+        *ngIf="
+          !registerForm.controls.terminosYCondiciones.value &&
+          registerForm.controls.terminosYCondiciones.touched
+        "
+        >Este dato es requerido</span
+      >
       <button mat-button type="submit" class="primary-dark">Registrarse</button>
     </form>
   </div>

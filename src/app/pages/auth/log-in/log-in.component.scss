@@ -6,7 +6,7 @@
     margin: 24px 0px;
     padding: 16px;
     border-radius: 24px;
-    // border: 1px solid #4bb0d0;
+    width: 50%;
     form {
       display: flex;
       flex-direction: column;
@@ -20,6 +20,9 @@
       }
       button {
         margin-top: 16px;
+      }
+      mat-error {
+        font-size: 15px;
       }
     }
   }
