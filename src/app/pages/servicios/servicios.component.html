@@ -1,13 +1,10 @@
 <div class="main-servicios">
   <h1 class="primary-dark">Servicios</h1>
-  <hr>
-  <mat-grid-list [cols]="numberOfColumns" rows="1" [rowHeight]="rowHeight" (window:resize)="onResize($event)">
-    <mat-grid-tile *ngFor="let servicio of servicios">
-      <app-presentation-card
-        [urlFoto]="servicio.image"
-        [ruta]="servicio.url!"
-        [titulo]="servicio.title"
-      ></app-presentation-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+  <hr />
+
+<div class="row">
+  <app-presentation-card
+    [presentationCard]="servicesToPresent"
+  ></app-presentation-card>
+</div>
 </div>

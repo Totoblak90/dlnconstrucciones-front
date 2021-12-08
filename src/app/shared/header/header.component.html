@@ -1,106 +1,83 @@
-<mat-toolbar>
-  <mat-toolbar-row class="logo">
-    <img src="../assets/logo.png" alt="logo" [routerLink]="'/'" />
-  </mat-toolbar-row>
-  <mat-toolbar-row class="navbar bgc-primary">
-    <ul class="desktop-menu">
-      <li class="animated-list" [routerLink]="['/home']">
-        <button mat-button class="bgc-primary">INICIO</button>
-      </li>
-      <li class="animated-list">
-        <button mat-button class="bgc-primary" routerLink="/servicios">
-          SERVICIOS
-        </button>
-      </li>
-      <li class="animated-list" [routerLink]="['/trabajos-realizados']">
-        <button mat-button class="bgc-primary">TRABAJOS REALIZADOS</button>
-      </li>
-      <li class="animated-list" [routerLink]="['/lotes']">
-        <button mat-button class="bgc-primary">LOTES</button>
-      </li>
-      <ng-container *ngIf="user; else userIsNotLoggedTemplate">
-        <li class="animated-list" routerLink="/auth/profile">
-          <button mat-button class="bgc-primary">
-            <img
-              src="http://localhost:3000/api/images/Usuario-1_1610562779647.jfif"
-              alt="Avatar"
-            />
-            {{ user?.nombre }} {{ user?.apellido }}
-          </button>
-        </li>
-      </ng-container>
-      <ng-template #userIsNotLoggedTemplate>
-        <li class="animated-list" [matMenuTriggerFor]="profileMenu">
-          <button mat-button class="bgc-primary">ACREDITARSE</button>
-          <mat-menu #profileMenu="matMenu" yPosition="below">
-            <button
-              mat-menu-item
-              [routerLink]="['/auth/login']"
-              class="bgc-primary"
+<header class="topbar">
+  <nav class="navbar top-navbar navbar-expand-md navbar-light">
+    <div class="navbar-header">
+      <a class="navbar-brand" routerLink="/">
+        <b>
+          <img src="../../../assets/logo.png" alt="homepage" class="logo" />
+        </b>
+      </a>
+    </div>
+    <div class="navbar-collapse">
+      <ul class="navbar-nav my-lg-0">
+        <li *ngFor="let m of menu" class="nav-item dropdown">
+          <ng-container *ngIf="m.show">
+            <a
+              class="nav-link dropdown-toggle waves-effect waves-dark primary-dark"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              [routerLink]="m.redirectTo"
             >
-              INICIAR SESIÓN
-            </button>
-            <button
-              mat-menu-item
-              [routerLink]="['/auth/register']"
-              class="bgc-primary"
+              {{ m.description }}
+            </a>
+            <div
+              *ngIf="m.moreOptions"
+              class="dropdown-menu dropdown-menu-right animated fadeIn"
             >
-              REGISTRARSE
-            </button>
-          </mat-menu>
+              <ul>
+                <li *ngFor="let subMenu of m.subMenu">
+                  <a [routerLink]="subMenu.redirectTo">
+                    <div class="mail-contnet">
+                      <h5 class="primary-dark">{{ subMenu.description }}</h5>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </ng-container>
         </li>
-      </ng-template>
-    </ul>
-
-    <!-- Para mobile -->
-    <mat-icon class="mobile-menu bgc-primary" [matMenuTriggerFor]="mobileMenu"
-      >menu</mat-icon
-    >
-    <mat-menu
-      #mobileMenu="matMenu"
-      yPosition="below"
-      class="mobile-menu-container"
-    >
-      <button mat-menu-item class="bgc-primary" [routerLink]="['/home']">
-        INICIO
-      </button>
-      <button mat-menu-item class="bgc-primary" routerLink="/servicios">
-        SERVICIOS
-      </button>
-      <button
-        mat-menu-item
-        class="bgc-primary"
-        [routerLink]="['/trabajos-realizados']"
-      >
-        TRABAJOS REALIZADOS
-      </button>
-      <button mat-menu-item class="bgc-primary" [routerLink]="['/lotes']">
-        LOTES
-      </button>
-      <button
-        mat-menu-item
-        class="bgc-primary"
-        [matMenuTriggerFor]="profileMenuMobile"
-        *ngIf="!user"
-      >
-        ACREDITARSE
-      </button>
-      <mat-menu #profileMenuMobile="matMenu" yPosition="below">
-        <button
-          mat-menu-item
-          [routerLink]="['/auth/login']"
-          class="bgc-primary"
-        >
-          INICIAR SESIÓN
-        </button>
-        <button
-          mat-menu-item
-          [routerLink]="['/auth/register']"
-          class="bgc-primary"
-        >
-          REGISTRARSE
-        </button>
-      </mat-menu>
-    </mat-menu>
-  </mat-toolbar-row>
-</mat-toolbar>
+        <li class="nav-item dropdown" *ngIf="user">
+          <a
+            class="nav-link dropdown-toggle waves-effect waves-dark primary-dark"
+            href=""
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            ><img [src]="getUserImg()" alt="user" class="profile-pic"
+          /> {{ user?.nombre }} {{ user?.apellido }} </a>
+          <div class="dropdown-menu dropdown-menu-right animated flipInY">
+            <ul class="dropdown-user">
+              <li class="pointer">
+                <div class="dw-user-box">
+                  <div class="u-img">
+                    <img [src]="getUserImg()" alt="user" />
+                  </div>
+                  <div class="u-text">
+                    <h4>{{ user?.nombre }} {{ user?.apellido }} </h4>
+                    <p class="text-muted">
+                      {{ user.email | slice: 0:20
+                      }}{{ user.email.length > 20 ? "..." : "" }}
+                    </p>
+                    <a
+                      routerLink="/auth/profile"
+                      class="btn btn-rounded btn-sm bgc-primary-dark"
+                      >Ver perfil</a
+                    >
+                  </div>
+                </div>
+              </li>
+              <li role="separator" class="divider"></li>
+              <li class="pointer">
+                <a><i class="ti-wallet"></i> Mi Balance</a>
+              </li>
+              <li role="separator" class="divider"></li>
+              <li class="pointer" (click)="logout()">
+                <a><i class="fa fa-power-off"></i> Logout</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

@@ -1,14 +1,35 @@
-<div
-  class="tile-content"
-  [ngClass]="imageSizeInRelationOfCols === 2 ? 'fourtyvw-container' : 'one-hundred-container'"
-  (click)="ruta ? navigate(ruta) : null"
->
-  <img
-    #image
-    [src]="urlFoto"
-    [ngClass]="imageSizeInRelationOfCols === 2 ? 'fourtyvw-img' : 'one-hundred-img'"
-  />
-  <div *ngIf="titulo" class="title-container bgc-primary-dark">
-    <h2 class="primary-light">{{ titulo }}</h2>
+<div class="row">
+  <div
+    class="col-lg-4"
+    *ngFor="let pCard of presentationCard"
+    (click)="pCard.ruta ? navigate(pCard.ruta, pCard) : null"
+  >
+    <div class="card" [class.pointer]="pCard.ruta">
+      <img
+        class="card-img-top img-responsive"
+        [src]="pCard.urlFoto"
+        alt="Imágen de un servicio"
+      />
+      <div class="card-body" *ngIf="pCard.titulo || pCard.descripcion">
+        <h3 class="font-normal text-center">
+          {{ pCard.titulo }}
+        </h3>
+        <p *ngIf="pCard.descripcion" class="m-b-0 m-t-10">
+          {{ pCard.descripcion | slice: 0:70 }}
+          {{ pCard.descripcion.length > 70 ? "..." : ""}}
+        </p>
+        <div class="text-center m-t-10" *ngIf="pCard.descripcion">
+          <button
+            class="
+              btn btn-success btn-rounded
+              waves-effect waves-light
+              bgc-primary-dark
+            "
+          >
+            Leer más
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

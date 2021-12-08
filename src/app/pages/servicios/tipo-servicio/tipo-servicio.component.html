@@ -7,18 +7,10 @@
       <p *ngIf="content.text">{{ content.text }}</p>
     </div>
   </ng-container>
-  <ng-container *ngIf="tipoServicioPictures.length">
-    <mat-grid-list
-      [cols]="numberOfColumns"
-      [rowHeight]="rowHeight"
-      (window:resize)="onResize($event)"
-    >
-      <mat-grid-tile *ngFor="let picture of tipoServicioPictures">
-        <app-presentation-card
-          [urlFoto]="picture.picture"
-          [imageSizeInRelationOfCols]="3"
-        ></app-presentation-card>
-      </mat-grid-tile>
-    </mat-grid-list>
+  <ng-container *ngIf="tipoServicioPictures?.length">
+    <p class="primary text-center">Chequeá nuestra galería de piscinas realizadas:</p>
+    <app-presentation-card
+      [presentationCard]="picturesToPresent"
+    ></app-presentation-card>
   </ng-container>
 </div>

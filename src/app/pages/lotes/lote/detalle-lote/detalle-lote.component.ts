@@ -30,6 +30,10 @@ export class DetalleLoteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.subscribeToDetallelote();
+  }
+
+  private subscribeToDetallelote(): void {
     this.http
       .getDetalleLote(this.loteId)
       .pipe(takeUntil(this.destroy$))

@@ -1,12 +1,6 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  AfterViewInit,
-  ViewChild,
-  ElementRef,
-} from '@angular/core';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { PresentationCard } from 'src/app/interfaces/presentation-card.interface';
 
 @Component({
   selector: 'app-presentation-card',
@@ -15,32 +9,17 @@ import { Router } from '@angular/router';
 })
 export class PresentationCardComponent {
   @ViewChild('image') image!: ElementRef<HTMLImageElement>;
-  @Input() ruta?: string = '';
-  @Input() urlFoto?: string = '';
-  @Input() titulo?: string = '';
-  @Input() sendDataByRoute?: boolean = false;
-  @Input() urlData?: {
-    data: any;
-  };
-  @Input() imageSizeInRelationOfCols?: number = 2;
+  @Input() presentationCard: PresentationCard[] = [];
+
+  public showMore: boolean = false;
 
   constructor(private router: Router) {}
 
-  public navigate(ruta: string) {
-    if (!this.sendDataByRoute) {
+  public navigate(ruta: string, data: PresentationCard) {
+    if (!data.sendDataByRoute) {
       this.router.navigateByUrl(ruta);
     } else {
-      this.router.navigateByUrl(ruta, { state: this.urlData });
+      this.router.navigateByUrl(ruta, { state: data.urlData });
     }
-  }
-
-  public setImageWidth(): string {
-    let classSelected: string = '';
-    this.imageSizeInRelationOfCols === 2
-      ? (classSelected = 'fiftyvw')
-      : this.imageSizeInRelationOfCols === 3
-      ? (classSelected = 'one-hundred')
-      : null;
-    return classSelected;
   }
 }

@@ -3,16 +3,8 @@
   <hr class="primary-dark" />
   <p class="primary">Chequeá nuestra galería de trabajos realizados:</p>
 </div>
-<mat-grid-list
-  [cols]="numberOfColumns"
-  [rowHeight]="rowHeight"
-  (window:resize)="onResize($event)"
->
-  <mat-grid-tile *ngFor="let trabajo of trabajoInfo">
+
     <app-presentation-card
-      [urlFoto]="trabajo.image"
-      [titulo]="trabajo.title"
-      [imageSizeInRelationOfCols]="3"
+    [presentationCard]="tipoTrabajoToPresent"
     ></app-presentation-card>
-  </mat-grid-tile>
-</mat-grid-list>
+

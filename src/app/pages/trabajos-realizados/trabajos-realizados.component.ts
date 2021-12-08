@@ -4,6 +4,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { TypesOfJobs, TypesOfJobsData } from '../../interfaces/http/jobs.interface';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { PresentationCard } from 'src/app/interfaces/presentation-card.interface';
 
 @Component({
   selector: 'app-trabajos-realizados',
@@ -14,15 +15,12 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
 
   public trabajosComplete!: TypesOfJobs;
   public trabajosData: TypesOfJobsData[] = [];
-  public numberOfColumns: number = 0;
-  public rowHeight: string = "";
+  public trabajoDataToPresent: PresentationCard[] = [];
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(private httpService: HttpService) { }
 
   ngOnInit(): void {
-    this.numberOfColumns = (window.innerWidth <= 575) ? 1 : 2;
-    this.rowHeight = (window.innerWidth <= 575) ? "2:1" : "90vh"
     this.httpService.getTypesOfJob()
       .pipe(takeUntil(this.destroy$))
       .subscribe((jobCategories: TypesOfJobs) => {
@@ -32,12 +30,18 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
           trabajo.url = `/trabajos-realizados/${trabajo.id}`
           trabajo.image = `${environment.API_IMAGE_URL}/${trabajo.image}`
         })
+        this.mapTrabajosRealizadosToPresent();
       })
   }
 
-  onResize(event: any) {
-    this.numberOfColumns = (event?.target?.innerWidth <= 575) ? 1 : 2;
-    this.rowHeight = (event?.target?.innerWidth <= 575) ? "2:1" : "90vh"
+  private mapTrabajosRealizadosToPresent(): void {
+    this.trabajosData.forEach( trabajo => {
+      this.trabajoDataToPresent.push({
+        titulo: trabajo.title,
+        urlFoto: trabajo.image,
+        ruta: trabajo.url
+      })
+    })
   }
 
   ngOnDestroy(): void {

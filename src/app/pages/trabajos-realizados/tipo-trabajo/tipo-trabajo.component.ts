@@ -9,6 +9,7 @@ import {
 } from 'src/app/interfaces/http/jobs.interface';
 import { HttpService } from '../../../services/http.service';
 import { environment } from 'src/environments/environment';
+import { PresentationCard } from 'src/app/interfaces/presentation-card.interface';
 
 @Component({
   selector: 'app-tipo-trabajo',
@@ -19,8 +20,7 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
   public trabajoCompleto!: Job;
   public trabajoBaseInfo!: JobBaseData;
   public trabajoInfo!: JobMoreInfo[];
-  public numberOfColumns: number = 0;
-  public rowHeight: string = '';
+  public tipoTrabajoToPresent: PresentationCard[] = [];
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(
@@ -29,9 +29,6 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-
-    this.numberOfColumns = window.innerWidth <= 575 ? 1 : 3;
-    this.rowHeight = window.innerWidth <= 575 ? '2:1' : '50vh';
     const idTipoTrabajo: string =
       this.activatedRoute.snapshot.params.idTipoTrabajo;
     this.httpService
@@ -44,12 +41,17 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
         this.trabajoInfo?.forEach((trabajo: JobMoreInfo) => {
           trabajo.image = `${environment.API_IMAGE_URL}/${trabajo.image}`;
         });
+        this.mapTrabajosToPresent();
       });
   }
 
-  public onResize(event: any): void {
-    this.numberOfColumns = event?.target?.innerWidth <= 575 ? 1 : 3;
-    this.rowHeight = event?.target?.innerWidth <= 575 ? '2:1' : '50vh';
+  private mapTrabajosToPresent(): void {
+    this.trabajoInfo.forEach( trabajo => {
+      this.tipoTrabajoToPresent.push({
+        titulo: trabajo.title,
+        urlFoto: trabajo.image,
+      })
+    })
   }
 
   ngOnDestroy(): void {

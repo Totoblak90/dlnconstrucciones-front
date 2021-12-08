@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user.model';
-import { setUserProp, userRole } from '../interfaces/http/auth.interface';
 import {
   LoginRes,
   LoginForm,
@@ -15,7 +14,7 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private loggedUser!: User;
+  private _loggedUser!: User | null;
   constructor(private httpClient: HttpClient) {}
 
   public login(payload: LoginForm): Observable<LoginRes> {
@@ -32,11 +31,16 @@ export class AuthService {
     );
   }
 
+  public logout(): void {
+    this._loggedUser = null;
+    localStorage.removeItem('token')
+  }
+
   public getUser(): User {
-    return this.loggedUser;
+    return this._loggedUser as User;
   }
 
   public setUser(user: User): void {
-    this.loggedUser = user;
+    this._loggedUser = user;
   }
 }

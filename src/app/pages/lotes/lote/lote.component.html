@@ -1,16 +1,5 @@
 <div class="lote-container">
-  <mat-grid-list
-    [cols]="numberOfColumns"
-    [rowHeight]="rowHeight"
-    (window:resize)="onResize($event)"
-  >
-    <mat-grid-tile *ngFor="let lote of lotes">
-      <app-presentation-card
-        [urlFoto]="lote.image"
-        [ruta]="lote.url!"
-        [titulo]="lote.title"
-        [imageSizeInRelationOfCols]="3"
-      ></app-presentation-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+  <app-presentation-card
+    [presentationCard]="lotesToPresent"
+  ></app-presentation-card>
 </div>

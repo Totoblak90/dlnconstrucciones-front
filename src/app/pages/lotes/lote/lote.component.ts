@@ -5,6 +5,7 @@ import { HttpService } from '../../../services/http.service';
 import { environment } from '../../../../environments/environment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { PresentationCard } from 'src/app/interfaces/presentation-card.interface';
 
 @Component({
   selector: 'app-lote',
@@ -12,10 +13,9 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./lote.component.scss'],
 })
 export class LoteComponent implements OnInit, OnDestroy {
+  public lotesToPresent: PresentationCard[] = [];
   private localidadID: string = '';
-  public lotes: Batch[] = [];
-  public numberOfColumns: number = 0;
-  public rowHeight: string = '';
+  private lotes: Batch[] = [];
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(private router: Router, private httpService: HttpService) {
@@ -23,8 +23,10 @@ export class LoteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.numberOfColumns = window.innerWidth <= 575 ? 1 : 3;
-    this.rowHeight = window.innerWidth <= 575 ? '1:1' : '50vh';
+    this.subscribeToLotes();
+  }
+
+  private subscribeToLotes(): void {
     this.httpService
       .getLotes(this.localidadID)
       .pipe(takeUntil(this.destroy$))
@@ -35,18 +37,33 @@ export class LoteComponent implements OnInit, OnDestroy {
             lote.url = `/lotes/${lote.categories_id}/detalle/${lote.id}`;
             lote.image = `${environment.API_IMAGE_URL}/${lote.image}`;
           });
+          this.mapLotesToPresent();
+          this.checkLotesLength();
         },
         (err) => console.log(err)
       );
   }
 
-  public onResize(event: any): void {
-    this.numberOfColumns = event?.target?.innerWidth <= 575 ? 1 : 3;
-    this.rowHeight = event?.target?.innerWidth <= 575 ? '1:1' : '50vh';
+  private checkLotesLength() {
+    if (!this.lotes?.length) {
+      this.router.navigateByUrl('/lotes');
+    }
   }
 
   private getDataFromRoute(): void {
     this.localidadID = this.router.getCurrentNavigation()?.extras?.state?.data;
+  }
+
+  private mapLotesToPresent(): void {
+    this.lotes?.forEach((lote) => {
+      this.lotesToPresent.push({
+        titulo: lote.title,
+        urlFoto: lote.image,
+        ruta: lote.url,
+        descripcion: lote.description,
+        sendDataByRoute: false,
+      });
+    });
   }
 
   ngOnDestroy(): void {
