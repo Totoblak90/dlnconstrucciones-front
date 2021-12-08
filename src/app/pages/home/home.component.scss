@@ -20,36 +20,15 @@
   }
 
   .third-section {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    @media (max-width: 575px) {
-      flex-direction: column;
-      align-content: center;
-    }
-    .box1 {
-      width: 50%;
-      padding: 16px;
-      @media (max-width: 575px) {
-        width: 100%;
-      }
-      h2 {
-        text-align: center;
-      }
-      p {
-        text-align: center;
-      }
-    }
-    .box2 {
-      width: 50%;
-      @media (max-width: 575px) {
-        width: 100%;
-        padding: 16px;
-      }
-      img {
-        width: 100%;
+    .card {
+      .card-body {
+        .text-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+        }
       }
     }
   }
