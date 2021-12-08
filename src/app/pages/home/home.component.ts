@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
 import { HttpService } from '../../services/http.service';
 import { Interests, InterestsData } from '../../interfaces/http/interests.interface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ModalComponent } from './components/modal/modal.component';
 
 
 @Component({
@@ -19,7 +17,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(
-    private dialog: MatDialog,
     private http: HttpService
   ) {}
 
@@ -31,15 +28,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.interestsData = interestsFull.data;
         this.interestsData?.forEach(interest => interest.image = `${environment.API_IMAGE_URL}/${interest.image}`)
       }, err => console.log(err))
-  }
-
-  openDialog(index: number): void {
-    this.dialog.open(
-      ModalComponent,
-      {
-        data: this.interestsData[index]
-      }
-    );
   }
 
   ngOnDestroy(): void {

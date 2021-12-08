@@ -1,113 +1,173 @@
 <div class="home-main">
-  <div class="banner-img">
-    <img src="../../../assets/quienes-somos-2.jpg" alt="" />
-    <div class="title-container">
-      <h1 class="primary-light">
-        <strong>Tu casa en costa esmeralda, más cerca</strong>
-      </h1>
-    </div>
-  </div>
-
   <section class="first-section">
-    <div class="carousel-component">
-      <app-carousel></app-carousel>
-    </div>
-    <div class="masterplan-container">
-      <h3 class="primary-dark">
-        ¿Ya tenés <strong>tu lote</strong> en Costa Esmeralda?
-      </h3>
-      <a mat-raised-button routerLink="/auth" class="bgc-primary-dark"
-        >Ingresá</a
-      >
-      <a
-        mat-raised-button
-        class="bgc-primary-dark"
-        href="../../../assets/masterplan.pdf"
-        download
-        >MASTERPLAN</a
-      >
+    <div class="row">
+      <div class="col-lg-9 col-md mb-2">
+        <app-carousel></app-carousel>
+      </div>
+      <div class="col-lg-3 col-md mb-2">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">
+              ¿Ya tenés <strong>tu lote</strong> en Costa Esmeralda?
+            </h3>
+            <button routerLink="/auth" class="btn bgc-primary-dark mb-2">
+              Ingresá
+            </button>
+            <button
+              class="btn bgc-primary-dark"
+              href="../../../assets/masterplan.pdf"
+              download
+            >
+              MASTERPLAN
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="second-section">
-    <mat-card class="sociedad">
-      <mat-card-header>
-        <img src="../../../assets/socio.jpeg" alt="logo" />
-      </mat-card-header>
-      <mat-card-content>
-        <p class="primary-dark">
-          Con más de 40 años en el mercado, podemos asesorarte en construcciones
-          de casas de <strong>alta gama.</strong>
-        </p>
-        <p class="primary-dark">
-          En alianza con <strong>DUBOURG aruitectos</strong>, tenemos la
-          capacidad y la experiencia para asesorarte en todo tipo de
-          construcciones pero especialmente en aquellas que superan los
-          <strong>400m2.</strong>
-        </p>
-        <p class="primary-dark">
-          Todo para que <strong>vos,</strong> puedas tener la casa de tus
-          sueños. Sin ocuparte de nada.
-        </p>
-        <p class="primary-dark">Proyecto, ejecución y dirección de obra.</p>
-        <p class="primary-dark">Llave en mano.</p>
-        <p class="primary-dark">Consultanos, podemos ayudarte</p>
-      </mat-card-content>
-    </mat-card>
-    <mat-card class="call-to-action">
-      <mat-card-header>
-        <img src="../../../assets/lote.jpg" alt="" />
-      </mat-card-header>
-      <mat-card-content>
-        <h2 class="primary-dark">Lotes en <strong>venta</strong></h2>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button class="bgc-primary-dark" routerLink="/lotes">
-          Ver más
-        </button>
-      </mat-card-actions>
-    </mat-card>
+  <section>
+    <div class="row">
+      <div class="col-lg-6 col-md">
+        <div class="card">
+          <img
+            class="card-img-top img-responsive"
+            src="../../../assets/socio.jpeg"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <h3 class="card-title text-center">Más de 40 años en el mercado</h3>
+            <p class="card-text primary-dark">
+              En alianza con <strong>DUBOURG aruitectos</strong>, tenemos la
+              capacidad y la experiencia para asesorarte en
+              <strong>todo tipo de construcciones</strong>
+            </p>
+            <p class="card-text primary-dark">
+              Todo para que <strong>vos,</strong> puedas tener la casa de tus
+              sueños. Sin ocuparte de nada.
+            </p>
+            <p class="card-text primary-dark">
+              Proyecto, ejecución y dirección de obra.
+            </p>
+            <p class="card-text primary-dark">Llave en mano.</p>
+            <p class="card-text primary-dark">Consultanos, podemos ayudarte</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md">
+        <div class="card">
+          <img
+            class="card-img-top img-responsive"
+            src="../../../assets/lote.jpg"
+            alt="Costa Esmeralda"
+          />
+          <div class="card-body text-center">
+            <h3 class="card-title">Lotes en <strong>venta</strong></h3>
+            <a routerLink="/lotes" class="btn btn-primary bgc-primary-dark"
+              >Ver más</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section class="third-section bgc-primary-light">
-    <div class="box1">
-      <h2 class="primary-dark">Nosotros</h2>
-      <p class="primary-dark text-justify">
-        DLN Construcciones es una joven empresa dedicada a la construccion de
-        hogares modernos, confortables, seguros y respetuosos del medio
-        ambiente, donde vos y tu familia puedan tener la descanso y la
-        recreación que merecen. Cubrimos toda la región de la Costa Atlántica,
-        pero la mayor parte de nuestros trabajos se han realizado en el barrio
-        Costa Esmeralda. Nos ocupamos de todos los aspectos: desde el
-        anteproyecto, estudio de suelo, la realización de planos, imágenes
-        digitales, los trámites municipales, compra de materiales, la dirección
-        de obra y la ejecución, hasta el posterior mantenimiento y la compra de
-        mobiliario, si así lo deseas. Ponemos a tu disposición toda nuestra
-        experiencia, asesorándote desde la idea inicial y la adquisición del
-        terreno, pasando por el diseño y desarrollo hasta la ejecución y
-        posterior mantenimiento de tu nuevo hogar, de la mano de nuestro equipo
-        de profesionales, técnicos y operarios de primera línea.
-        <strong>Decenas de clientes satisfechos nos avalan.</strong>
-      </p>
-      <p class="primary-dark">Contactanos, podemos asesorarte</p>
-    </div>
-    <div class="box2">
-      <img src="../../../assets/quienes-somos-home.jpg" alt="" />
+  <section class="third-section">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title primary-dark text-center">Nosotros</h2>
+        <div class="row">
+          <div class="col-lg-4 col-md-3">
+            <img src="../../../assets/quienes-somos-home.jpg" class="img-fluid" />
+          </div>
+          <div
+            class="col-lg-8 col-md-9"
+          >
+            <div>
+              <p class="primary-dark text-justify">
+                DLN Construcciones es una joven empresa dedicada a la construccion de
+                hogares modernos, confortables, seguros y respetuosos del medio
+                ambiente, donde vos y tu familia puedan tener la descanso y la
+                recreación que merecen. Cubrimos toda la región de la Costa Atlántica,
+                pero la mayor parte de nuestros trabajos se han realizado en el barrio
+                Costa Esmeralda. Nos ocupamos de todos los aspectos: desde el
+                anteproyecto, estudio de suelo, la realización de planos, imágenes
+                digitales, los trámites municipales, compra de materiales, la dirección
+                de obra y la ejecución, hasta el posterior mantenimiento y la compra de
+                mobiliario, si así lo deseas. Ponemos a tu disposición toda nuestra
+                experiencia, asesorándote desde la idea inicial y la adquisición del
+                terreno, pasando por el diseño y desarrollo hasta la ejecución y
+                posterior mantenimiento de tu nuevo hogar, de la mano de nuestro equipo
+                de profesionales, técnicos y operarios de primera línea.
+                <strong>Decenas de clientes satisfechos nos avalan.</strong>
+              </p>
+              <p class="primary-dark">Contactanos, podemos asesorarte</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="section-four">
-    <h2 class="primary-dark">Te puede <strong>interesar</strong></h2>
-    <div class="cards">
-      <mat-card
-        (click)="openDialog(index)"
-        *ngFor="let interest of interestsData; let index = index"
-      >
-        <mat-card-content>
-          <img [src]="interest.image" alt="" />
-          <h4>{{ interest.title }}</h4>
-        </mat-card-content>
-      </mat-card>
+    <div class="row">
+      <h2 class="card-title primary-dark">
+        Te puede <strong>interesar</strong>
+      </h2>
+      <div class="card-body col-lg-4 col-sm" *ngFor="let int of interestsData">
+        <!-- sample modal content -->
+        <div
+          id="responsive-modal"
+          class="modal fade"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="myModalLabel"
+          style="display: none"
+          aria-hidden="true"
+        >
+          <!-- Start Modal -->
+          <div class="modal-dialog" *ngFor="let int2 of interestsData">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title text-center">{{ int2.title }}</h4>
+                <button
+                  type="button"
+                  class="close btn"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  X
+                </button>
+              </div>
+              <div class="modal-body">
+                <img class="img-responsive" [src]="int2.image" alt="" />
+              </div>
+              <div class="modal-footer">
+                <p>
+                  {{ int2.description }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End modal -->
+        <img
+          id="interests-image"
+          class="card-img-top img-responsive"
+          [src]="int.image"
+        />
+        <div class="card-body text-center">
+          <h4 class="primary-dark">{{ int.title }}</h4>
+          <button
+            class="btn btn-primary bgc-primary-dark model_img img-responsive"
+            alt="default"
+            data-toggle="modal"
+            data-target="#responsive-modal"
+          >
+            Ver más
+          </button>
+        </div>
+      </div>
     </div>
   </section>
 </div>
