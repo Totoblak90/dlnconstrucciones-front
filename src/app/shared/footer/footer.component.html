@@ -3,15 +3,15 @@
   <div class="contact-info">
     <p><strong class="primary-dark">¿Tenés alguna consulta?</strong> Estamos para asesorarte</p>
     <div>
-      <p>+54 9 2267 531541</p> <mat-icon class="spinIcon">whatsapp</mat-icon>
+      <p>+54 9 2267 531541</p> <i></i>
     </div>
     <div>
-      <p>info@dlnconstrucciones.com.ar </p> <mat-icon class="spinIcon">email</mat-icon>
+      <p>info@dlnconstrucciones.com.ar </p> <i></i>
     </div>
     <div>
-      <p>Pinamar, Buenos Aires</p> <mat-icon class="spinIcon">place</mat-icon>
+      <p>Pinamar, Buenos Aires</p> <i></i>
     </div>
-    <form [formGroup]="formularioContacto" (submit)="send($event)">
+    <!-- <form [formGroup]="formularioContacto" (submit)="send($event)">
       <mat-form-field appearance="fill">
         <mat-label>Email:</mat-label>
         <input matInput formControlName="email" placeholder="email@dominio.com">
@@ -31,7 +31,7 @@
         </mat-error>
       </mat-form-field>
       <button mat-raised-button [disabled]="formularioContacto.invalid" type="submit" class="bgc-primary-dark">Enviar consulta</button>
-    </form>
+    </form> -->
   </div>
 
   <div class="logo">

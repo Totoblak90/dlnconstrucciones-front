@@ -1,6 +1,101 @@
-<div class="register-container">
-  <div class="box">
-    <form [formGroup]="registerForm" (ngSubmit)="register()">
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <form class="form p-t-20" [formGroup]="registerForm" (ngSubmit)="register()">
+          <div class="form-group">
+            <label for="exampleInputuname2">Nombre</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="exampleInputuname2"
+                placeholder="Nombre"
+                formControlName="first_name"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputuname2">Apellido</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="exampleInputuname2"
+                placeholder="Apellido"
+                formControlName="last_name"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputuname2">DNI</label>
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                id="exampleInputuname2"
+                placeholder="DNI"
+                formControlName="dni"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail2">Email address</label>
+            <div class="input-group">
+              <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail2"
+                placeholder="juan@tuemail.com"
+                formControlName="email"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputpwd2">Contraseña</label>
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control"
+                id="exampleInputpwd2"
+                placeholder="Escribir contraseña"
+                formControlName="password"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputpwd3">Confirmar contraseña</label>
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control"
+                id="exampleInputpwd3"
+                placeholder="Confirmar contraseña"
+                formControlName="passwordRepeat"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="checkbox checkbox-success">
+              <input formControlName="terminosYCondiciones" id="checkbox2" type="checkbox" />
+              <label for="checkbox2"> Acepto términos y condiciones </label>
+            </div>
+          </div>
+          <div class="text-left">
+            <button
+              type="submit"
+              class="btn btn-success waves-effect waves-light m-r-10 bgc-primary-dark"
+            >
+              Registrarse
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <form [formGroup]="registerForm" (ngSubmit)="register()">
       <mat-form-field>
         <mat-label>Nombre</mat-label>
         <input formControlName="first_name" type="text" matInput />
@@ -86,6 +181,4 @@
         >Este dato es requerido</span
       >
       <button mat-button type="submit" class="primary-dark">Registrarse</button>
-    </form>
-  </div>
-</div>
+    </form> -->

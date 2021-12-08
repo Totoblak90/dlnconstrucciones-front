@@ -14,7 +14,7 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private _loggedUser!: User | null;
+  private _loggedUser!: User;
   constructor(private httpClient: HttpClient) {}
 
   public login(payload: LoginForm): Observable<LoginRes> {
@@ -29,11 +29,6 @@ export class AuthService {
       `${environment.API_BASE_URL}/users/register`,
       payload
     );
-  }
-
-  public logout(): void {
-    this._loggedUser = null;
-    localStorage.removeItem('token')
   }
 
   public getUser(): User {

@@ -1,19 +1,60 @@
-<div class="login-container">
-  <div class="box" >
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input formControlName="email" matInput autocomplete="email">
-        <mat-error *ngIf="loginForm?.controls?.email?.errors?.required" >Este dato es requerido</mat-error>
-        <mat-error *ngIf="loginForm?.controls?.email?.errors?.pattern" >Por favor ingresá un email válido</mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Contraseña</mat-label>
-        <input formControlName="password" matInput type="password" autocomplete="current-password">
-        <mat-error *ngIf="loginForm?.controls?.password?.errors?.required" >Este dato es requerido</mat-error>
-      </mat-form-field>
-      <mat-checkbox formControlName="rememberMe" class="primary-dark">Recordarme</mat-checkbox>
-      <button mat-button type="submit" class="primary-dark">Iniciar sesión</button>
-    </form>
+<div class="row">
+  <div class="col-lg-6 ">
+    <div class="card">
+      <div class="card-body">
+        <form class="form-horizontal p-t-20" [formGroup]="loginForm" (ngSubmit)="login()">
+          <div class="form-group row">
+            <label for="exampleInputEmail3" class="col-sm-3 control-label"
+              >Email*</label
+            >
+            <div class="col-sm-9">
+              <div class="input-group">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="exampleInputEmail3"
+                  placeholder="tuemail@dlnconstrucciones..."
+                  formControlName="email"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword4" class="col-sm-3 control-label"
+              >Constraseña*</label
+            >
+            <div class="col-sm-9">
+              <div class="input-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="exampleInputpwd4"
+                  placeholder="Escribí tu contraseña"
+                  formControlName="password"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9">
+              <div class="checkbox checkbox-success">
+                <input id="checkbox33" type="checkbox" />
+                <label for="checkbox33">Recordarme</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row m-b-0">
+            <div class="offset-sm-3 col-sm-9">
+              <button
+                type="submit"
+                class="btn btn-success waves-effect waves-light bgc-primary-dark"
+              >
+                Iniciar sesión
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

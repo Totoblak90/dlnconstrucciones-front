@@ -1,5 +1,4 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { MatSidenavContainer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',

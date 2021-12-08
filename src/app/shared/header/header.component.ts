@@ -88,10 +88,6 @@ export class HeaderComponent {
   }
 
   public getUserImg(): string {
-    return this.user?.getAvatar();
-  }
-
-  public logout(): void {
-    this.authService.logout();
+    return this.user ? this.user?.getAvatar() : '';
   }
 }
