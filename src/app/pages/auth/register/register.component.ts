@@ -25,8 +25,8 @@ export class RegisterComponent implements OnDestroy {
         '',
         [
           Validators.required,
-          Validators.max(99999999),
-          Validators.minLength(8),
+          Validators.max(999999999),
+          Validators.min(1000000),
         ],
       ],
       email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],

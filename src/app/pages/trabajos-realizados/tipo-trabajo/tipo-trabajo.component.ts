@@ -50,6 +50,7 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
       this.tipoTrabajoToPresent.push({
         titulo: trabajo.title,
         urlFoto: trabajo.image,
+        openModal: true
       })
     })
   }

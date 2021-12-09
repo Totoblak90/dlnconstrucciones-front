@@ -26,14 +26,14 @@
     </div>
   </section>
 
-  <section>
+  <section class="second-section">
     <div class="row">
-      <div class="col-lg-6 col-md">
-        <div class="card">
+      <div class="card-group">
+        <div class="card first-card">
           <img
             class="card-img-top img-responsive"
             src="../../../assets/socio.jpeg"
-            alt="Card image cap"
+            alt="Logo Dubourg arquitectos"
           />
           <div class="card-body">
             <h3 class="card-title text-center">Más de 40 años en el mercado</h3>
@@ -50,12 +50,12 @@
               Proyecto, ejecución y dirección de obra.
             </p>
             <p class="card-text primary-dark">Llave en mano.</p>
+          </div>
+          <div class="card-footer bg-white text-center">
             <p class="card-text primary-dark">Consultanos, podemos ayudarte</p>
           </div>
         </div>
-      </div>
-      <div class="col-lg-6 col-md">
-        <div class="card">
+        <div class="card second-card">
           <img
             class="card-img-top img-responsive"
             src="../../../assets/lote.jpg"
@@ -63,6 +63,8 @@
           />
           <div class="card-body text-center">
             <h3 class="card-title">Lotes en <strong>venta</strong></h3>
+          </div>
+          <div class="card-footer text-center bg-white">
             <a routerLink="/lotes" class="btn btn-primary bgc-primary-dark"
               >Ver más</a
             >
@@ -78,94 +80,35 @@
         <h2 class="card-title primary-dark text-center">Nosotros</h2>
         <div class="row">
           <div class="col-lg-4 col-md-3">
-            <img src="../../../assets/quienes-somos-home.jpg" class="img-fluid" />
+            <img
+              src="../../../assets/quienes-somos-home.jpg"
+              class="img-fluid"
+            />
           </div>
-          <div
-            class="col-lg-8 col-md-9"
-          >
+          <div class="col-lg-8 col-md-9">
             <div class="text-container">
               <p class="primary-dark text-justify">
-                DLN Construcciones es una joven empresa dedicada a la construccion de
-                hogares modernos, confortables, seguros y respetuosos del medio
-                ambiente, donde vos y tu familia puedan tener la descanso y la
-                recreación que merecen. Cubrimos toda la región de la Costa Atlántica,
-                pero la mayor parte de nuestros trabajos se han realizado en el barrio
-                Costa Esmeralda. Nos ocupamos de todos los aspectos: desde el
-                anteproyecto, estudio de suelo, la realización de planos, imágenes
-                digitales, los trámites municipales, compra de materiales, la dirección
-                de obra y la ejecución, hasta el posterior mantenimiento y la compra de
-                mobiliario, si así lo deseas. Ponemos a tu disposición toda nuestra
-                experiencia, asesorándote desde la idea inicial y la adquisición del
-                terreno, pasando por el diseño y desarrollo hasta la ejecución y
-                posterior mantenimiento de tu nuevo hogar, de la mano de nuestro equipo
-                de profesionales, técnicos y operarios de primera línea.
+                DLN Construcciones es una joven empresa dedicada a la
+                construccion de hogares modernos, confortables, seguros y
+                respetuosos del medio ambiente, donde vos y tu familia puedan
+                tener la descanso y la recreación que merecen. Cubrimos toda la
+                región de la Costa Atlántica, pero la mayor parte de nuestros
+                trabajos se han realizado en el barrio Costa Esmeralda. Nos
+                ocupamos de todos los aspectos: desde el anteproyecto, estudio
+                de suelo, la realización de planos, imágenes digitales, los
+                trámites municipales, compra de materiales, la dirección de obra
+                y la ejecución, hasta el posterior mantenimiento y la compra de
+                mobiliario, si así lo deseas. Ponemos a tu disposición toda
+                nuestra experiencia, asesorándote desde la idea inicial y la
+                adquisición del terreno, pasando por el diseño y desarrollo
+                hasta la ejecución y posterior mantenimiento de tu nuevo hogar,
+                de la mano de nuestro equipo de profesionales, técnicos y
+                operarios de primera línea.
                 <strong>Decenas de clientes satisfechos nos avalan.</strong>
               </p>
               <p class="primary-dark">Contactanos, podemos asesorarte</p>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-four">
-    <div class="row">
-      <h2 class="card-title primary-dark">
-        Te puede <strong>interesar</strong>
-      </h2>
-      <div class="card-body col-lg-4 col-sm" *ngFor="let int of interestsData">
-        <!-- sample modal content -->
-        <div
-          id="responsive-modal"
-          class="modal fade"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="myModalLabel"
-          style="display: none"
-          aria-hidden="true"
-        >
-          <!-- Start Modal -->
-          <div class="modal-dialog" *ngFor="let int2 of interestsData">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title text-center">{{ int2.title }}</h4>
-                <button
-                  type="button"
-                  class="close btn"
-                  data-dismiss="modal"
-                  aria-hidden="true"
-                >
-                  X
-                </button>
-              </div>
-              <div class="modal-body">
-                <img class="img-responsive" [src]="int2.image" alt="" />
-              </div>
-              <div class="modal-footer">
-                <p>
-                  {{ int2.description }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End modal -->
-        <img
-          id="interests-image"
-          class="card-img-top img-responsive"
-          [src]="int.image"
-        />
-        <div class="card-body text-center">
-          <h4 class="primary-dark">{{ int.title }}</h4>
-          <button
-            class="btn btn-primary bgc-primary-dark model_img img-responsive"
-            alt="default"
-            data-toggle="modal"
-            data-target="#responsive-modal"
-          >
-            Ver más
-          </button>
         </div>
       </div>
     </div>

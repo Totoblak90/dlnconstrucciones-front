@@ -50,6 +50,7 @@ export class TipoServicioComponent implements OnInit, OnDestroy {
     this.tipoServicioPictures?.forEach( picture => {
       this.picturesToPresent.push({
         urlFoto: picture.picture,
+        openModal: true
       })
     })
   }

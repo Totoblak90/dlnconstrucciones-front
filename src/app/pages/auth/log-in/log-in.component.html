@@ -16,6 +16,24 @@
                   placeholder="tuemail@dlnconstrucciones..."
                   formControlName="email"
                 />
+                <div class="p-2">
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      loginForm.controls.email.errors?.required &&
+                      loginForm.controls.email.touched
+                    "
+                    >Este dato es requerido</span
+                  >
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      loginForm.controls.email.errors?.pattern &&
+                      loginForm.controls.email.touched
+                    "
+                    >Por favor ingresá un email válido</span
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -32,6 +50,16 @@
                   placeholder="Escribí tu contraseña"
                   formControlName="password"
                 />
+                <div class="p-2">
+                  <span
+                  class="text-danger"
+                  *ngIf="
+                    loginForm.controls.password.errors?.required &&
+                    loginForm.controls.password.touched
+                  "
+                  >Este dato es requerido</span
+                >
+                </div>
               </div>
             </div>
           </div>
