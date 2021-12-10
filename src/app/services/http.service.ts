@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { BatchComplete, Lotes, PostalZones } from '../interfaces/http/batches.interface';
-import { Interests } from '../interfaces/http/interests.interface';
-import { Job, TypesOfJobs } from '../interfaces/http/jobs.interface';
-import { Services, TipoServicio } from '../interfaces/http/services.interface';
+import { BatchComplete, Lotes, PostalZones } from '../modules/main/interfaces/http/batches.interface';
+import { Interests } from '../modules/main/interfaces/http/interests.interface';
+import { Job, TypesOfJobs } from '../modules/main/interfaces/http/jobs.interface';
+import { Services, TipoServicio } from '../modules/main/interfaces/http/services.interface';
 
 @Injectable({
   providedIn: 'root'

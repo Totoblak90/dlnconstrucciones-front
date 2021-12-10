@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpService } from '../../../services/http.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PresentationCard } from '../../../interfaces/presentation-card.interface';
 import { Batch, Lotes } from '../../../interfaces/http/batches.interface';
 import { environment } from 'src/environments/environment';
+import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-lote',

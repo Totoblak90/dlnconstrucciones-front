@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpService } from '../../services/http.service';
 import { PostalZonesData } from '../../interfaces/http/batches.interface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { PresentationCard } from '../../interfaces/presentation-card.interface';
+import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-lotes',

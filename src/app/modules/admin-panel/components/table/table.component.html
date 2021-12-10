@@ -1,0 +1,115 @@
+<div class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <input
+          type="text"
+          class="form-control primary-dark"
+          placeholder="Buscar en la tabla"
+          #searchInput
+        />
+        <!-- (keyup)="searchUsers(searchInput.value)" -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="loading">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="alert alert-info text-center">
+          <h4 class="alert-heading">Cargado</h4>
+          <i class="fa fa-spin fa-refresh fa-2"></i>
+          <p class="mb-0">Aguarda un momento por favor</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="!loading">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title primary-dark">{{ title }}</h4>
+        <ng-container *ngIf="!searching; else searchingTemplate">
+          <h6 class="card-subtitle primary-dark">
+            {{ totalSection }} {{ title | lowercase }} en mi página.
+          </h6>
+        </ng-container>
+        <ng-template #searchingTemplate>
+          <h6 class="card-subtitle primary-dark">
+            {{ searchingResults }} {{ title | lowercase }} encontrados.
+          </h6>
+        </ng-template>
+
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="text-nowrap primary-dark">Imágen / Avatar</th>
+                <th
+                  *ngFor="let encabezado of encabezadosTabla"
+                  class="primary-dark"
+                >
+                  {{ encabezado }}
+                </th>
+                <th class="text-nowrap primary-dark">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cuerpo of filasTabla">
+                <td class="text-center">
+                  <img
+                    [src]="cuerpo.imagen"
+                    alt="Avatar"
+                    class="avatar pointer"
+                    (click)="expandirImagen(cuerpo.imagen!)"
+                  />
+                </td>
+                <td class="primary-dark" *ngIf="cuerpo.item2">
+                  {{ cuerpo.item2 }}
+                </td>
+                <td class="primary-dark" *ngIf="cuerpo.item3">
+                  {{ cuerpo.item3 }}
+                </td>
+                <td class="primary-dark" *ngIf="cuerpo.item4">
+                  {{ cuerpo.item4 }}
+                </td>
+                <td class="primary-dark" *ngIf="cuerpo.linkVerMas">
+                  {{ cuerpo.linkVerMas }}
+                </td>
+                <td class="primary-dark" *ngIf="cuerpo.item6">
+                  {{ cuerpo.item6 }}
+                </td>
+                <td class="primary-dark" *ngIf="cuerpo.item7">
+                  {{ cuerpo.item7 }}
+                </td>
+                <td class="primary-dark" *ngIf="cuerpo.item8">
+                  {{ cuerpo.item8 }}
+                </td>
+                <td class="primary-dark" *ngIf="cuerpo.item9">
+                  {{ cuerpo.item9 }}
+                </td>
+                <td class="primary-dark" *ngIf="cuerpo.item10">
+                  {{ cuerpo.item10 }}
+                </td>
+                <td class="text-nowrap text-center">
+                  <a
+                    class="pointer actions"
+                    data-toggle="tooltip"
+                    data-original-title="Delete"
+                  >
+                    <i class="fa fa-pencil text-danger primary-dark"></i>
+                    <i class="fa fa-close text-danger primary-dark"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

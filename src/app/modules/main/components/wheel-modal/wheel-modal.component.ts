@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { HttpService } from 'src/app/services/http.service';
 import { environment } from 'src/environments/environment';
 import { Interests, InterestsData } from '../../interfaces/http/interests.interface';
-import { HttpService } from '../../services/http.service';
 
 @Component({
   selector: 'app-wheel-modal',

@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpService } from '../../../../services/http.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -8,6 +7,7 @@ import {
   BatchComplete,
 } from '../../../../interfaces/http/batches.interface';
 import { environment } from 'src/environments/environment';
+import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-detalle-lote',

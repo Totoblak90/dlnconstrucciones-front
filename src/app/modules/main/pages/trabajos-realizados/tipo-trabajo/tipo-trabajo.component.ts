@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { HttpService } from '../../../services/http.service';
+import { HttpService } from 'src/app/services/http.service';
 import { environment } from 'src/environments/environment';
 import { Job, JobBaseData, JobMoreInfo } from '../../../interfaces/http/jobs.interface';
 import { PresentationCard } from '../../../interfaces/presentation-card.interface';

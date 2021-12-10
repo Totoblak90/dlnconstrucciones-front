@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { HttpService } from '../../services/http.service';
 import { Services, ServicesData } from '../../interfaces/http/services.interface';
 import { environment } from 'src/environments/environment';
 import { PresentationCard } from '../../interfaces/presentation-card.interface';
+import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-servicios',

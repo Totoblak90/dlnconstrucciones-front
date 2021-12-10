@@ -22,6 +22,11 @@ export class HeaderComponent {
       redirectTo: '/admin/users',
     },
     {
+      description: 'Trabajos Realizados',
+      show: true,
+      redirectTo: '/admin/trabajos',
+    },
+    {
       description: 'Salir',
       redirectTo: '/main/home',
       show: true

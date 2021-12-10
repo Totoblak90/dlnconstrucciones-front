@@ -6,7 +6,7 @@ import { UsersService } from '../../services/users.service';
 import Swal from 'sweetalert2';
 import { AllUsersRes } from '../../interfaces/users.interface';
 import { environment } from 'src/environments/environment';
-
+import { CuerpoTabla } from '../../interfaces/tabla.interface';
 
 @Component({
   selector: 'app-users',
@@ -14,13 +14,10 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
-  public totalUsers: number = 0;
   public users: User[] = [];
-  private from: number = 0;
+  public encabezadosTabla: string[] = ['Nombre', 'Email', 'Rol'];
+  public tableData: CuerpoTabla[] = [];
   public loading: boolean = true;
-  public pagination!: number;
-  public searching: boolean = false;
-  public searchingResults: number = 0;
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(private usersService: UsersService) {}
@@ -38,50 +35,40 @@ export class UsersComponent implements OnInit {
       .getAllUsers()
       .pipe(finalize(() => (this.loading = false)))
       .subscribe((res: AllUsersRes) => {
-        this.searchingResults = 0;
-        this.users = res?.data?.map(user => {
-          return {
-            apellido: user.last_name,
-            email: user.email,
-            nombre: user.first_name,
-            role: user.role,
-            phone: user.phone,
-            avatar: user.avatar,
-            getAvatar!: () => {
-              let imageUrl = '';
-              user.avatar ? imageUrl = `${environment.API_IMAGE_URL}/${user.avatar}` : imageUrl = `assets/no-image.png`;
-              return imageUrl;
-            }
-          }
-        })
-        this.totalUsers = this.users.length;
-
+        this.setUsers(res);
+        this.mapUsersForTable();
       });
   }
 
-  changePage(value: number): void {
-    this.from += value;
-
-    if (this.from < 0) {
-      this.from = 0;
-    } else if (this.from > this.totalUsers) {
-      this.from -= value;
-    }
-
-    this.loadUsers();
+  private setUsers(data: AllUsersRes): void {
+    this.users = data?.data?.map((user) => {
+      return {
+        apellido: user.last_name,
+        email: user.email,
+        nombre: user.first_name,
+        role: user.role,
+        phone: user.phone,
+        avatar: user.avatar,
+        getAvatar: () => {
+          let imageUrl = '';
+          user.avatar
+            ? (imageUrl = `${environment.API_IMAGE_URL}/${user.avatar}`)
+            : (imageUrl = `assets/no-image.png`);
+          return imageUrl;
+        },
+      };
+    });
   }
 
-  public searchUsers(term: string): void {
-    this.searching = true;
-    if (!term) {
-      this.loadUsers();
-      this.searching = false;
-      return;
-    }
-    // this.search.search('usuarios', term).subscribe((res: Search) => {
-    //   this.users = res?.resultados as User[];
-    //   this.searchingResults = res?.resultados?.length;
-    // });
+  private mapUsersForTable() {
+    this.tableData = this.users.map((user) => {
+      return {
+        imagen: user.getAvatar(),
+        item2: `${user.nombre} ${user.apellido}`,
+        item3: user.email,
+        item4: user.role
+      }
+    });
   }
 
   public deleteUser(user: User): void {
@@ -123,10 +110,6 @@ export class UsersComponent implements OnInit {
     //   (res: UpdateUserResponseFromAdminPanel) => null,
     //   (err) => Swal.fire('Error', 'Could not update the user', 'error')
     // );
-  }
-
-  public openModal(user: User): void {
-    // this.modalImgSrv.showModal('usuarios', user.uid, user.img);
   }
 
   ngOnDestroy(): void {
