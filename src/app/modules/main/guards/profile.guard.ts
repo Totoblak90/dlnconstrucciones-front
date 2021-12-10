@@ -21,14 +21,14 @@ export class ProfileGuard implements CanActivate, CanLoad {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('access-token')) {
       return true;
     }
     this.router.navigate(['home']);
     return false;
   }
   canLoad(route: Route, segments: UrlSegment[]): boolean {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('access-token')) {
       return true;
     }
     this.router.navigate(['home']);
