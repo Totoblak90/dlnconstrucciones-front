@@ -1,5 +1,5 @@
 import { environment } from 'src/environments/environment';
-import { userRole } from '../interfaces/http/auth.interface';
+import { userRole } from '../modules/main/interfaces/http/auth.interface';
 
 export class User {
   constructor(

@@ -1,0 +1,235 @@
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <form
+          class="form p-t-20"
+          [formGroup]="registerForm"
+          (ngSubmit)="register()"
+        >
+          <div class="form-group">
+            <label for="exampleInputuname2">Nombre</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="exampleInputuname2"
+                placeholder="Nombre"
+                formControlName="first_name"
+              />
+              <div class="p-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    registerForm.controls.first_name.errors?.required &&
+                    registerForm.controls.first_name.touched
+                  "
+                  >Este dato es requerido</span
+                >
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    registerForm.controls.first_name.errors?.minlength &&
+                    registerForm.controls.first_name.touched
+                  "
+                  >Debe tener al menos 3 caracteres</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputuname2">Apellido</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="exampleInputuname2"
+                placeholder="Apellido"
+                formControlName="last_name"
+              />
+              <div class="p-2">
+                <span
+                  *ngIf="
+                    registerForm.controls.last_name.errors?.required &&
+                    registerForm.controls.last_name.touched
+                  "
+                  class="text-danger"
+                  >Este dato es requerido</span
+                >
+                <span
+                  *ngIf="
+                    registerForm.controls.last_name.errors?.minlength &&
+                    registerForm.controls.last_name.touched
+                  "
+                  class="text-danger"
+                  >Debe tener al menos 3 caracteres</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputuname2">DNI</label>
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                id="exampleInputuname2"
+                placeholder="DNI"
+                formControlName="dni"
+              />
+              <div class="p-2">
+                <span
+                  *ngIf="
+                    registerForm.controls.dni.errors?.required &&
+                    registerForm.controls.dni.touched
+                  "
+                  class="text-danger"
+                  >Este dato es requerido</span
+                >
+                <span
+                  *ngIf="
+                    registerForm.controls.dni.errors?.min &&
+                    registerForm.controls.dni.touched
+                  "
+                  class="text-danger"
+                  >Debe contenter al menos 7 caracteres</span
+                >
+                <span
+                  *ngIf="
+                    registerForm.controls.dni.errors?.max &&
+                    registerForm.controls.dni.touched
+                  "
+                  class="text-danger"
+                  >Número máximo 999.999.999</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail2">Email</label>
+            <div class="input-group">
+              <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail2"
+                placeholder="juan@tuemail.com"
+                formControlName="email"
+              />
+              <div class="p-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    registerForm.controls.email.errors?.required &&
+                    registerForm.controls.email.touched
+                  "
+                  >Este dato es requerido</span
+                >
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    registerForm.controls.email.errors?.pattern &&
+                    registerForm.controls.email.touched
+                  "
+                  >Por favor ingresá un email válido</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputpwd2">Contraseña</label>
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control"
+                id="exampleInputpwd2"
+                placeholder="Escribir contraseña"
+                formControlName="password"
+              />
+              <div class="p-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    registerForm.controls.password.errors?.required &&
+                    registerForm.controls.password.touched
+                  "
+                  >Este dato es requerido</span
+                >
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    registerForm.controls.password.errors?.pattern &&
+                    registerForm.controls.password.touched
+                  "
+                  >La contraseña debe tener un mínimo de 8 caracteres,
+                  incluyendo una minúscula, una mayúscula, un número y un
+                  símbolo</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputpwd3">Confirmar contraseña</label>
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control"
+                id="exampleInputpwd3"
+                placeholder="Confirmar contraseña"
+                formControlName="passwordRepeat"
+              />
+              <div class="p-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    registerForm.controls.passwordRepeat.errors?.required &&
+                    registerForm.controls.passwordRepeat.touched
+                  "
+                  >Este dato es requerido</span
+                >
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    registerForm.controls.passwordRepeat.errors?.notMatch &&
+                    registerForm.controls.passwordRepeat.touched
+                  "
+                  >Las contraseñas no coinciden</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="checkbox checkbox-success">
+              <input
+                formControlName="terminosYCondiciones"
+                id="checkbox2"
+                type="checkbox"
+              />
+              <label for="checkbox2"> Acepto términos y condiciones </label>
+            </div>
+            <span
+              class="text-danger"
+              *ngIf="
+                !registerForm.controls.terminosYCondiciones.value &&
+                registerForm.controls.terminosYCondiciones.touched
+              "
+              >Este dato es requerido</span
+            >
+          </div>
+          <div class="text-left">
+            <button
+              type="submit"
+              class="
+                btn btn-success
+                waves-effect waves-light
+                m-r-10
+                bgc-primary-dark
+              "
+            >
+              Registrarse
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
