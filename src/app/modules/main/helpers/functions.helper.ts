@@ -1,3 +1,3 @@
-export const getToken = (): string | null => {
-  return localStorage.getItem('token')
+export const getToken = (): string => {
+  return localStorage.getItem('access-token') || ''
 }

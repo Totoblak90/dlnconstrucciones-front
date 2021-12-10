@@ -1,0 +1,104 @@
+<div class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search user"
+          #searchInput
+        />
+        <!-- (keyup)="searchUsers(searchInput.value)" -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="loading">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="alert alert-info text-center">
+          <h4 class="alert-heading">Loading</h4>
+          <i class="fa fa-spin fa-refresh fa-2"></i>
+          <p class="mb-0">Please wait</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row animated fadeIn" *ngIf="!loading">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title primary-dark">Usuarios</h4>
+        <ng-container *ngIf="!searching; else searchingTemplate">
+          <h6 class="card-subtitle primary-dark">
+            {{ totalUsers }} registrados en mi página
+          </h6>
+        </ng-container>
+        <ng-template #searchingTemplate>
+          <h6 class="card-subtitle primary-dark">
+            {{ searchingResults }} usuarios encontrados.
+          </h6>
+        </ng-template>
+
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="primary-dark">Avatar</th>
+                <th class="primary-dark">Nombre</th>
+                <th class="primary-dark">Email</th>
+                <th class="primary-dark">Rol</th>
+                <th class="text-nowrap primary-dark">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users">
+                <td class="text-center">
+                  <!-- (click)="openModal(user)" -->
+                  <img
+                    [src]="user.getAvatar()"
+                    alt="Avatar"
+                    class="avatar pointer"
+                  />
+                </td>
+
+                <td class="primary-dark">{{ user.nombre }}</td>
+
+                <td class="primary-dark">{{ user.email }}</td>
+                <td>
+
+                  <select class="form-control"  (change)="changeRole(user)" [(ngModel)]="user.role">
+                    <option class="primary-dark" value="admin">Admin</option>
+                    <option class="primary-dark" value="user">User</option>
+                  </select>
+                </td>
+                <td class="text-nowrap text-center">
+                  <!-- (click)="deleteUser(user)" -->
+                  <a
+                    class="pointer"
+                    data-toggle="tooltip"
+                    data-original-title="Delete"
+                  >
+                    <i class="fa fa-close text-danger primary-dark"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- [disabled]="from === 0 || searching" -->
+          <!-- (click)="changePage(-pagination)" -->
+          <button class="btn bgc-primary-dark text-white">Anterior</button>
+          &nbsp;
+          <!-- [disabled]="from === (totalUsers - pagination) || searching" -->
+          <!-- (click)="changePage(pagination)" -->
+          <button class="btn bgc-primary-dark text-white">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

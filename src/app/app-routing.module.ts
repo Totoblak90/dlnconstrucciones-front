@@ -3,12 +3,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
-    loadChildren: () => import('./modules/main/main.module').then(m => m.MainModule)
+    path: 'admin',
+    loadChildren: () => import('./modules/admin-panel/admin-panel.module').then(m => m.AdminPanelModule)
   },
   {
-    path: 'admin-panel',
-    loadChildren: () => import('./modules/admin-panel/admin-panel.module').then(m => m.AdminPanelModule)
+    path: '',
+    loadChildren: () => import('./modules/main/main.module').then(m => m.MainModule)
   },
   {
     path: '**',

@@ -69,7 +69,7 @@ export class RegisterComponent implements OnDestroy {
             );
             this.authService.setUser(user);
             if (res?.data?.token) {
-              localStorage.setItem('token', res?.data?.token);
+              localStorage.setItem('access-token', res?.data?.token);
             }
             this.router.navigateByUrl('/main/auth/profile');
           },

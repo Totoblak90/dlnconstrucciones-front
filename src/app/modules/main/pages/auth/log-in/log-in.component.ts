@@ -38,7 +38,7 @@ export class LogInComponent implements OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (res: LoginRes) => {
-            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('access-token', res.data.token);
             const loggedUser = new User(
               res?.data?.user?.first_name,
               res?.data?.user?.last_name,
