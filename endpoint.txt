@@ -1,0 +1,48 @@
+ENDPOINTS:
+
+/api/interests [GET interests]
+
+/api/services [GET services]
+/api/services/:id [GET service detail]
+
+/api/types [GET types of jobs]
+/api/types/:id [GET type of job detail]
+
+/api/jobs [GET jobs]
+/api/jobs/:id [GET job detail]
+
+/api/batches [GET batches]
+/api/batches/:id [GET batch detail]
+
+/api/categories [GET categories]
+/api/categories/:id [GET category detail]
+
+/api/contact [POST form contacto]
+
+/api/users/login [POST login]
+/api/users/register [POST register]
+/api/users/profile [POST profile modificar] (no anda bien todavia, ojo, en el prox push andaria bien)
+/api/users/avatar [POST avatar modificar] (no existe aun, proximo push)
+
+Protegidos (solo admin)
+
+/api/users [GET users]
+/api/users/:id [GET user detail w/ proyects]
+
+/api/projects [GET projects]   (Agregado ahora, este push)
+/api/projects/:id [GET project details w/ users]  (Agregado ahora, este push)
+
+
+
+MASTER:
+{
+    "email": "tobias.blaksley@hotmail.com",
+    "password": "Vildom.90",
+    "remember": false
+}
+ADMIN:
+{
+    "email": "mafmaggot@gmail.com",
+    "password": "Sarasasa20*",
+    "remember": false
+}

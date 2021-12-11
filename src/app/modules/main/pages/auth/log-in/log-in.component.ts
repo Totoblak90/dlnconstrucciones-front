@@ -1,11 +1,16 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
-import { LoginRes, LoginForm } from '../../../interfaces/http/auth.interface';
+import {
+  LoginRes,
+  LoginForm,
+  UserData,
+} from '../../../interfaces/http/auth.interface';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { User } from '../../../../../models/user.model';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-log-in',
@@ -18,7 +23,11 @@ export class LogInComponent implements OnDestroy {
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   private destroy$: Subject<boolean> = new Subject();
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.createForm();
   }
 
@@ -38,21 +47,50 @@ export class LogInComponent implements OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           (res: LoginRes) => {
-            localStorage.setItem('access-token', res.data.token);
-            const loggedUser = new User(
-              res?.data?.user?.first_name,
-              res?.data?.user?.last_name,
-              res?.data?.user?.email,
-              res?.data?.user?.role,
-              res?.data?.user?.avatar,
-              res?.data?.user?.phone,
-            )
-            this.authService.setUser(loggedUser);
-            this.router.navigateByUrl('/main/auth/profile')
+            res?.data?.token
+              ? localStorage.setItem('access-token', res?.data?.token)
+              : null;
+            res?.meta?.status === 200
+              ? this.guardarOAlertarUsuarioLogueado(res?.data?.user)
+              : this.alertUsuarioInexistente();
           },
-          (err) => console.log(err)
+          (err) => {
+            Swal.fire(
+              '¡Lo sentimos!',
+              'Tuvimos un inconveniente, por favor intentá nuevamente',
+              'error'
+            );
+          }
         );
     }
+  }
+
+  private guardarOAlertarUsuarioLogueado(usuario: UserData): void {
+    const loggedUser = new User(
+      usuario.first_name,
+      usuario.last_name,
+      usuario.email,
+      usuario.role,
+      usuario.dni,
+      usuario.avatar,
+      usuario.phone
+    );
+    this.authService.setUser(loggedUser);
+    this.router.navigateByUrl('/main/auth/profile');
+  }
+
+  private alertUsuarioInexistente(): void {
+    Swal.fire({
+      title: '¡Lo sentimos!',
+      text: 'No tenemos un usuario registrado con ese email, podés registrart clickeando en el botón.',
+      showDenyButton: true,
+      confirmButtonText: 'Registrarse',
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigateByUrl('/main/auth/register');
+      }
+    });
   }
 
   ngOnDestroy(): void {

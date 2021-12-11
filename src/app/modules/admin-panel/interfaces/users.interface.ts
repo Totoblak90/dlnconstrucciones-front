@@ -14,7 +14,7 @@ export interface FullUser {
   avatar: string;
   role: userRole;
   phone?: string;
-  dni?: string;
+  dni?: number;
   created_at: string;
   updated_at: string;
   deleted_at: string;

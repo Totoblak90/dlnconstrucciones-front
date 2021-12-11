@@ -2,7 +2,7 @@
   <div class="col-lg-6 ">
     <div class="card">
       <div class="card-body">
-        <form class="form-horizontal p-t-20" [formGroup]="loginForm" (ngSubmit)="login()">
+        <form class="form-horizontal form-material p-t-20" [formGroup]="loginForm" (ngSubmit)="login()">
           <div class="form-group row">
             <label for="exampleInputEmail3" class="col-sm-3 control-label"
               >Email*</label
@@ -11,7 +11,7 @@
               <div class="input-group">
                 <input
                   type="email"
-                  class="form-control"
+                  class="form-control form-control-line"
                   id="exampleInputEmail3"
                   placeholder="tuemail@dlnconstrucciones..."
                   formControlName="email"
@@ -45,7 +45,7 @@
               <div class="input-group">
                 <input
                   type="password"
-                  class="form-control"
+                  class="form-control form-control-line"
                   id="exampleInputpwd4"
                   placeholder="Escribí tu contraseña"
                   formControlName="password"

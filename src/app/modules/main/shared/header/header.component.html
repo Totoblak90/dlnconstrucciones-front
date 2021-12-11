@@ -80,12 +80,12 @@
                 </div>
               </li>
               <li
-                *ngIf="user?.role === 'admin'"
+                *ngIf="user?.role === 'admin' || user?.role === 'master'"
                 role="separator"
                 class="divider"
               ></li>
               <li
-                *ngIf="user?.role === 'admin'"
+                *ngIf="user?.role === 'admin' || user?.role === 'master'"
                 class="pointer bgc-primary text-white"
                 routerLink="/admin"
               >

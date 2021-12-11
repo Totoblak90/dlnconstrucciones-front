@@ -39,6 +39,7 @@ export interface UserData {
   email: string;
   avatar?: string;
   role: userRole;
+  dni: number;
   phone?: string;
   created_at: string;
   updeated_at: string;
@@ -53,4 +54,4 @@ export type setUserProp =
   | 'role'
   | 'phone';
 
-export type userRole = 'user' | 'admin';
+export type userRole = 'user' | 'admin' | 'master';

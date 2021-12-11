@@ -20,7 +20,9 @@ export class TableComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.filasTabla)
+  }
 
   public expandirImagen(imagen: string): void {
     Swal.fire({

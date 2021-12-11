@@ -43,6 +43,7 @@ export class UsersComponent implements OnInit {
         apellido: user.last_name,
         email: user.email,
         nombre: user.first_name,
+        dni: user.dni!,
         role: user.role,
         phone: user.phone,
         avatar: user.avatar,

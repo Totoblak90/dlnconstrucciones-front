@@ -64,6 +64,7 @@ export class RegisterComponent implements OnDestroy {
               res?.data?.user?.last_name,
               res?.data?.user?.email,
               res?.data?.user?.role,
+              res?.data?.user?.dni,
               res?.data?.user?.avatar,
               res?.data?.user?.phone
             );
