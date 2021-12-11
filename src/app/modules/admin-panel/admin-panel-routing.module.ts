@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminPanelComponent } from './admin-panel.component';
+import { AdminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: AdminPanelComponent,
+    canActivate: [AdminGuard],
+    canLoad: [AdminGuard],
     children: [
       {
         path: 'dashboard',
