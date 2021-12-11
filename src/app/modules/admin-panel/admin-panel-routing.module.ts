@@ -16,21 +16,40 @@ const routes: Routes = [
       },
       {
         path: 'users',
-        loadChildren: () => import('./pages/users/users.module').then(m => m.UsersModule)
-      },      {
+        loadChildren: () =>
+          import('./pages/users/users.module').then((m) => m.UsersModule),
+      },
+      {
         path: 'trabajos',
-        loadChildren: () => import('./pages/trabajos-realizados/trabajos-realizados.module').then(m => m.TrabajosRealizadosModule)
+        loadChildren: () =>
+          import('./pages/trabajos-realizados/trabajos-realizados.module').then(
+            (m) => m.TrabajosRealizadosModule
+          ),
+      },
+      {
+        path: 'servicios',
+        loadChildren: () =>
+          import('./pages/servicios/servicios.module').then(
+            (m) => m.ServiciosModule
+          ),
+      },
+      {
+        path: 'lotes',
+        loadChildren: () =>
+          import('./pages/lotes/lotes.module').then(
+            (m) => m.LotesModule
+          ),
       },
       {
         path: '**',
-        redirectTo: 'dashboard'
-      }
+        redirectTo: 'dashboard',
+      },
     ],
   },
   {
     path: '**',
-    redirectTo: ''
-  }
+    redirectTo: '',
+  },
 ];
 
 @NgModule({

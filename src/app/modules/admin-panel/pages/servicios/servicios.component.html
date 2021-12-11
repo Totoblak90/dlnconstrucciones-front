@@ -1,9 +1,9 @@
 <app-table
   *ngIf="tableData"
-  [title]="'Trabajos realizados'"
   [loading]="loading"
   [filasTabla]="tableData"
   [encabezadosTabla]="encabezadosTabla"
+  [title]="'Servicios'"
   [totalSection]="tableData?.length!"
-  (onRecargar)="recargarTrabajos($event)"
+  (onRecargar)="recargarServicios($event)"
 ></app-table>

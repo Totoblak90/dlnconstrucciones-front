@@ -15,7 +15,7 @@ import { CuerpoTabla } from '../../interfaces/tabla.interface';
 })
 export class UsersComponent implements OnInit {
   public users: User[] = [];
-  public encabezadosTabla: string[] = ['Nombre', 'Email', 'Rol'];
+  public encabezadosTabla: string[] = ['Nombre', 'Email', 'Teléfono', 'Rol'];
   public tableData: CuerpoTabla[] = [];
   public loading: boolean = true;
   private destroy$: Subject<boolean> = new Subject();
@@ -24,9 +24,6 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
-    // this.modalImgSrv.showUploadedImage
-    //   .pipe(delay(500))
-    //   .subscribe((img) => this.loadUsers());
   }
 
   public loadUsers(): void {
@@ -65,10 +62,18 @@ export class UsersComponent implements OnInit {
       return {
         imagen: user.getAvatar(),
         item2: `${user.nombre} ${user.apellido}`,
-        item3: user.email,
-        item4: user.role
+        item3: user.email ? user.email : 'Vacío',
+        item4: user.phone ? user.phone : 'Vacío',
+        item6: user.role ? user.role : 'Vacío',
       }
     });
+  }
+
+  public recargarUsuarios(recargar: boolean): void {
+    if (recargar) {
+      this.tableData = [];
+      this.loadUsers();
+    }
   }
 
   public deleteUser(user: User): void {

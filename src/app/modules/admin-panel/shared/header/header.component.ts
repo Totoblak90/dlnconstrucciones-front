@@ -22,9 +22,19 @@ export class HeaderComponent {
       redirectTo: '/admin/users',
     },
     {
+      description: 'Servicios',
+      show: true,
+      redirectTo: '/admin/servicios',
+    },
+    {
       description: 'Trabajos Realizados',
       show: true,
       redirectTo: '/admin/trabajos',
+    },
+    {
+      description: 'Lotes',
+      show: true,
+      redirectTo: '/admin/lotes',
     },
     {
       description: 'Salir',

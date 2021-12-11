@@ -1,9 +1,8 @@
 <app-table
-  *ngIf="tableData"
-  [title]="'Trabajos realizados'"
-  [loading]="loading"
+  [title]="'Lotes'"
   [filasTabla]="tableData"
   [encabezadosTabla]="encabezadosTabla"
   [totalSection]="tableData?.length!"
-  (onRecargar)="recargarTrabajos($event)"
+  [loading]="loading"
+  (onRecargar)="recargarLotes($event)"
 ></app-table>

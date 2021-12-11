@@ -30,25 +30,32 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
     this.httpSrv
       .getTypesOfJob()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res: TypesOfJobs) => {
-        concat(
-          this.httpSrv.getOneTypeOfJob(res?.data[0].id.toString()),
-          this.httpSrv.getOneTypeOfJob(res?.data[1].id.toString())
-        )
-          .pipe(
-            takeUntil(this.destroy$),
-            finalize(() => (this.loading = false))
-          )
-          .subscribe((res: Job) => {
-            this.tableData = res?.data?.Jobs.map((job) => {
-              return {
-                imagen: `${environment.API_IMAGE_URL}/${job.image}`,
-                item2: job.title ? job.title : 'Vacío',
-                item3: job.description ? job.description : 'Vacío'
-              };
+      .subscribe((typesOfJobs: TypesOfJobs) => {
+        for (const typeOfJob of typesOfJobs.data) {
+          this.httpSrv
+            .getOneTypeOfJob(typeOfJob.id.toString())
+            .pipe(
+              takeUntil(this.destroy$),
+              finalize(() => (this.loading = false))
+            )
+            .subscribe((job: Job) => {
+              job?.data?.Jobs.forEach((j) => {
+                this.tableData.push({
+                  imagen: `${environment.API_IMAGE_URL}/${j.image}`,
+                  item2: j.title ? j.title : 'Vacío',
+                  item3: j.description ? j.description : 'Vacío',
+                });
+              });
             });
-          });
+        }
       });
+  }
+
+  public recargarTrabajos(recargar: boolean): void {
+    if (recargar) {
+      this.tableData = [];
+      this.getTrabajos();
+    }
   }
 
   ngOnDestroy(): void {

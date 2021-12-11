@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import Swal from 'sweetalert2';
 
@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent implements OnInit {
+  @Output() onRecargar: EventEmitter<boolean> = new EventEmitter();
   @Input() title: string = '';
   @Input() totalSection: number = 0;
   @Input() encabezadosTabla: string[] = [];
@@ -27,23 +28,73 @@ export class TableComponent implements OnInit {
       imageWidth: 400,
       imageHeight: 400,
       showClass: {
-        popup: 'animate__animated animate__fadeInDown'
+        popup: 'animate__animated animate__fadeInDown',
       },
       hideClass: {
-        popup: 'animate__animated animate__fadeOutUp'
-      }
-    })
+        popup: 'animate__animated animate__fadeOutUp',
+      },
+    });
+  }
+
+  public verMas(info: string) {
+    if (info.length > 100) {
+      Swal.fire({
+        text: info,
+        showClass: {
+          popup: 'animate__animated animate__fadeInDown',
+        },
+        hideClass: {
+          popup: 'animate__animated animate__fadeOutUp',
+        },
+      });
+    }
   }
 
   public search(term: string): void {
     this.searching = true;
+
     if (!term) {
+      this.onRecargar.emit(true);
       this.searching = false;
       return;
     }
-    // this.search.search('usuarios', term).subscribe((res: Search) => {
-    //   this.users = res?.resultados as User[];
-    //   this.searchingResults = res?.resultados?.length;
-    // });
+
+    this.filasTabla = this.filasTabla.filter((data) => {
+      return (
+        data.item2
+          ?.toLocaleLowerCase()
+          .trim()
+          .includes(term.toLocaleLowerCase().trim()) ||
+        data.item3
+          ?.toLocaleLowerCase()
+          .trim()
+          .includes(term.toLocaleLowerCase().trim()) ||
+        data.item4
+          ?.toLocaleLowerCase()
+          .trim()
+          .includes(term.toLocaleLowerCase().trim()) ||
+        data.item6
+          ?.toLocaleLowerCase()
+          .trim()
+          .includes(term.toLocaleLowerCase().trim()) ||
+        data.item7
+          ?.toLocaleLowerCase()
+          .trim()
+          .includes(term.toLocaleLowerCase().trim()) ||
+        data.item8
+          ?.toLocaleLowerCase()
+          .trim()
+          .includes(term.toLocaleLowerCase().trim()) ||
+        data.item9
+          ?.toLocaleLowerCase()
+          .trim()
+          .includes(term.toLocaleLowerCase().trim()) ||
+        data.item10
+          ?.toLocaleLowerCase()
+          .trim()
+          .includes(term.toLocaleLowerCase().trim())
+      );
+    });
+    this.searchingResults = this.filasTabla.length;
   }
 }
