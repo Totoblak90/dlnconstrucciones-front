@@ -4,11 +4,11 @@ import { Menu } from 'src/app/modules/main/interfaces/header.interface';
 import { AuthService } from '../../../main/services/auth.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: 'app-header-admin',
+  templateUrl: './header-admin.component.html',
+  styleUrls: ['./header-admin.component.scss']
 })
-export class HeaderComponent {
+export class HeaderAdminComponent {
 
   public menu: Menu[] = [
     {

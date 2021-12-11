@@ -43,7 +43,7 @@
         </li>
 
         <!-- Tarjeta de usuario -->
-        <li class="nav-item dropdown d-none d-sm-block" *ngIf="user">
+        <li class="nav-item dropdown" *ngIf="user">
           <a
             class="
               nav-link
@@ -140,10 +140,7 @@
                 </ng-container>
               </li>
 
-              <li
-                class="pointer"
-                routerLink="/main/auth/login"
-              >
+              <li class="pointer" routerLink="/main/auth/login">
                 <ng-container *ngIf="!user">
                   <a
                     class="
@@ -158,37 +155,19 @@
                 </ng-container>
               </li>
 
-              <li
-              class="pointer"
-              routerLink="/main/auth/register"
-            >
-              <ng-container *ngIf="!user">
-                <a
-                  class="
-                    nav-link
-                    dropdown-toggle
-                    waves-effect waves-dark
-                    primary-dark
-                  "
-                >
-                  REGISTRARSE</a
-                >
-              </ng-container>
-            </li>
-
-              <!-- Tarjeta de usuario en mobile -->
-              <li class="nav-item dropdown" *ngIf="user">
-                <a
-                  class="
-                    nav-link
-                    dropdown-toggle
-                    waves-effect waves-dark
-                    primary-dark
-                  "
-                  routerLink="/main/auth/profile"
-                  ><img [src]="getUserImg()" alt="user" class="profile-pic" />
-                  {{ user?.nombre }} {{ user?.apellido }}
-                </a>
+              <li class="pointer" routerLink="/main/auth/register">
+                <ng-container *ngIf="!user">
+                  <a
+                    class="
+                      nav-link
+                      dropdown-toggle
+                      waves-effect waves-dark
+                      primary-dark
+                    "
+                  >
+                    REGISTRARSE</a
+                  >
+                </ng-container>
               </li>
             </ul>
           </div>

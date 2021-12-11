@@ -9,7 +9,8 @@
     </div>
     <div class="navbar-collapse">
       <ul class="navbar-nav my-lg-0">
-        <li *ngFor="let m of menu" class="nav-item dropdown">
+        <!-- Para desktop -->
+        <li *ngFor="let m of menu" class="nav-item dropdown d-none d-lg-block">
           <ng-container *ngIf="m.toggle">
             <a
               class="
@@ -96,6 +97,46 @@
               <li role="separator" class="divider"></li>
               <li class="pointer">
                 <a><i class="fa fa-power-off"></i> Logout</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- Para Mobile -->
+        <li class="nav-item dropdown d-lg-none">
+          <a
+            class="
+              nav-link
+              dropdown-toggle
+              waves-effect waves-dark
+              primary-dark
+            "
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i class="ti-menu"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu animated flipInY">
+            <ul class="dropdown-user">
+              <li
+                *ngFor="let m of menu"
+                class="pointer"
+                [routerLink]="m.redirectTo"
+              >
+                <ng-container *ngIf="m.toggle && m.inMobile">
+                  <a
+                    class="
+                      nav-link
+                      dropdown-toggle
+                      waves-effect waves-dark
+                      primary-dark
+                    "
+                    [routerLink]="m.redirectTo"
+                  >
+                    {{ m.description }}</a
+                  >
+                </ng-container>
               </li>
             </ul>
           </div>

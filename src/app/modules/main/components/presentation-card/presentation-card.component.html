@@ -18,7 +18,7 @@
         {{ pCard.titulo }}
       </h3>
       <p *ngIf="pCard.descripcion" class="m-b-0 m-t-10">
-        {{ pCard.descripcion | slice: 0:40 }}
+        {{ pCard.descripcion | slice: 0:40 | titlecase }}
         {{ pCard.descripcion.length > 40 ? "..." : "" }}
       </p>
       <div class="text-center m-t-10" *ngIf="pCard.descripcion">
