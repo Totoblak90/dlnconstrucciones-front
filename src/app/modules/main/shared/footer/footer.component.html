@@ -1,53 +1,101 @@
 <footer class="bgc-primary">
-
   <div class="contact-info">
-    <p><strong class="primary-dark">¿Tenés alguna consulta?</strong> Estamos para asesorarte</p>
+    <p>
+      <strong class="primary-dark">¿Tenés alguna consulta?</strong> Estamos para
+      asesorarte
+    </p>
     <div>
-      <p>+54 9 2267 531541</p> <i></i>
+      <p>+54 9 2267 531541</p>
+      <i></i>
     </div>
     <div>
-      <p>info@dlnconstrucciones.com.ar </p> <i></i>
+      <p>info@dlnconstrucciones.com.ar</p>
+      <i></i>
     </div>
     <div>
-      <p>Pinamar, Buenos Aires</p> <i></i>
+      <p>Pinamar, Buenos Aires</p>
+      <i></i>
     </div>
-    <!-- <form [formGroup]="formularioContacto" (submit)="send($event)">
-      <mat-form-field appearance="fill">
-        <mat-label>Email:</mat-label>
-        <input matInput formControlName="email" placeholder="email@dominio.com">
-        <mat-error *ngIf="formularioContacto.controls.email.hasError('required')">
+    <form
+      class="form-material m-t-40"
+      [formGroup]="formularioContacto"
+      (ngSubmit)="send()"
+    >
+      <div class="form-group">
+        <label>Email:</label>
+        <input
+          type="text"
+          class="form-control form-control-line"
+          formControlName="email"
+          placeholder="email@dominio.com"
+        />
+        <span
+          *ngIf="
+            formularioContacto.controls.email.hasError('required') &&
+            formularioContacto.controls.email.touched
+          "
+        >
           Este campo es requerido
-        </mat-error>
-        <mat-error *ngIf="formularioContacto.controls.email.hasError('pattern')">
+        </span>
+        <span
+          *ngIf="
+            formularioContacto.controls.email.hasError('pattern') &&
+            formularioContacto.controls.email.touched
+          "
+        >
           Asegurate de que el formato sea válido
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Dejanos tu comentario:</mat-label>
-        <textarea formControlName="comentario" matInput></textarea>
-        <mat-error *ngIf="formularioContacto.controls.comentario.hasError('required')">
+        </span>
+      </div>
+      <div class="form-group">
+        <label>Dejanos tu comentario:</label>
+        <textarea
+          formControlName="comment"
+          class="form-control"
+          rows="5"
+        ></textarea>
+        <span
+          *ngIf="
+            formularioContacto.controls.comment.hasError('required') &&
+            formularioContacto.controls.comment.touched
+          "
+        >
           Este campo es requerido
-        </mat-error>
-      </mat-form-field>
-      <button mat-raised-button [disabled]="formularioContacto.invalid" type="submit" class="bgc-primary-dark">Enviar consulta</button>
-    </form> -->
+        </span>
+        <span
+          *ngIf="
+            formularioContacto.controls.comment.hasError('minlength') &&
+            formularioContacto.controls.comment.touched
+          "
+        >
+          Debe tener al menos 10 caracteres
+        </span>
+      </div>
+      <button
+        [disabled]="formularioContacto.invalid"
+        type="submit"
+        class="btn btn-success waves-effect waves-light bgc-primary-dark"
+      >
+        Enviar consulta
+      </button>
+    </form>
   </div>
 
   <div class="logo">
-    <img src="assets/logo.png" alt="" routerLink="/">
+    <img src="assets/logo.png" alt="" routerLink="/" />
     <div class="social-icons-container">
       <a href="https://www.facebook.com/dlnconstrucciones/" target="_blank">
-        <img src="assets/icon-facebook.png" alt="Facebook logo">
+        <img src="assets/icon-facebook.png" alt="Facebook logo" />
       </a>
       <a href="https://www.instagram.com/dln_construcciones/" target="_blank">
-        <img src="assets/icon-instagram.png" alt="Instagram logo">
+        <img src="assets/icon-instagram.png" alt="Instagram logo" />
       </a>
     </div>
     <div class="copyright m-2">
-      <p><strong class="primary-dark">@2021 DLN Construcciones</strong> todos los derechos reservados</p>
+      <p>
+        <strong class="primary-dark">@2021 DLN Construcciones</strong> todos los
+        derechos reservados
+      </p>
       <p>Pinamar, provincia de Buenos Aires</p>
     </div>
   </div>
-
 </footer>

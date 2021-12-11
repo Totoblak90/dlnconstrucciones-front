@@ -49,11 +49,6 @@ footer {
         color: rgb(35, 150, 189);
       }
     }
-    & mat-icon:hover {
-      -webkit-animation:spin 1s linear both;
-      -moz-animation:spin 1s linear both;
-      animation:spin 1s linear both;
-    }
     @-moz-keyframes spin {
       100% { -moz-transform: rotate(90deg); }
     }
@@ -75,8 +70,10 @@ footer {
       display: flex;
       flex-direction: column;
       align-content: center;
-      mat-form-field {
-        width: 100%;
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
       }
       button {
         color: white;

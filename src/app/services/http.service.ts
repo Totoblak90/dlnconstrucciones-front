@@ -6,6 +6,7 @@ import { BatchComplete, Lotes, PostalZones } from '../modules/main/interfaces/ht
 import { Interests } from '../modules/main/interfaces/http/interests.interface';
 import { Job, TypesOfJobs } from '../modules/main/interfaces/http/jobs.interface';
 import { Services, TipoServicio } from '../modules/main/interfaces/http/services.interface';
+import { Contact, ContactFormRes } from '../modules/main/interfaces/http/contact.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -46,8 +47,8 @@ export class HttpService {
   }
   // ---------------------------------------------------------------------------
   // Formulario de contacto
-  public sendContactForm(): unknown {
-    return;
+  public sendContactForm(form: Contact): Observable<ContactFormRes> {
+    return this.http.post<ContactFormRes>(`${environment.API_BASE_URL}/contact`, form)
   }
 
 }
