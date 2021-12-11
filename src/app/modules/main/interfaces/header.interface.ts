@@ -4,5 +4,6 @@ export interface Menu {
   moreOptions?: boolean;
   subMenu?: Menu[];
   icon?: string;
-  show: boolean;
+  toggle: boolean;
+  inMobile: boolean;
 }

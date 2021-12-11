@@ -1,16 +1,17 @@
 <header class="topbar animate__animated animate__slideInDown animate__slow">
   <nav class="navbar top-navbar navbar-expand-md navbar-light">
-    <div class="navbar-header">
+    <div class="navbar-header d-inline-block">
       <a class="navbar-brand" routerLink="/">
         <b>
           <img src="../../../assets/logo.png" alt="homepage" class="logo" />
         </b>
       </a>
     </div>
-    <div class="navbar-collapse">
+    <div class="navbar-collapse d-inline-block">
       <ul class="navbar-nav my-lg-0">
-        <li *ngFor="let m of menu" class="nav-item dropdown">
-          <ng-container *ngIf="m.show">
+        <!-- Para desktop -->
+        <li *ngFor="let m of menu" class="nav-item dropdown d-none d-sm-block">
+          <ng-container *ngIf="m.toggle">
             <a
               class="
                 nav-link
@@ -32,16 +33,17 @@
               <ul>
                 <li *ngFor="let subMenu of m.subMenu">
                   <a [routerLink]="subMenu.redirectTo">
-                    <div class="mail-contnet">
-                      <h5 class="primary-dark">{{ subMenu.description }}</h5>
-                    </div>
+                    <i [class]="subMenu.icon"></i>
+                    <h5 class="primary-dark">{{ subMenu.description }}</h5>
                   </a>
                 </li>
               </ul>
             </div>
           </ng-container>
         </li>
-        <li class="nav-item dropdown" *ngIf="user">
+
+        <!-- Tarjeta de usuario -->
+        <li class="nav-item dropdown d-none d-sm-block" *ngIf="user">
           <a
             class="
               nav-link
@@ -67,7 +69,7 @@
                     <h4>{{ user?.nombre }} {{ user?.apellido }}</h4>
                     <p class="text-muted" *ngIf="user?.email">
                       {{ user?.email | slice: 0:20
-                      }}{{  user.email.length > 20 ? "..." : "" }}
+                      }}{{ user.email.length > 20 ? "..." : "" }}
                     </p>
                     <a
                       routerLink="/main/auth/profile"
@@ -95,7 +97,98 @@
               </li>
               <li role="separator" class="divider"></li>
               <li class="pointer">
-                <a><i class="fa fa-power-off"></i> Logout</a>
+                <a><i class="fa fa-power-off"></i> Cerrar sesión</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- Para Mobile -->
+        <li class="nav-item dropdown d-sm-none">
+          <a
+            class="
+              nav-link
+              dropdown-toggle
+              waves-effect waves-dark
+              primary-dark
+            "
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i class="ti-menu"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu animated flipInY">
+            <ul class="dropdown-user">
+              <li
+                *ngFor="let m of menu"
+                class="pointer"
+                [routerLink]="m.redirectTo"
+              >
+                <ng-container *ngIf="m.toggle && m.inMobile">
+                  <a
+                    class="
+                      nav-link
+                      dropdown-toggle
+                      waves-effect waves-dark
+                      primary-dark
+                    "
+                    [routerLink]="m.redirectTo"
+                  >
+                    {{ m.description }}</a
+                  >
+                </ng-container>
+              </li>
+
+              <li
+                class="pointer"
+                routerLink="/main/auth/login"
+              >
+                <ng-container *ngIf="!user">
+                  <a
+                    class="
+                      nav-link
+                      dropdown-toggle
+                      waves-effect waves-dark
+                      primary-dark
+                    "
+                  >
+                    INICIAR SESIÓN</a
+                  >
+                </ng-container>
+              </li>
+
+              <li
+              class="pointer"
+              routerLink="/main/auth/register"
+            >
+              <ng-container *ngIf="!user">
+                <a
+                  class="
+                    nav-link
+                    dropdown-toggle
+                    waves-effect waves-dark
+                    primary-dark
+                  "
+                >
+                  REGISTRARSE</a
+                >
+              </ng-container>
+            </li>
+
+              <!-- Tarjeta de usuario en mobile -->
+              <li class="nav-item dropdown" *ngIf="user">
+                <a
+                  class="
+                    nav-link
+                    dropdown-toggle
+                    waves-effect waves-dark
+                    primary-dark
+                  "
+                  routerLink="/main/auth/profile"
+                  ><img [src]="getUserImg()" alt="user" class="profile-pic" />
+                  {{ user?.nombre }} {{ user?.apellido }}
+                </a>
               </li>
             </ul>
           </div>

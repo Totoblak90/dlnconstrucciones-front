@@ -15,40 +15,47 @@ export class HeaderComponent {
       description: 'INICIO',
       redirectTo: '/main/home',
       moreOptions: false,
-      show: true,
+      toggle: true,
+      inMobile: true,
     },
     {
       description: 'SERVICIOS',
       redirectTo: '/main/servicios',
       moreOptions: false,
-      show: true,
+      toggle: true,
+      inMobile: true,
     },
     {
       description: 'TRABAJOS REALIZADOS',
       redirectTo: '/main/trabajos-realizados',
       moreOptions: false,
-      show: true,
+      toggle: true,
+      inMobile: true,
     },
     {
       description: 'LOTES',
       redirectTo: '/main/lotes',
       moreOptions: false,
-      show: true,
+      toggle: true,
+      inMobile: true,
     },
     {
       description: 'ACREDITARSE',
       moreOptions: true,
-      show: true,
+      toggle: true,
+      inMobile: false,
       subMenu: [
         {
           description: 'INICIAR SESIÓN',
           redirectTo: '/main/auth/login',
-          show: true,
+          toggle: true,
+          inMobile: true,
         },
         {
           description: 'REGISTRARSE',
           redirectTo: '/main/auth/register',
-          show: true,
+          toggle: true,
+          inMobile: true,
         },
       ],
     },
@@ -57,17 +64,22 @@ export class HeaderComponent {
   private _acreditarse: Menu = {
     description: 'ACREDITARSE',
     moreOptions: true,
-    show: true,
+    toggle: true,
+    inMobile: true,
     subMenu: [
       {
         description: 'INICIAR SESIÓN',
         redirectTo: '/auth/login',
-        show: true,
+        toggle: true,
+        icon: 'ti-user',
+        inMobile: true,
       },
       {
         description: 'REGISTRARSE',
         redirectTo: '/auth/register',
-        show: true,
+        toggle: true,
+        icon: 'ti-plus',
+        inMobile: true,
       },
     ],
   };
@@ -80,8 +92,10 @@ export class HeaderComponent {
         (menuItems) => menuItems.description !== 'ACREDITARSE'
       );
     } else {
-      if (!this.menu.find(menuItem => menuItem.description === 'ACREDITARSE')) {
-        this.menu.push(this._acreditarse)
+      if (
+        !this.menu.find((menuItem) => menuItem.description === 'ACREDITARSE')
+      ) {
+        this.menu.push(this._acreditarse);
       }
     }
     return this.authService.getUser();

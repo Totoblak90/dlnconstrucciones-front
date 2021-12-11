@@ -13,33 +13,39 @@ export class HeaderComponent {
   public menu: Menu[] = [
     {
       description: 'Dashboard',
-      show: true,
+      toggle: true,
       redirectTo: '/admin/dashboard',
+      inMobile: true
     },
     {
       description: 'Usuarios',
-      show: true,
+      toggle: true,
       redirectTo: '/admin/users',
+      inMobile: true
     },
     {
       description: 'Servicios',
-      show: true,
+      toggle: true,
       redirectTo: '/admin/servicios',
+      inMobile: true
     },
     {
       description: 'Trabajos Realizados',
-      show: true,
+      toggle: true,
       redirectTo: '/admin/trabajos',
+      inMobile: true
     },
     {
       description: 'Lotes',
-      show: true,
+      toggle: true,
       redirectTo: '/admin/lotes',
+      inMobile: true
     },
     {
       description: 'Salir',
       redirectTo: '/main/home',
-      show: true
+      toggle: true,
+      inMobile: true
     }
   ]
   constructor(private authService: AuthService) { }
