@@ -6,38 +6,48 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent {
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
 
-  public editProfileForm: FormGroup = this.fb.group(    {
-    first_name: [this.user?.nombre, [Validators.required, Validators.minLength(3)]],
-    last_name: [this.user?.apellido, [Validators.required, Validators.minLength(3)]],
-    dni: [
-      this.user?.dni,
-      [
-        Validators.required,
-        Validators.max(999999999),
-        Validators.min(1000000),
+  public editProfileForm: FormGroup = this.fb.group(
+    {
+      first_name: [
+        this.user?.nombre,
+        [Validators.required, Validators.minLength(3)],
       ],
-    ],
-    email: [this.user?.email, [Validators.required, Validators.pattern(this.emailPattern)]],
-    phone: [this.user?.phone, [Validators.required]],
-    password: [
-      '',
-      [
-        Validators.required,
-        // Validators.pattern(this.passwordPattern)
+      last_name: [
+        this.user?.apellido,
+        [Validators.required, Validators.minLength(3)],
       ],
-    ],
-    passwordRepeat: ['', [Validators.required]],
-  },
-  {
-    validator: this.passwordMatchFormValidator('password', 'passwordRepeat'),
-  })
+      dni: [
+        this.user?.dni,
+        [
+          Validators.required,
+          Validators.max(999999999),
+          Validators.min(1000000),
+        ],
+      ],
+      email: [
+        this.user?.email,
+        [Validators.required, Validators.pattern(this.emailPattern)],
+      ],
+      phone: [this.user?.phone],
+      password: [
+        '',
+        [
+          /** Validators.pattern(this.passwordPattern)*/
+        ],
+      ],
+      passwordRepeat: ['', [Validators.required]],
+    },
+    {
+      validator: this.passwordMatchFormValidator('password', 'passwordRepeat'),
+    }
+  );
 
-  constructor(private authService: AuthService, private fb: FormBuilder) { }
+  constructor(private authService: AuthService, private fb: FormBuilder) {}
 
   public get user(): User {
     return this.authService.getUser();
@@ -45,12 +55,13 @@ export class UserProfileComponent {
 
   public cambiarFoto(e: any): void {
     const file: File = e.target!.files[0];
-    console.log(file)
+    console.log(file);
   }
 
   public cambiarPerfil(): void {
+    this.editProfileForm.markAllAsTouched();
     if (this.editProfileForm.valid) {
-      console.log('Guardo el nuevo perfil!!')
+      console.log('Guardo el nuevo perfil!!');
     }
   }
 

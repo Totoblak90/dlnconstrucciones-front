@@ -4,8 +4,18 @@
     <div class="card">
       <div class="card-body">
         <div class="m-t-30 text-center">
-          <img (click)="inputFoto.click()" [src]="user.getAvatar()" class="img-circle pointer" width="150" />
-          <input (change)="cambiarFoto($event)" type="file" #inputFoto class="d-none">
+          <img
+            (click)="inputFoto.click()"
+            [src]="user.getAvatar()"
+            class="img-circle pointer"
+            width="150"
+          />
+          <input
+            (change)="cambiarFoto($event)"
+            type="file"
+            #inputFoto
+            class="d-none"
+          />
           <h4 class="card-title m-t-10 primary-dark">
             {{ user?.nombre }} {{ user.apellido }}
           </h4>
@@ -47,7 +57,10 @@
             >Editar perfil</a
           >
         </li>
-        <li *ngIf="user?.role === 'admin' || user?.role === 'master'" class="nav-item bgc-primary">
+        <li
+          *ngIf="user?.role === 'admin' || user?.role === 'master'"
+          class="nav-item bgc-primary"
+        >
           <a
             class="nav-link"
             id="admin-pag"
@@ -112,7 +125,11 @@
           aria-expanded="false"
         >
           <div class="card-body">
-            <form [formGroup]="editProfileForm" (ngSubmit)="cambiarPerfil()" class="form-horizontal form-material">
+            <form
+              [formGroup]="editProfileForm"
+              (ngSubmit)="cambiarPerfil()"
+              class="form-horizontal form-material"
+            >
               <div class="form-group">
                 <div class="col-md-12">
                   <input
@@ -121,6 +138,24 @@
                     placeholder="Nombre"
                     class="form-control form-control-line primary-dark"
                   />
+                  <div class="p-2">
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        editProfileForm.controls.first_name.errors?.required &&
+                        editProfileForm.controls.first_name.touched
+                      "
+                      >Este dato es requerido</span
+                    >
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        editProfileForm.controls.first_name.errors?.minlength &&
+                        editProfileForm.controls.first_name.touched
+                      "
+                      >Debe tener al menos 3 caracteres</span
+                    >
+                  </div>
                 </div>
               </div>
               <div class="form-group">
@@ -132,6 +167,24 @@
                     class="form-control form-control-line primary-dark"
                   />
                 </div>
+                <div class="p-2">
+                  <span
+                    *ngIf="
+                      editProfileForm.controls.last_name.errors?.required &&
+                      editProfileForm.controls.last_name.touched
+                    "
+                    class="text-danger"
+                    >Este dato es requerido</span
+                  >
+                  <span
+                    *ngIf="
+                      editProfileForm.controls.last_name.errors?.minlength &&
+                      editProfileForm.controls.last_name.touched
+                    "
+                    class="text-danger"
+                    >Debe tener al menos 3 caracteres</span
+                  >
+                </div>
               </div>
               <div class="form-group">
                 <div class="col-md-12">
@@ -141,6 +194,32 @@
                     placeholder="DNI"
                     class="form-control form-control-line primary-dark"
                   />
+                  <div class="p-2">
+                    <span
+                      *ngIf="
+                        editProfileForm.controls.dni.errors?.required &&
+                        editProfileForm.controls.dni.touched
+                      "
+                      class="text-danger"
+                      >Este dato es requerido</span
+                    >
+                    <span
+                      *ngIf="
+                        editProfileForm.controls.dni.errors?.min &&
+                        editProfileForm.controls.dni.touched
+                      "
+                      class="text-danger"
+                      >Debe contenter al menos 7 caracteres</span
+                    >
+                    <span
+                      *ngIf="
+                        editProfileForm.controls.dni.errors?.max &&
+                        editProfileForm.controls.dni.touched
+                      "
+                      class="text-danger"
+                      >Número máximo 999.999.999</span
+                    >
+                  </div>
                 </div>
               </div>
               <div class="form-group">
@@ -153,16 +232,35 @@
                     name="example-email"
                     id="example-email"
                   />
+                  <div class="p-2">
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        editProfileForm.controls.email.errors?.required &&
+                        editProfileForm.controls.email.touched
+                      "
+                      >Este dato es requerido</span
+                    >
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        editProfileForm.controls.email.errors?.pattern &&
+                        editProfileForm.controls.email.touched
+                      "
+                      >Por favor ingresá un email válido</span
+                    >
+                  </div>
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-md-12">
                   <input
-                    type="text"
+                    type="number"
                     placeholder="Teléfono"
                     formControlName="phone"
                     class="form-control form-control-line primary-dark"
                   />
+                  <div class="p-2"></div>
                 </div>
               </div>
               <div class="form-group">
@@ -173,6 +271,16 @@
                     class="form-control form-control-line primary-dark"
                     formControlName="password"
                   />
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      editProfileForm.controls.password.errors?.pattern &&
+                      editProfileForm.controls.password.touched
+                    "
+                    >La contraseña debe tener un mínimo de 8 caracteres,
+                    incluyendo una minúscula, una mayúscula, un número y un
+                    símbolo</span
+                  >
                 </div>
               </div>
               <div class="form-group">
@@ -183,12 +291,31 @@
                     class="form-control form-control-line primary-dark"
                     formControlName="passwordRepeat"
                   />
+                  <div class="p-2">
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        editProfileForm.controls.passwordRepeat.errors
+                          ?.required &&
+                        editProfileForm.controls.passwordRepeat.touched
+                      "
+                      >Este dato es requerido</span
+                    >
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        editProfileForm.controls.passwordRepeat.errors
+                          ?.notMatch &&
+                        editProfileForm.controls.passwordRepeat.touched
+                      "
+                      >Las contraseñas no coinciden</span
+                    >
+                  </div>
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-sm-12">
                   <button
-                    [disabled]="editProfileForm.invalid"
                     type="submit"
                     class="btn btn-success"
                   >
