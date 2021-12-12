@@ -1,14 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from '../../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+import {
+  IdentifyTokenOActualizarUsuario,
+  UserData,
+} from '../../../interfaces/http/auth.interface';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss'],
 })
-export class UserProfileComponent {
+export class UserProfileComponent implements OnDestroy {
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
 
   public editProfileForm: FormGroup = this.fb.group(
@@ -46,6 +53,8 @@ export class UserProfileComponent {
       validator: this.passwordMatchFormValidator('password', 'passwordRepeat'),
     }
   );
+  public mostrarRepetirContrasena: boolean = false;
+  private destroy$: Subject<boolean> = new Subject();
 
   constructor(private authService: AuthService, private fb: FormBuilder) {}
 
@@ -61,8 +70,77 @@ export class UserProfileComponent {
   public cambiarPerfil(): void {
     this.editProfileForm.markAllAsTouched();
     if (this.editProfileForm.valid) {
-      console.log('Guardo el nuevo perfil!!');
+      this.editProfileForm.controls.password.value
+        ? this.confirmAndModifyLoggedUser()
+        : this.guardarCambiosEnBaseDeDatos();
     }
+  }
+
+  private guardarCambiosEnBaseDeDatos() {
+    this.authService
+      .actualizarUsuario(this.editProfileForm.value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res: IdentifyTokenOActualizarUsuario) => {
+          if (res?.meta?.status === 200) {
+            this.modifyLoggedUser(res?.data);
+          } else {
+            Swal.fire(
+              '¡Lo sentimos!',
+              'No podemos actualizar tu información por favor ponete en contacto con el administrador de la página',
+              'warning'
+            );
+          }
+        },
+        () => {
+          Swal.fire(
+            '¡Lo sentimos!',
+            'No pudimos actualizar tu perfil como queríamos, por favor intentalo nuevamente',
+            'error'
+          );
+        }
+      );
+  }
+
+  private confirmAndModifyLoggedUser() {
+    Swal.fire({
+      title: '¿Estás seguro que querés cambiar tu contraseña?',
+      showDenyButton: true,
+      confirmButtonText: 'Si, continuar',
+      denyButtonText: `No`,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.guardarCambiosEnBaseDeDatos();
+        }
+      })
+      .catch((err) =>
+        Swal.fire(
+          '¡Lo sentimos!',
+          'No pudimos actualizar tu perfil como queríamos, por favor intentalo nuevamente',
+          'error'
+        )
+      );
+  }
+
+  private modifyLoggedUser(usuario: UserData) {
+    const user: User = new User(
+      usuario.first_name,
+      usuario.last_name,
+      usuario.email,
+      usuario.role,
+      usuario.dni,
+      usuario.avatar,
+      usuario.phone
+    );
+    this.authService.setUser(user);
+    Swal.fire('¡Excelente!', 'Actualizamos tus datos sin problemas', 'success');
+  }
+
+  public toggleRepetirConstrasena(): void {
+    this.editProfileForm.controls.password.value
+      ? (this.mostrarRepetirContrasena = true)
+      : (this.mostrarRepetirContrasena = false);
   }
 
   private passwordMatchFormValidator(
@@ -79,5 +157,10 @@ export class UserProfileComponent {
         pass2Control!.setErrors({ notMatch: true });
       }
     };
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

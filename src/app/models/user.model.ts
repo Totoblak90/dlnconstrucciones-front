@@ -17,14 +17,4 @@ export class User {
     this.avatar ? imageUrl = `${environment.API_IMAGE_URL}/${this.avatar}` : imageUrl = `assets/no-image.png`;
     return imageUrl;
   }
-
-  public deleteUser(): void {
-    delete this.nombre;
-    delete this.apellido;
-    delete this.email;
-    delete this.role;
-    delete this.dni;
-    delete this.avatar;
-    delete this.phone;
-  }
 }

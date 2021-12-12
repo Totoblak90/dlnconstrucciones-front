@@ -47,9 +47,19 @@ export interface UserData {
   deleted_at?: string;
 }
 
-export interface IdentifyToken {
+export interface IdentifyTokenOActualizarUsuario {
   meta: Meta;
   data: UserData;
+}
+
+export interface ActualizarUsuarioReq {
+  first_name: string;
+  last_name: string;
+  dni: number;
+  email: string;
+  phone?: number;
+  password?: string;
+  passwordRepeat?: string;
 }
 
 export type setUserProp =

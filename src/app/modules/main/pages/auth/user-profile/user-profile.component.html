@@ -270,6 +270,7 @@
                     placeholder="Escribí tu contraseña nueva"
                     class="form-control form-control-line primary-dark"
                     formControlName="password"
+                    (change)="toggleRepetirConstrasena()"
                   />
                   <span
                     class="text-danger"
@@ -283,7 +284,13 @@
                   >
                 </div>
               </div>
-              <div class="form-group">
+              <div
+                class="
+                  form-group
+                  animate__animated animate__slideInLeft animate__fast
+                "
+                *ngIf="mostrarRepetirContrasena"
+              >
                 <div class="col-md-12">
                   <input
                     type="password"
@@ -315,10 +322,7 @@
               </div>
               <div class="form-group">
                 <div class="col-sm-12">
-                  <button
-                    type="submit"
-                    class="btn btn-success"
-                  >
+                  <button type="submit" class="btn btn-success">
                     Actualizar perfil
                   </button>
                 </div>

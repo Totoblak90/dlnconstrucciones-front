@@ -4,7 +4,7 @@ import { getToken } from './modules/main/helpers/functions.helper';
 import { AuthService } from './modules/main/services/auth.service';
 import { User } from './models/user.model';
 import {
-  IdentifyToken,
+  IdentifyTokenOActualizarUsuario,
   UserData,
 } from './modules/main/interfaces/http/auth.interface';
 import Swal from 'sweetalert2';
@@ -26,7 +26,7 @@ export class AppComponent {
         .loginWithToken(token)
         .pipe(take(1))
         .subscribe(
-          (user: IdentifyToken) =>
+          (user: IdentifyTokenOActualizarUsuario) =>
             user?.meta?.status === 200
               ? this.crearYSetearUsuario(user?.data)
               : null,
