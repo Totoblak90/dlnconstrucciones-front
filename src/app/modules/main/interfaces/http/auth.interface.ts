@@ -34,6 +34,7 @@ export interface RegisterForm {
 
 export interface UserData {
   id: number;
+  hash_id: string;
   first_name: string;
   last_name: string;
   email: string;
@@ -44,6 +45,11 @@ export interface UserData {
   created_at: string;
   updeated_at: string;
   deleted_at?: string;
+}
+
+export interface IdentifyToken {
+  meta: Meta;
+  data: UserData;
 }
 
 export type setUserProp =

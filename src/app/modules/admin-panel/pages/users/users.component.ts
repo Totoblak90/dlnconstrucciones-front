@@ -54,6 +54,7 @@ export class UsersComponent implements OnInit {
             : (imageUrl = `assets/no-image.png`);
           return imageUrl;
         },
+        deleteUser: () => {}
       };
     });
   }

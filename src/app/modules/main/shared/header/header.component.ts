@@ -104,4 +104,8 @@ export class HeaderComponent {
   public getUserImg(): string {
     return this.user ? this.user?.getAvatar() : '';
   }
+
+  public logout(): void {
+    this.authService.logout();
+  }
 }
