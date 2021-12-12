@@ -8,6 +8,7 @@ import {
   TipoServicio,
 } from 'src/app/modules/main/interfaces/http/services.interface';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-servicios',
@@ -15,7 +16,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./servicios.component.scss'],
 })
 export class ServiciosComponent implements OnInit, OnDestroy {
-  public encabezadosTabla: string[] = ['Título', 'Descripción'];
+  public encabezadosTabla: string[] = ['Título'];
   public tableData: CuerpoTabla[] = [];
   public loading: boolean = true;
   private destroy$: Subject<boolean> = new Subject();
@@ -29,31 +30,26 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   public getServicios(): void {
     this.httpSrv
       .getAllServices()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => (this.loading = false))
+      )
       .subscribe(
         (servicios: Services) => {
-          for (const servicio of servicios.data) {
-            this.httpSrv
-              .getOneService(servicio.id.toString())
-              .pipe(
-                takeUntil(this.destroy$),
-                finalize(() => (this.loading = false))
-              )
-              .subscribe(
-                (tipoServicio: TipoServicio) => {
-                  tipoServicio?.data?.Contents.map((servicio) => {
-                    this.tableData.push({
-                      imagen: `${environment.API_IMAGE_URL}/${tipoServicio.data.image}`,
-                      item2: servicio.subtitle ? servicio.subtitle : 'Vacío',
-                      item3: servicio.text ? servicio.text : 'Vacío',
-                    });
-                  });
-                },
-                (err) => console.log(err)
-              );
-          }
+          servicios?.data?.forEach((servicio) => {
+            this.tableData.push({
+              imagen: `${environment.API_IMAGE_URL}/${servicio.image}`,
+              item2: servicio.title,
+            });
+          });
         },
-        (err) => console.log(err, 'primer error')
+        (err) => {
+          Swal.fire(
+            '¡Lo sentimos!',
+            'No pudimos cargar los servicios como esperabamos, intentá de nuevo y sino ponete en contacto con tu proveedor de internet',
+            'warning'
+          );
+        }
       );
   }
 

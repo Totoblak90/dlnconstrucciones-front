@@ -1,168 +1,171 @@
-<div class="row animated fadeIn">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <input
-          type="text"
-          class="form-control primary-dark"
-          placeholder="Buscar en la tabla"
-          (keyup)="search(searchInput.value)"
-          #searchInput
-        />
+<div class="table-main-container">
+  <div class="row animated fadeIn">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <input
+            type="text"
+            class="form-control primary-dark"
+            placeholder="Buscar en la tabla"
+            (keyup)="search(searchInput.value)"
+            #searchInput
+          />
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="row animated fadeIn" *ngIf="loading">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <div class="alert alert-info text-center">
-          <h4 class="alert-heading">Cargado</h4>
-          <i class="fa fa-spin fa-refresh fa-2"></i>
-          <p class="mb-0">Aguarda un momento por favor</p>
+  <div class="row animated fadeIn" *ngIf="loading">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="alert alert-info text-center">
+            <h4 class="alert-heading">Cargado</h4>
+            <i class="fa fa-spin fa-refresh fa-2"></i>
+            <p class="mb-0">Aguarda un momento por favor</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row animated fadeIn" *ngIf="!loading">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title primary-dark">{{ title }}</h4>
+          <ng-container *ngIf="!searching; else searchingTemplate">
+            <h6 class="card-subtitle primary-dark">
+              {{ totalSection }} {{ title | lowercase }} en mi página.
+            </h6>
+          </ng-container>
+          <ng-template #searchingTemplate>
+            <h6 class="card-subtitle primary-dark">
+              {{ searchingResults }} {{ title | lowercase }} encontrados de
+              {{ totalSection }} totales.
+            </h6>
+          </ng-template>
+
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="text-nowrap primary-dark w100">Imágen / Avatar</th>
+                  <th
+                    *ngFor="let encabezado of encabezadosTabla"
+                    class="primary-dark"
+                  >
+                    {{ encabezado }}
+                  </th>
+                  <th class="text-nowrap primary-dark w100">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cuerpo of filasTabla">
+                  <td class="text-center">
+                    <img
+                      [src]="cuerpo.imagen"
+                      alt="Avatar"
+                      class="avatar pointer"
+                      (click)="expandirImagen(cuerpo.imagen!)"
+                    />
+                  </td>
+                  <td
+                    class="primary-dark"
+                    *ngIf="cuerpo.item2"
+                    [class.pointer]="cuerpo.item2.length > 100"
+                    (click)="verMas(cuerpo.item2)"
+                  >
+                    {{ cuerpo.item2 | slice: 0:100
+                    }}{{ cuerpo.item2?.length! > 100 ? "..." : "" }}
+                  </td>
+                  <td
+                    class="primary-dark"
+                    *ngIf="cuerpo.item3"
+                    [class.pointer]="cuerpo.item3.length > 100"
+                    (click)="verMas(cuerpo.item3)"
+                  >
+                    {{ cuerpo.item3 | slice: 0:100
+                    }}{{ cuerpo.item3?.length! > 100 ? "..." : "" }}
+                  </td>
+                  <td
+                    class="primary-dark"
+                    *ngIf="cuerpo.item4"
+                    [class.pointer]="cuerpo.item4.length > 100"
+                    (click)="verMas(cuerpo.item4)"
+                  >
+                    {{ cuerpo.item4 | slice: 0:100
+                    }}{{ cuerpo.item4?.length! > 100 ? "..." : "" }}
+                  </td>
+                  <td
+                    class="primary-dark"
+                    *ngIf="cuerpo.linkVerMas"
+                    [class.pointer]="cuerpo.linkVerMas.length > 100"
+                    (click)="verMas(cuerpo.linkVerMas)"
+                  >
+                    {{ cuerpo.linkVerMas | slice: 0:100
+                    }}{{ cuerpo.linkVerMas?.length! > 100 ? "..." : "" }}
+                  </td>
+                  <td
+                    class="primary-dark"
+                    *ngIf="cuerpo.item6"
+                    [class.pointer]="cuerpo.item6.length > 100"
+                    (click)="verMas(cuerpo.item6)"
+                  >
+                    {{ cuerpo.item6 | slice: 0:100
+                    }}{{ cuerpo.item6?.length! > 100 ? "..." : "" }}
+                  </td>
+                  <td
+                    class="primary-dark"
+                    *ngIf="cuerpo.item7"
+                    [class.pointer]="cuerpo.item7.length > 100"
+                    (click)="verMas(cuerpo.item7)"
+                  >
+                    {{ cuerpo.item7 | slice: 0:100
+                    }}{{ cuerpo.item7?.length! > 100 ? "..." : "" }}
+                  </td>
+                  <td
+                    class="primary-dark"
+                    *ngIf="cuerpo.item8"
+                    [class.pointer]="cuerpo.item8.length > 100"
+                    (click)="verMas(cuerpo.item8)"
+                  >
+                    {{ cuerpo.item8 | slice: 0:100
+                    }}{{ cuerpo.item8?.length! > 100 ? "..." : "" }}
+                  </td>
+                  <td
+                    class="primary-dark"
+                    *ngIf="cuerpo.item9"
+                    [class.pointer]="cuerpo.item9.length > 100"
+                    (click)="verMas(cuerpo.item9)"
+                  >
+                    {{ cuerpo.item9 | slice: 0:100
+                    }}{{ cuerpo.item9?.length! > 100 ? "..." : "" }}
+                  </td>
+                  <td
+                    class="primary-dark"
+                    *ngIf="cuerpo.item10"
+                    [class.pointer]="cuerpo.item10.length > 100"
+                    (click)="verMas(cuerpo.item10)"
+                  >
+                    {{ cuerpo.item10 | slice: 0:100
+                    }}{{ cuerpo.item10?.length! > 100 ? "..." : "" }}
+                  </td>
+                  <td class="text-nowrap text-center actions">
+                    <a class="pointer">
+                      <i class="fa fa-pencil text-danger primary-dark"></i>
+                    </a>
+                    <a class="pointer">
+                      <i class="fa fa-close text-danger primary-dark"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row animated fadeIn" *ngIf="!loading">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title primary-dark">{{ title }}</h4>
-        <ng-container *ngIf="!searching; else searchingTemplate">
-          <h6 class="card-subtitle primary-dark">
-            {{ totalSection }} {{ title | lowercase }} en mi página.
-          </h6>
-        </ng-container>
-        <ng-template #searchingTemplate>
-          <h6 class="card-subtitle primary-dark">
-            {{ searchingResults }} {{ title | lowercase }} encontrados de
-            {{ totalSection }} totales.
-          </h6>
-        </ng-template>
-
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th class="text-nowrap primary-dark w100">Imágen / Avatar</th>
-                <th
-                  *ngFor="let encabezado of encabezadosTabla"
-                  class="primary-dark"
-                >
-                  {{ encabezado }}
-                </th>
-                <th class="text-nowrap primary-dark w100">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let cuerpo of filasTabla">
-                <td class="text-center">
-                  <img
-                    [src]="cuerpo.imagen"
-                    alt="Avatar"
-                    class="avatar pointer"
-                    (click)="expandirImagen(cuerpo.imagen!)"
-                  />
-                </td>
-                <td
-                  class="primary-dark"
-                  *ngIf="cuerpo.item2"
-                  [class.pointer]="cuerpo.item2.length > 100"
-                  (click)="verMas(cuerpo.item2)"
-                >
-                  {{ cuerpo.item2 | slice: 0:100
-                  }}{{ cuerpo.item2?.length! > 100 ? "..." : "" }}
-                </td>
-                <td
-                  class="primary-dark"
-                  *ngIf="cuerpo.item3"
-                  [class.pointer]="cuerpo.item3.length > 100"
-                  (click)="verMas(cuerpo.item3)"
-                >
-                  {{ cuerpo.item3 | slice: 0:100
-                  }}{{ cuerpo.item3?.length! > 100 ? "..." : "" }}
-                </td>
-                <td
-                  class="primary-dark"
-                  *ngIf="cuerpo.item4"
-                  [class.pointer]="cuerpo.item4.length > 100"
-                  (click)="verMas(cuerpo.item4)"
-                >
-                  {{ cuerpo.item4 | slice: 0:100
-                  }}{{ cuerpo.item4?.length! > 100 ? "..." : "" }}
-                </td>
-                <td
-                  class="primary-dark"
-                  *ngIf="cuerpo.linkVerMas"
-                  [class.pointer]="cuerpo.linkVerMas.length > 100"
-                  (click)="verMas(cuerpo.linkVerMas)"
-                >
-                  {{ cuerpo.linkVerMas | slice: 0:100
-                  }}{{ cuerpo.linkVerMas?.length! > 100 ? "..." : "" }}
-                </td>
-                <td
-                  class="primary-dark"
-                  *ngIf="cuerpo.item6"
-                  [class.pointer]="cuerpo.item6.length > 100"
-                  (click)="verMas(cuerpo.item6)"
-                >
-                  {{ cuerpo.item6 | slice: 0:100
-                  }}{{ cuerpo.item6?.length! > 100 ? "..." : "" }}
-                </td>
-                <td
-                  class="primary-dark"
-                  *ngIf="cuerpo.item7"
-                  [class.pointer]="cuerpo.item7.length > 100"
-                  (click)="verMas(cuerpo.item7)"
-                >
-                  {{ cuerpo.item7 | slice: 0:100
-                  }}{{ cuerpo.item7?.length! > 100 ? "..." : "" }}
-                </td>
-                <td
-                  class="primary-dark"
-                  *ngIf="cuerpo.item8"
-                  [class.pointer]="cuerpo.item8.length > 100"
-                  (click)="verMas(cuerpo.item8)"
-                >
-                  {{ cuerpo.item8 | slice: 0:100
-                  }}{{ cuerpo.item8?.length! > 100 ? "..." : "" }}
-                </td>
-                <td
-                  class="primary-dark"
-                  *ngIf="cuerpo.item9"
-                  [class.pointer]="cuerpo.item9.length > 100"
-                  (click)="verMas(cuerpo.item9)"
-                >
-                  {{ cuerpo.item9 | slice: 0:100
-                  }}{{ cuerpo.item9?.length! > 100 ? "..." : "" }}
-                </td>
-                <td
-                  class="primary-dark"
-                  *ngIf="cuerpo.item10"
-                  [class.pointer]="cuerpo.item10.length > 100"
-                  (click)="verMas(cuerpo.item10)"
-                >
-                  {{ cuerpo.item10 | slice: 0:100
-                  }}{{ cuerpo.item10?.length! > 100 ? "..." : "" }}
-                </td>
-                <td class="text-nowrap text-center actions">
-                  <a class="pointer">
-                    <i class="fa fa-pencil text-danger primary-dark"></i>
-                  </a>
-                  <a class="pointer">
-                    <i class="fa fa-close text-danger primary-dark"></i>
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
