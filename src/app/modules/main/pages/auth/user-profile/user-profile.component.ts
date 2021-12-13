@@ -17,7 +17,6 @@ import {
 })
 export class UserProfileComponent implements OnDestroy {
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
-
   public editProfileForm: FormGroup = this.fb.group(
     {
       first_name: [
@@ -54,6 +53,7 @@ export class UserProfileComponent implements OnDestroy {
     }
   );
   public mostrarRepetirContrasena: boolean = false;
+  public formatoImagenNoAceptado: boolean = false;
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(private authService: AuthService, private fb: FormBuilder) {}
@@ -63,8 +63,55 @@ export class UserProfileComponent implements OnDestroy {
   }
 
   public cambiarFoto(e: any): void {
-    const file: File = e.target!.files[0];
-    console.log(file);
+    const file: File = e.target.files[0];
+    const formData: FormData = new FormData();
+    formData.append('avatar', file)
+    if (formData.get('avatar')) {
+      switch (file.type) {
+        case 'image/jpg':
+          this.formatoImagenNoAceptado = false;
+          this.actualizarImagenEnDB(formData);
+          return;
+        case 'image/png':
+          this.formatoImagenNoAceptado = false;
+          this.actualizarImagenEnDB(formData);
+          return;
+        case 'image/jpeg':
+          this.formatoImagenNoAceptado = false;
+          this.actualizarImagenEnDB(formData);
+          return;
+        default:
+          this.formatoImagenNoAceptado = true;
+          break;
+    }
+    }
+  }
+
+  private actualizarImagenEnDB(formData: FormData): void {
+    this.authService
+      .actualizarImagenUsuario(formData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (user: IdentifyTokenOActualizarUsuario) => {
+          console.log(user)
+          if (user.meta.status === 200) {
+            this.modifyLoggedUser(user?.data);
+          } else {
+            Swal.fire(
+              '¡Lo sentimos!',
+              'No podemos actualizar tu información por favor ponete en contacto con el administrador de la página',
+              'error'
+            );
+          }
+        },
+        (err) => {
+          Swal.fire(
+            '¡Lo sentimos!',
+            'No pudimos actualizar tu perfil como queríamos, por favor intentalo nuevamente',
+            'error'
+          );
+        }
+      );
   }
 
   public cambiarPerfil(): void {
@@ -125,13 +172,13 @@ export class UserProfileComponent implements OnDestroy {
 
   private modifyLoggedUser(usuario: UserData) {
     const user: User = new User(
-      usuario.first_name,
-      usuario.last_name,
-      usuario.email,
-      usuario.role,
-      usuario.dni,
-      usuario.avatar,
-      usuario.phone
+      usuario?.first_name,
+      usuario?.last_name,
+      usuario?.email,
+      usuario?.role,
+      usuario?.dni,
+      usuario?.avatar,
+      usuario?.phone
     );
     this.authService.setUser(user);
     Swal.fire('¡Excelente!', 'Actualizamos tus datos sin problemas', 'success');

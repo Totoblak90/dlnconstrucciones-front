@@ -14,7 +14,7 @@ export class User {
 
   public getAvatar(): string {
     let imageUrl = '';
-    this.avatar ? imageUrl = `${environment.API_IMAGE_URL}/${this.avatar}` : imageUrl = `assets/no-image.png`;
+    this.avatar ? imageUrl = `${environment.API_IMAGE_URL}/users/${this.avatar}` : imageUrl = `assets/no-image.png`;
     return imageUrl;
   }
 }

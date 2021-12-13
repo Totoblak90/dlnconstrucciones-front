@@ -10,6 +10,9 @@
             class="img-circle pointer"
             width="150"
           />
+          <div class="p-2" *ngIf="formatoImagenNoAceptado">
+            <span class="text-danger">Formato de imágen inválido</span>
+          </div>
           <input
             (change)="cambiarFoto($event)"
             type="file"

@@ -89,6 +89,22 @@ export class AuthService {
   }
 
   /**
+   * Actualiza la imágen del usuario
+   *
+   * @param avatar: File
+   * @return {*}  {Observable<IdentifyTokenOActualizarUsuario>}
+   * @memberof AuthService
+   */
+  public actualizarImagenUsuario(formData: FormData): Observable<IdentifyTokenOActualizarUsuario> {
+
+    return this.httpClient.post<IdentifyTokenOActualizarUsuario>(
+      `${environment.API_BASE_URL}/users/avatar`,
+      formData,
+      { headers: this.headers }
+    );
+  }
+
+  /**
    * Cierra sesión
    *
    * @return {*}  void
