@@ -1,1 +1,37 @@
-<p>dashboard works!</p>
+<div class="row flex-column flex-center">
+  <div class="col text-center">
+    <h1 class="primary-dark">Bienvenido, {{ user.nombre }}</h1>
+    <hr />
+    <h2 class="primary">Algunos números importantes sobre tu página:</h2>
+  </div>
+</div>
+<div class="card-group">
+  <!-- Column -->
+  <div class="card">
+    <div class="box bg-info text-center">
+      <h1 class="font-light text-white">{{ cantidadDeUsuarios }}</h1>
+      <h6 class="text-white">Usuarios</h6>
+    </div>
+  </div>
+  <!-- Column -->
+  <div class="card">
+    <div class="box bg-primary text-center">
+      <h1 class="font-light text-white">{{ lotes.length }}</h1>
+      <h6 class="text-white">lotes</h6>
+    </div>
+  </div>
+  <!-- Column -->
+  <div class="card">
+    <div class="box bg-success text-center">
+      <h1 class="font-light text-white">{{ servicios.length }}</h1>
+      <h6 class="text-white">Servicios</h6>
+    </div>
+  </div>
+  <!-- Column -->
+  <div class="card">
+    <div class="box bg-dark text-center">
+      <h1 class="font-light text-white">{{ trabajos.length }}</h1>
+      <h6 class="text-white">Trabajos realizados</h6>
+    </div>
+  </div>
+</div>

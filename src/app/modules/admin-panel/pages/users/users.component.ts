@@ -52,11 +52,10 @@ export class UsersComponent implements OnInit {
         getAvatar: () => {
           let imageUrl = '';
           user.avatar
-            ? (imageUrl = `${environment.API_IMAGE_URL}/${user.avatar}`)
+            ? (imageUrl = `${environment.API_IMAGE_URL}/users/${user.avatar}`)
             : (imageUrl = `assets/no-image.png`);
           return imageUrl;
         },
-        deleteUser: () => {},
       };
     });
   }

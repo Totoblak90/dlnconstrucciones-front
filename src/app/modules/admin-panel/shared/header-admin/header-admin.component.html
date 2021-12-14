@@ -1,6 +1,18 @@
 <div class="navbar-actions">
-  <button *ngIf="showMenu" class="btn" (click)="showMenu = !showMenu"><i class="ti-close"></i></button>
-  <button *ngIf="!showMenu" class="btn" (click)="showMenu = !showMenu"><i class="ti-menu"></i></button>
+  <button
+    *ngIf="showMenu"
+    class="btn primary-dark"
+    (click)="showMenu = !showMenu"
+  >
+    <i class="ti-close"></i>
+  </button>
+  <button
+    *ngIf="!showMenu"
+    class="btn primary-dark"
+    (click)="showMenu = !showMenu"
+  >
+    <i class="ti-menu"></i>
+  </button>
 </div>
 <header class="topbar" *ngIf="showMenu">
   <nav class="navbar top-navbar navbar-expand-md navbar-light">
@@ -20,18 +32,14 @@
           </div>
         </li>
         <!-- Tarjeta de usuario -->
+        <li role="separator" class="divider" *ngIf="user"></li>
         <li class="nav-item dropdown" *ngIf="user">
-          <a
-            class="
-              nav-link
-              dropdown-toggle
-              waves-effect waves-dark
-              primary-dark
-            "
+          <a class="nav-link waves-effect waves-dark primary-dark"
             ><img [src]="getUserImg()" alt="user" class="profile-pic" />
             {{ user?.nombre }} {{ user?.apellido }}
           </a>
         </li>
+        <li role="separator" class="divider" *ngIf="user"></li>
         <li *ngFor="let m of menu" class="nav-item dropdown">
           <ng-container *ngIf="m.toggle">
             <a

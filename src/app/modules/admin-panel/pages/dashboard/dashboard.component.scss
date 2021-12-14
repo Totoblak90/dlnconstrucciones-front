@@ -1,0 +1,7 @@
+.card-group {
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  .card {
+    flex-grow: 0.3;
+  }
+}
