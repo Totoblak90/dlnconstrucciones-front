@@ -1,15 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap");
 
-html, body { height: 100%;}
+html,
+body {
+  height: 100%;
+}
 body {
   margin: auto;
-  // font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-family: 'Oswald', sans-serif !important;
+  font-family: "Oswald", sans-serif !important;
   box-sizing: border-box;
 }
-h1, h2, h3, h4, h5, h6, span, label, p, button, a, mat-form-field {
-  font-family: 'Oswald', sans-serif !important;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+label,
+p,
+button,
+a {
+  font-family: "Oswald", sans-serif !important;
 }
 a {
   text-decoration: none;
@@ -44,21 +56,14 @@ p {
 .text-justify {
   text-align: justify !important;
 }
-mat-menu, .mat-menu-content {
-  background-color: #4bb0d0 !important;
-
-  button:hover {
-    background-color: #006ba6 !important;
-  }
-
-}
 .mobile-menu-container {
   width: 100%;
 }
 
 .pointer {
-  cursor: pointer;
+  cursor: pointer !important;
 }
-mat-grid-tile {
-  margin: 5px;
+
+.full-width {
+  width: 100% !important;
 }

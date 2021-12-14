@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Host, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { concat, Subject } from 'rxjs';
 import { HttpService } from '../../../../services/http.service';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
@@ -16,6 +16,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./servicios.component.scss'],
 })
 export class ServiciosComponent implements OnInit, OnDestroy {
+  @HostBinding('class.full-width') someClass: Host = true;
+
   public encabezadosTabla: string[] = ['Título'];
   public tableData: CuerpoTabla[] = [];
   public loading: boolean = true;

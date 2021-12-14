@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Host, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { concat, Subject } from 'rxjs';
 import {
   Job,
@@ -15,6 +15,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./trabajos-realizados.component.scss'],
 })
 export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
+  @HostBinding('class.full-width') someClass: Host = true;
+
   public encabezadosTabla: string[] = ['Título', 'Descripción'];
   public tableData: CuerpoTabla[] = [];
   public loading: boolean = true;

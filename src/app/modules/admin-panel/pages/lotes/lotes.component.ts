@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Host, HostBinding, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { HttpService } from '../../../../services/http.service';
@@ -16,6 +16,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./lotes.component.scss'],
 })
 export class LotesComponent implements OnInit {
+  @HostBinding('class.full-width') someClass: Host = true;
+
   public encabezadosTabla: string[] = [
     'Título',
     'Descripción',
@@ -52,8 +54,10 @@ export class LotesComponent implements OnInit {
                       imagen: `${environment.API_IMAGE_URL}/${lote.image}`,
                       item2: lote.title ? lote.title : 'Vacío',
                       item3: lote.description ? lote.description : 'Vacío',
-                      item4: lote.price?.toString() ? lote.price?.toString() : 'Vacío',
-                      item6: this.setearElEstadoVendidoONo(lote.sold)
+                      item4: lote.price?.toString()
+                        ? lote.price?.toString()
+                        : 'Vacío',
+                      item6: this.setearElEstadoVendidoONo(lote.sold),
                     });
                   });
                 },
@@ -79,7 +83,7 @@ export class LotesComponent implements OnInit {
 
   private setearElEstadoVendidoONo(palabra: string): string {
     let frase = '';
-    palabra === 'true' ? frase = 'Si' : frase = 'No'
+    palabra === 'true' ? (frase = 'Si') : (frase = 'No');
     return frase;
   }
 

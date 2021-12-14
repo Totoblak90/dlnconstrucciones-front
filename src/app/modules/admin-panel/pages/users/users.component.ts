@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Host, HostBinding, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
@@ -14,6 +14,8 @@ import { CuerpoTabla } from '../../interfaces/tabla.interface';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
+  @HostBinding('class.full-width') someClass: Host = true;
+
   public users: User[] = [];
   public encabezadosTabla: string[] = ['Nombre', 'Email', 'Teléfono', 'Rol'];
   public tableData: CuerpoTabla[] = [];
@@ -54,7 +56,7 @@ export class UsersComponent implements OnInit {
             : (imageUrl = `assets/no-image.png`);
           return imageUrl;
         },
-        deleteUser: () => {}
+        deleteUser: () => {},
       };
     });
   }
@@ -67,7 +69,7 @@ export class UsersComponent implements OnInit {
         item3: user.email ? user.email : 'Vacío',
         item4: user.phone ? user.phone : 'Vacío',
         item6: user.role ? user.role : 'Vacío',
-      }
+      };
     });
   }
 

@@ -9,7 +9,7 @@ import { AuthService } from '../../../main/services/auth.service';
   styleUrls: ['./header-admin.component.scss']
 })
 export class HeaderAdminComponent {
-
+  public showMenu: boolean = false;
   public menu: Menu[] = [
     {
       description: 'Dashboard',

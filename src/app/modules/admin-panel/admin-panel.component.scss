@@ -1,3 +1,10 @@
 .flex {
   display: flex;
+  .navigation-bar {
+    flex-grow: 0.2;
+  }
+  .content-admin {
+    flex-grow: 0.7;
+  }
 }
+
