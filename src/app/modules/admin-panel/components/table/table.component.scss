@@ -1,4 +1,14 @@
 .table-main-container {
+  .rows-container {
+    .card {
+      .card-body {
+        .title-section {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
   .w100 {
     width: 100px;
   }

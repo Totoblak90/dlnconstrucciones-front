@@ -14,7 +14,7 @@ import { CuerpoTabla } from '../../interfaces/tabla.interface';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
-  @HostBinding('class.full-width') someClass: Host = true;
+  @HostBinding('class.admin-panel-container') someClass: Host = true;
 
   public users: User[] = [];
   public encabezadosTabla: string[] = ['Nombre', 'Email', 'Teléfono', 'Rol'];

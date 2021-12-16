@@ -30,6 +30,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'tipo-de-trabajo',
+        loadChildren: () =>
+          import('./pages/tipo-de-trabajo/tipo-de-trabajo.module').then(
+            (m) => m.TipoDeTrabajoModule
+          ),
+      },
+      {
         path: 'servicios',
         loadChildren: () =>
           import('./pages/servicios/servicios.module').then(

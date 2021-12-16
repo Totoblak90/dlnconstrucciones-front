@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Host, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import Swal from 'sweetalert2';
 
@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent implements OnInit {
+export class TableComponent {
+
   @Output() onRecargar: EventEmitter<boolean> = new EventEmitter();
   @Input() title: string = '';
   @Input() totalSection: number = 0;
@@ -17,12 +18,6 @@ export class TableComponent implements OnInit {
 
   public searching: boolean = false;
   public searchingResults: number = 0;
-
-  constructor() {}
-
-  ngOnInit(): void {
-    console.log(this.filasTabla)
-  }
 
   public expandirImagen(imagen: string): void {
     Swal.fire({

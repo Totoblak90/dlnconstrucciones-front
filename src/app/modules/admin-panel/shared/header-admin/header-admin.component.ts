@@ -36,6 +36,12 @@ export class HeaderAdminComponent {
       inMobile: true
     },
     {
+      description: 'Tipo de trabajo',
+      toggle: true,
+      redirectTo: '/admin/tipo-de-trabajo',
+      inMobile: true
+    },
+    {
       description: 'Lotes',
       toggle: true,
       redirectTo: '/admin/lotes',

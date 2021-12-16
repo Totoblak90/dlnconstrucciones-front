@@ -1,0 +1,9 @@
+<app-table
+  *ngIf="tableData"
+  [title]="'Tipos de trabajo'"
+  [loading]="loading"
+  [filasTabla]="tableData"
+  [encabezadosTabla]="encabezadosTabla"
+  [totalSection]="tableData?.length!"
+  (onRecargar)="recargarTrabajos($event)"
+></app-table>

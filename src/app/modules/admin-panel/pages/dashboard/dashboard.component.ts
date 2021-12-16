@@ -20,7 +20,7 @@ import { AuthService } from '../../../main/services/auth.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  @HostBinding('class.full-width') someClass: Host = true;
+  @HostBinding('class.admin-panel-container') someClass: Host = true;
 
   public user!: User;
   public cantidadDeUsuarios: number = 0;

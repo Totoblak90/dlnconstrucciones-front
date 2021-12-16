@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <div class="row animated fadeIn" *ngIf="loading">
+  <div class="row animated fadeIn loading-container" *ngIf="loading">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
@@ -29,22 +29,29 @@
     </div>
   </div>
 
-  <div class="row animated fadeIn" *ngIf="!loading">
+  <div class="row animated fadeIn rows-container" *ngIf="!loading">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title primary-dark">{{ title }}</h4>
-          <ng-container *ngIf="!searching; else searchingTemplate">
-            <h6 class="card-subtitle primary-dark">
-              {{ totalSection }} {{ title | lowercase }} en mi página.
-            </h6>
-          </ng-container>
-          <ng-template #searchingTemplate>
-            <h6 class="card-subtitle primary-dark">
-              {{ searchingResults }} {{ title | lowercase }} encontrados de
-              {{ totalSection }} totales.
-            </h6>
-          </ng-template>
+          <div class="title-section">
+            <div class="title-section-info">
+              <h4 class="card-title primary-dark">{{ title }}</h4>
+              <ng-container *ngIf="!searching; else searchingTemplate">
+                <h6 class="card-subtitle primary-dark">
+                  {{ totalSection }} {{ title | lowercase }} en mi página.
+                </h6>
+              </ng-container>
+              <ng-template #searchingTemplate>
+                <h6 class="card-subtitle primary-dark">
+                  {{ searchingResults }} {{ title | lowercase }} encontrados de
+                  {{ totalSection }} totales.
+                </h6>
+              </ng-template>
+            </div>
+            <div class="title-section-actions">
+              <button class="btn bgc-primary-dark text-white">Crear {{ title }}</button>
+            </div>
+          </div>
 
           <div class="table-responsive">
             <table class="table table-bordered">

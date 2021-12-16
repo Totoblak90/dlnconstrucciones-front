@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./servicios.component.scss'],
 })
 export class ServiciosComponent implements OnInit, OnDestroy {
-  @HostBinding('class.full-width') someClass: Host = true;
+  @HostBinding('class.admin-panel-container') someClass: Host = true;
 
   public encabezadosTabla: string[] = ['Título'];
   public tableData: CuerpoTabla[] = [];

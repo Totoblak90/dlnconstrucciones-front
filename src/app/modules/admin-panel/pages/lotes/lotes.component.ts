@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./lotes.component.scss'],
 })
 export class LotesComponent implements OnInit {
-  @HostBinding('class.full-width') someClass: Host = true;
+  @HostBinding('class.admin-panel-container') someClass: Host = true;
 
   public encabezadosTabla: string[] = [
     'Título',

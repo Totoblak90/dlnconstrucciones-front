@@ -15,7 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./trabajos-realizados.component.scss'],
 })
 export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
-  @HostBinding('class.full-width') someClass: Host = true;
+  @HostBinding('class.admin-panel-container') someClass: Host = true;
 
   public encabezadosTabla: string[] = ['Título', 'Descripción'];
   public tableData: CuerpoTabla[] = [];
