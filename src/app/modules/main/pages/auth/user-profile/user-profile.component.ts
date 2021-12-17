@@ -65,7 +65,7 @@ export class UserProfileComponent implements OnDestroy {
   public cambiarFoto(e: any): void {
     const file: File = e.target.files[0];
     const formData: FormData = new FormData();
-    formData.append('avatar', file)
+    formData.append('avatar', file);
     if (formData.get('avatar')) {
       switch (file.type) {
         case 'image/jpg':
@@ -83,7 +83,7 @@ export class UserProfileComponent implements OnDestroy {
         default:
           this.formatoImagenNoAceptado = true;
           break;
-    }
+      }
     }
   }
 
@@ -93,7 +93,7 @@ export class UserProfileComponent implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (user: IdentifyTokenOActualizarUsuario) => {
-          console.log(user)
+          console.log(user);
           if (user.meta.status === 200) {
             this.modifyLoggedUser(user?.data);
           } else {

@@ -33,7 +33,7 @@ export class TableComponent {
     });
   }
 
-  public verMas(info: string) {
+  public verMas(info: string): void {
     if (info.length > 100) {
       Swal.fire({
         text: info,
@@ -45,6 +45,10 @@ export class TableComponent {
         },
       });
     }
+  }
+
+  public sendData(): void {
+
   }
 
   public search(term: string): void {

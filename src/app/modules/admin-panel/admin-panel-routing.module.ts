@@ -46,9 +46,12 @@ const routes: Routes = [
       {
         path: 'lotes',
         loadChildren: () =>
-          import('./pages/lotes/lotes.module').then(
-            (m) => m.LotesModule
-          ),
+          import('./pages/lotes/lotes.module').then((m) => m.LotesModule),
+      },
+      {
+        path: 'zonas',
+        loadChildren: () =>
+          import('./pages/zonas/zonas.module').then((m) => m.ZonasModule),
       },
       {
         path: '**',

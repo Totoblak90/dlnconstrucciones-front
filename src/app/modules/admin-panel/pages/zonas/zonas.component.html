@@ -1,0 +1,8 @@
+<app-table
+  [title]="'Lotes'"
+  [filasTabla]="tableData"
+  [encabezadosTabla]="encabezadosTabla"
+  [totalSection]="tableData?.length!"
+  [loading]="loading"
+  (onRecargar)="recargarZonas($event)"
+></app-table>

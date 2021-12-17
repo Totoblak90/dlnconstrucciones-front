@@ -3,16 +3,15 @@ import { Subject } from 'rxjs';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { HttpService } from '../../../../services/http.service';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { TypesOfJobs } from 'src/app/modules/main/interfaces/http/jobs.interface';
-import { environment } from 'src/environments/environment';
+import { PostalZones } from 'src/app/modules/main/interfaces/http/batches.interface';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-tipo-de-trabajo',
-  templateUrl: './tipo-de-trabajo.component.html',
-  styleUrls: ['./tipo-de-trabajo.component.scss'],
+  selector: 'app-zonas',
+  templateUrl: './zonas.component.html',
+  styleUrls: ['./zonas.component.scss'],
 })
-export class TipoDeTrabajoComponent implements OnInit {
+export class ZonasComponent implements OnInit {
   @HostBinding('class.admin-panel-container') someClass: Host = true;
 
   public encabezadosTabla: string[] = ['Título'];
@@ -23,22 +22,22 @@ export class TipoDeTrabajoComponent implements OnInit {
   constructor(private httpSrv: HttpService) {}
 
   ngOnInit(): void {
-    this.getTiposDeTrabajo();
+    this.getZonas();
   }
 
-  private getTiposDeTrabajo(): void {
+  private getZonas(): void {
     this.httpSrv
-      .getTypesOfJob()
+      .getAllZones()
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => (this.loading = false))
       )
       .subscribe(
-        (typesOfJob: TypesOfJobs) => {
-          typesOfJob.data.forEach((typeOfJob) => {
+        (zonas: PostalZones) => {
+          zonas?.data?.forEach((zona) => {
             this.tableData.push({
-              imagen: `${environment.API_IMAGE_URL}/${typeOfJob.image}`,
-              item2: typeOfJob.title,
+              imagen: zona.image,
+              item2: zona.title,
             });
           });
         },
@@ -52,15 +51,14 @@ export class TipoDeTrabajoComponent implements OnInit {
       );
   }
 
-  public recargarTrabajos(recargar: boolean): void {
+  public recargarZonas(recargar: boolean): void {
     if (recargar) {
       this.tableData = [];
-      this.getTiposDeTrabajo();
+      this.getZonas();
     }
   }
-
   ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
 }

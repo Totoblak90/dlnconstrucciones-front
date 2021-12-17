@@ -19,7 +19,6 @@ import Swal from 'sweetalert2';
 })
 export class LogInComponent implements OnDestroy {
   public loginForm!: FormGroup;
-  private user!: User;
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   private destroy$: Subject<boolean> = new Subject();
 

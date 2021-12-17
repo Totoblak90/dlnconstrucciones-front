@@ -10,7 +10,7 @@
             <h3 class="card-title">
               ¿Ya tenés <strong>tu lote</strong> en Costa Esmeralda?
             </h3>
-            <button routerLink="/main/auth" class="btn bgc-primary-dark mb-2">
+            <button *ngIf="!user" routerLink="/main/auth" class="btn bgc-primary-dark mb-2">
               Ingresá
             </button>
             <a

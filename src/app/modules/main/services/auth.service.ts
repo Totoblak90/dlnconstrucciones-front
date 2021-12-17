@@ -95,8 +95,9 @@ export class AuthService {
    * @return {*}  {Observable<IdentifyTokenOActualizarUsuario>}
    * @memberof AuthService
    */
-  public actualizarImagenUsuario(formData: FormData): Observable<IdentifyTokenOActualizarUsuario> {
-
+  public actualizarImagenUsuario(
+    formData: FormData
+  ): Observable<IdentifyTokenOActualizarUsuario> {
     return this.httpClient.post<IdentifyTokenOActualizarUsuario>(
       `${environment.API_BASE_URL}/users/avatar`,
       formData,
