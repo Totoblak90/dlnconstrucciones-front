@@ -3,6 +3,21 @@
   justify-content: space-around;
   .card {
     flex-grow: 0.3;
+    .ribbon-wrapper {
+      position: relative;
+      .ribbon {
+        position: absolute;
+        width: 75%;
+        top: 15%;
+        left: 0;
+        padding: 3px;
+        border-top-right-radius: 33px;
+        border-bottom-right-radius: 33px;
+        letter-spacing: 5px;
+        font-size: 2em;
+        font-style: italic;
+      }
+    }
     button {
       border: none;
       color: white;

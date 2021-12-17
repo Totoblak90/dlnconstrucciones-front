@@ -6,6 +6,7 @@ import { PresentationCard } from '../../../interfaces/presentation-card.interfac
 import { Batch, Lotes } from '../../../interfaces/http/batches.interface';
 import { environment } from 'src/environments/environment';
 import { HttpService } from 'src/app/services/http.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-lote',
@@ -40,7 +41,13 @@ export class LoteComponent implements OnInit, OnDestroy {
           this.mapLotesToPresent();
           this.checkLotesLength();
         },
-        (err) => console.log(err)
+        (err) => {
+          Swal.fire(
+            '¡Lo sentimos!',
+            'No pudimos cargar la información, probá recargando la página. Si el problema persiste contactate con el adminitrador',
+            'error'
+          );
+        }
       );
   }
 
@@ -55,13 +62,14 @@ export class LoteComponent implements OnInit, OnDestroy {
   }
 
   private mapLotesToPresent(): void {
-    this.lotes?.forEach((lote) => {
+    this.lotes?.forEach((lote: Batch) => {
       this.lotesToPresent.push({
         titulo: lote.title,
         urlFoto: lote.image,
         ruta: lote.url,
         descripcion: lote.description,
         sendDataByRoute: false,
+        vendido: lote.sold,
       });
     });
   }

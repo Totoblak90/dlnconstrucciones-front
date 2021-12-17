@@ -46,7 +46,7 @@ export class LotesComponent implements OnInit, OnDestroy {
         urlFoto: postalZone.image,
         ruta: postalZone.url,
         sendDataByRoute: true,
-        urlData: {data: postalZone.id}
+        urlData: {data: postalZone.id},
       })
     })
   }

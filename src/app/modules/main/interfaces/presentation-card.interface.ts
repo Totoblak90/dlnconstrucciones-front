@@ -6,4 +6,5 @@ export interface PresentationCard {
   sendDataByRoute?: boolean;
   urlData?: {data: any},
   openModal?: boolean;
+  vendido?: string;
 }
