@@ -18,22 +18,15 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'users',
+        path: 'lotes',
         loadChildren: () =>
-          import('./pages/users/users.module').then((m) => m.UsersModule),
+          import('./pages/lotes/lotes.module').then((m) => m.LotesModule),
       },
       {
-        path: 'trabajos',
+        path: 'intereses',
         loadChildren: () =>
-          import('./pages/trabajos-realizados/trabajos-realizados.module').then(
-            (m) => m.TrabajosRealizadosModule
-          ),
-      },
-      {
-        path: 'tipo-de-trabajo',
-        loadChildren: () =>
-          import('./pages/tipo-de-trabajo/tipo-de-trabajo.module').then(
-            (m) => m.TipoDeTrabajoModule
+          import('./pages/intereses/intereses.module').then(
+            (m) => m.InteresesModule
           ),
       },
       {
@@ -44,9 +37,23 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'lotes',
+        path: 'tipo-de-trabajo',
         loadChildren: () =>
-          import('./pages/lotes/lotes.module').then((m) => m.LotesModule),
+          import('./pages/tipo-de-trabajo/tipo-de-trabajo.module').then(
+            (m) => m.TipoDeTrabajoModule
+          ),
+      },
+      {
+        path: 'trabajos',
+        loadChildren: () =>
+          import('./pages/trabajos-realizados/trabajos-realizados.module').then(
+            (m) => m.TrabajosRealizadosModule
+          ),
+      },
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('./pages/users/users.module').then((m) => m.UsersModule),
       },
       {
         path: 'zonas',

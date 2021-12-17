@@ -18,6 +18,12 @@ export class HeaderAdminComponent {
       inMobile: true,
     },
     {
+      description: 'Intereses',
+      toggle: true,
+      redirectTo: '/admin/intereses',
+      inMobile: true,
+    },
+    {
       description: 'Lotes',
       toggle: true,
       redirectTo: '/admin/lotes',
