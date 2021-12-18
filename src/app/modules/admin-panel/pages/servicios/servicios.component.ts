@@ -42,6 +42,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
             this.tableData.push({
               imagen: `${environment.API_IMAGE_URL}/${servicio.image}`,
               item2: servicio.title,
+              id: servicio.id
             });
           });
         },

@@ -5,4 +5,7 @@
   [totalSection]="tableData?.length!"
   [loading]="loading"
   (onRecargar)="recargarLotes($event)"
+  (onCreate)="creatLote()"
+  (onEdit)="editarLote($event)"
+  (onDelete)="borrarLote($event)"
 ></app-table>

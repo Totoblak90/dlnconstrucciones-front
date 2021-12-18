@@ -38,6 +38,7 @@ export class ZonasComponent implements OnInit {
             this.tableData.push({
               imagen: zona.image,
               item2: zona.title,
+              id: zona.id,
             });
           });
         },

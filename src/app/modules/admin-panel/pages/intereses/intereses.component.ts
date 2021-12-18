@@ -41,6 +41,7 @@ export class InteresesComponent implements OnInit {
             imagen: `${environment.API_IMAGE_URL}/${int.image}`,
             item2: int.title,
             item3: int.description,
+            id: int.id
           });
         });
       });

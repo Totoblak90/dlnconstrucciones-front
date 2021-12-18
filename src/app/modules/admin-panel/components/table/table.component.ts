@@ -8,6 +8,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
+  @Output() onCreate: EventEmitter<undefined> = new EventEmitter();
+  @Output() onEdit: EventEmitter<number> = new EventEmitter();
+  @Output() onDelete: EventEmitter<number> = new EventEmitter();
 
   @Output() onRecargar: EventEmitter<boolean> = new EventEmitter();
   @Input() title: string = '';
@@ -47,9 +50,18 @@ export class TableComponent {
     }
   }
 
-  public sendData(): void {
-
+  public create(): void {
+    this.onCreate.emit();
   }
+
+  public edit(value: number): void {
+    this.onEdit.emit(value);
+  }
+
+  public delete(value: number): void {
+    this.onDelete.emit(value);
+  }
+
 
   public search(term: string): void {
     this.searching = true;

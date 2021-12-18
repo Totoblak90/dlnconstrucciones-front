@@ -49,7 +49,7 @@
               </ng-template>
             </div>
             <div class="title-section-actions">
-              <button class="btn bgc-primary-dark text-white" (click)="sendData()">Crear {{ title }}</button>
+              <button class="btn bgc-primary-dark text-white" (click)="create()">Crear {{ title }}</button>
             </div>
           </div>
 
@@ -159,10 +159,10 @@
                     }}{{ cuerpo.item10?.length! > 100 ? "..." : "" }}
                   </td>
                   <td class="text-nowrap text-center actions">
-                    <a class="pointer">
+                    <a class="pointer" (click)="edit(cuerpo.id)">
                       <i class="fa fa-pencil text-danger primary-dark"></i>
                     </a>
-                    <a class="pointer">
+                    <a class="pointer" (click)="delete(cuerpo.id)">
                       <i class="fa fa-close text-danger primary-dark"></i>
                     </a>
                   </td>

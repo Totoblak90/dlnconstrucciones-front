@@ -39,6 +39,7 @@ export class TipoDeTrabajoComponent implements OnInit {
             this.tableData.push({
               imagen: `${environment.API_IMAGE_URL}/${typeOfJob.image}`,
               item2: typeOfJob.title,
+              id: typeOfJob.id
             });
           });
         },

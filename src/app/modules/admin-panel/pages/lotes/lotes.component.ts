@@ -4,11 +4,13 @@ import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { HttpService } from '../../../../services/http.service';
 import { takeUntil, finalize } from 'rxjs/operators';
 import {
+  Batch,
   Lotes,
   PostalZones,
 } from '../../../main/interfaces/http/batches.interface';
 import { environment } from 'src/environments/environment';
-import Swal from 'sweetalert2';
+import Swal, { SweetAlertResult } from 'sweetalert2';
+import { LotesService } from '../../services/lotes.service';
 
 @Component({
   selector: 'app-lotes',
@@ -26,9 +28,13 @@ export class LotesComponent implements OnInit {
   ];
   public tableData: CuerpoTabla[] = [];
   public loading: boolean = true;
+  public lotes: Batch[] = [];
   private destroy$: Subject<boolean> = new Subject();
 
-  constructor(private httpSrv: HttpService) {}
+  constructor(
+    private httpSrv: HttpService,
+    private lotesService: LotesService
+  ) {}
 
   ngOnInit(): void {
     this.getLotes();
@@ -58,10 +64,12 @@ export class LotesComponent implements OnInit {
                         ? lote.price?.toString()
                         : 'Vacío',
                       item6: this.setearElEstadoVendidoONo(lote.sold),
+                      id: lote.id,
                     });
+                    this.lotes.push(lote);
                   });
                 },
-                (err) => {
+                () => {
                   Swal.fire(
                     'Error',
                     'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
@@ -93,6 +101,59 @@ export class LotesComponent implements OnInit {
       this.getLotes();
     }
   }
+
+  public creatLote(): void {
+    console.log('estoy creando');
+  }
+
+  public editarLote(id: number): void {
+    if (this.encontrarLoteSeleccionado(id)) {
+    }
+  }
+
+  public borrarLote(id: number): void {
+    if (this.encontrarLoteSeleccionado(id)) {
+      Swal.fire({
+        title: '¿Seguro querés elimninar el lote seleccionado?',
+        showDenyButton: true,
+        confirmButtonText: 'Si, borrar',
+        denyButtonText: `No`,
+      }).then((result: SweetAlertResult<any>) => {
+        result.isConfirmed ? this.borrarLoteDeLaDb(id) : null;
+      });
+    }
+  }
+
+  private borrarLoteDeLaDb(id: number): void {
+    this.lotesService
+      .deleteLote(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => {
+          this.recargarLotes(true);
+          Swal.fire(
+            '¡Genial!',
+            'Hemos completado tu pedido, gracias',
+            'success'
+          );
+        },
+        () => {
+          Swal.fire(
+            '¡Lo sentimos!',
+            'No pudimos realizar el pedido correctamente, por favor actualizá la página e intentá de nuevo',
+            'error'
+          );
+        }
+      );
+  }
+
+  private encontrarLoteSeleccionado(id: number): Batch | undefined {
+    const loteSeleccionado: Batch | undefined = this.lotes.find((lote) => {
+      return lote.id === id;
+    });
+    return loteSeleccionado;
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();

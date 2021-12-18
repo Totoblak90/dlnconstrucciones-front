@@ -46,6 +46,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
                   imagen: `${environment.API_IMAGE_URL}/${j.image}`,
                   item2: j.title ? j.title : 'Vacío',
                   item3: j.description ? j.description : 'Vacío',
+                  id: j.id
                 });
               });
             });

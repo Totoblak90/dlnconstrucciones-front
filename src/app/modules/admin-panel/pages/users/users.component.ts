@@ -68,6 +68,7 @@ export class UsersComponent implements OnInit {
         item3: user.email ? user.email : 'Vacío',
         item4: user.phone ? user.phone : 'Vacío',
         item6: user.role ? user.role : 'Vacío',
+        id: 1
       };
     });
   }
