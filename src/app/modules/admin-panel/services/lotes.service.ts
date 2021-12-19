@@ -8,13 +8,11 @@ import { getToken } from '../../main/helpers/functions.helper';
   providedIn: 'root',
 })
 export class LotesService {
-
-  private headers: HttpHeaders =  new HttpHeaders({
-    'acces-token': getToken()
-  })
+  private headers: HttpHeaders = new HttpHeaders({
+    'access-token': getToken(),
+  });
 
   constructor(private http: HttpClient) {}
-
 
   /**
    * Crea un nuevo lote
@@ -27,7 +25,7 @@ export class LotesService {
     return this.http.post<any>(
       `${environment.API_BASE_URL}/batches/create`,
       payload,
-      {headers: this.headers}
+      { headers: this.headers }
     );
   }
 
@@ -41,8 +39,9 @@ export class LotesService {
    */
   public editLote(id: number, payload: any): Observable<any> {
     return this.http.patch<any>(
-      `${environment.API_BASE_URL}/batches/${id}`,
-      payload
+      `${environment.API_BASE_URL}/batches/edit/${id}`,
+      payload,
+      { headers: this.headers }
     );
   }
 
@@ -54,6 +53,11 @@ export class LotesService {
    * @memberof LotesService
    */
   public deleteLote(id: number): Observable<any> {
-    return this.http.delete<any>(`${environment.API_BASE_URL}/batches/delete/${id}`);
+
+    console.log(this.headers)
+    return this.http.delete<any>(
+      `${environment.API_BASE_URL}/batches/delete/${id}`,
+      { headers: this.headers }
+    );
   }
 }

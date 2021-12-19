@@ -1,11 +1,207 @@
-<app-table
-  [title]="'Lotes'"
-  [filasTabla]="tableData"
-  [encabezadosTabla]="encabezadosTabla"
-  [totalSection]="tableData?.length!"
-  [loading]="loading"
-  (onRecargar)="recargarLotes($event)"
-  (onCreate)="creatLote()"
-  (onEdit)="editarLote($event)"
-  (onDelete)="borrarLote($event)"
-></app-table>
+<div class="row">
+  <div class="col" *ngIf="!isEditing && !isCreating">
+    <div class="card">
+      <div class="card-body">
+        <app-table
+          [title]="'Lotes'"
+          [filasTabla]="tableData"
+          [encabezadosTabla]="encabezadosTabla"
+          [totalSection]="tableData?.length!"
+          [loading]="loading"
+          (onRecargar)="recargarLotes($event)"
+          (onCreate)="creatLote()"
+          (onEdit)="editarLote($event)"
+          (onDelete)="borrarLote($event)"
+        ></app-table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col" *ngIf="isCreating || isEditing">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="primary-dark">{{ crudAction }} lote</h1>
+      </div>
+      <form
+        class="form p-t-20 form-material"
+        [formGroup]="loteForm"
+        (ngSubmit)="formSubmit()"
+      >
+        <div class="card-body">
+          <div class="row justify-content-center">
+            <div class="col-md-4 mb-2" (click)="imageInput.click()">
+              <img class="img-responsive" [src]="imageToShow" alt="Lote" />
+              <input
+                [hidden]="true"
+                #imageInput
+                type="file"
+                formControlName="image"
+                (change)="showSelectedImage($event)"
+              />
+              <div class="p-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    loteForm.controls.image.errors?.required &&
+                    loteForm.controls.image.touched
+                  "
+                  >Este dato es requerido</span
+                >
+                <span class="text-danger" *ngIf="!fileTypeNoError"
+                  >Los formatos aceptados son JPG, JPEG y PNG</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Zona de construcción*</label>
+            <select
+              formControlName="category"
+              class="form-control custom-select"
+            >
+              <option [value]="null">--Seleccionar una zona--</option>
+              <option
+                *ngFor="let zona of zonasDeConstruccion"
+                [value]="zona.id"
+              >
+                {{ zona.nombre }}
+              </option>
+            </select>
+            <div class="p-2">
+              <span
+                class="text-danger"
+                *ngIf="
+                  loteForm.controls.category.errors?.required &&
+                  loteForm.controls.category.touched
+                "
+                >Este dato es requerido</span
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="exampleInputuname2"
+                    placeholder="Título*"
+                    formControlName="title"
+                  />
+                  <div class="p-2">
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        loteForm.controls.title.errors?.required &&
+                        loteForm.controls.title.touched
+                      "
+                      >Este dato es requerido</span
+                    >
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        loteForm.controls.title.errors?.minlength &&
+                        loteForm.controls.title.touched
+                      "
+                      >Debe tener al menos 6 caracteres</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <textarea
+                    type="text"
+                    class="form-control"
+                    id="exampleInputuname2"
+                    placeholder="Descripción*"
+                    formControlName="description"
+                    rows="5"
+                  ></textarea>
+                  <div class="p-2">
+                    <span
+                      *ngIf="
+                        loteForm.controls.description.errors?.required &&
+                        loteForm.controls.description.touched
+                      "
+                      class="text-danger"
+                      >Este dato es requerido</span
+                    >
+                    <span
+                      *ngIf="
+                        loteForm.controls.description.errors?.minlength &&
+                        loteForm.controls.description.touched
+                      "
+                      class="text-danger"
+                      >Debe tener al menos 10 caracteres</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="exampleInputuname2"
+                    placeholder="Precio*"
+                    formControlName="price"
+                  />
+                  <div class="p-2">
+                    <span
+                      *ngIf="
+                        loteForm.controls.price.errors?.required &&
+                        loteForm.controls.price.touched
+                      "
+                      class="text-danger"
+                      >Este dato es requerido</span
+                    >
+                    <span
+                      *ngIf="
+                        loteForm.controls.price.errors?.min &&
+                        loteForm.controls.price.touched
+                      "
+                      class="text-danger"
+                      >Debe ser mayor a 1</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Vendido*</label>
+                <select
+                  formControlName="sold"
+                  class="form-control custom-select"
+                >
+                  <option [value]="'true'">Si</option>
+                  <option [value]="'false'">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button
+            type="submit"
+            class="
+              btn btn-success
+              waves-effect waves-light
+              m-r-10
+              bgc-primary-dark
+            "
+          >
+            Confirmar
+          </button>
+          <button
+            type="button"
+            (click)="recargarLotes(true)"
+            class="btn btn-danger waves-effect waves-light m-r-10"
+          >
+            Volver
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

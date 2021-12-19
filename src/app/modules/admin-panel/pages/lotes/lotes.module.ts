@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { LotesRoutingModule } from './lotes-routing.module';
 import { LotesComponent } from './lotes.component';
 import { ComponentsModule } from '../../components/components.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ComponentsModule } from '../../components/components.module';
   imports: [
     CommonModule,
     LotesRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    ReactiveFormsModule
   ]
 })
 export class LotesModule { }

@@ -11,6 +11,8 @@ import {
 import { environment } from 'src/environments/environment';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { LotesService } from '../../services/lotes.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ZonasDeConstruccion } from '../../interfaces/lotes.interface';
 
 @Component({
   selector: 'app-lotes',
@@ -29,15 +31,134 @@ export class LotesComponent implements OnInit {
   public tableData: CuerpoTabla[] = [];
   public loading: boolean = true;
   public lotes: Batch[] = [];
+  public isCreating: boolean = false;
+  public isEditing: boolean = false;
+  public crudAction: string = '';
+  public zonasDeConstruccion: ZonasDeConstruccion[] = [];
+
+  // Formulario para crear o editar lotes
+  public loteForm!: FormGroup;
+
+  public imageToShow: string = '../../../../../assets/no-image.png';
+  public fileToUpload?: File;
+  public fileTypeNoError: boolean = true;
+
+  private loteID!: number;
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(
     private httpSrv: HttpService,
-    private lotesService: LotesService
-  ) {}
+    private lotesService: LotesService,
+    private fb: FormBuilder
+  ) {
+    this.crearForm();
+  }
 
   ngOnInit(): void {
     this.getLotes();
+  }
+
+  private crearForm(): void {
+    this.loteForm = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(6)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      image: ['', Validators.required],
+      price: ['', [Validators.required, Validators.min(1)]],
+      sold: ['false'],
+      category: [null, [Validators.required]],
+    });
+  }
+
+  public showSelectedImage(e: any) {
+    const file = e.target?.files[0];
+
+    this.fileTypeNoError =
+      file.type === 'image/jpg' ||
+      file.type === 'image/jpeg' ||
+      file.type === 'image/png';
+
+    if (file && this.fileTypeNoError) {
+      this.fileToUpload = file;
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => (this.imageToShow = reader.result as string);
+    } else {
+      this.imageToShow = '../../../../../assets/no-image.png';
+    }
+  }
+
+  public formSubmit(): void {
+    this.loteForm.markAllAsTouched();
+    if (this.loteForm.valid) {
+      const formData: FormData = new FormData();
+      formData.append('title', this.loteForm.controls.title?.value);
+      formData.append('description', this.loteForm.controls.description?.value);
+      formData.append('price', this.loteForm.controls.price?.value);
+      formData.append('sold', this.loteForm.controls.sold?.value);
+      formData.append('image', this.fileToUpload!);
+      formData.append('category', this.loteForm.controls.category?.value);
+
+      this.crudAction === 'Crear'
+        ? this.crearLoteEnLaDb(formData)
+        : this.editarLoteEnLaDb(formData);
+    }
+  }
+
+  private crearLoteEnLaDb(payload: FormData): void {
+    this.lotesService
+      .createLote(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res) => {
+          if (res?.meta?.status === 200 || res?.meta?.status === 201) {
+            this.recargarLotes(true);
+            Swal.fire(
+              '¡Excelente!',
+              'Creamos el lote sin problemmas.',
+              'success'
+            );
+          }
+        },
+        () => {
+          this.isCreating = false;
+          this.isEditing = false;
+          this.recargarLotes(true);
+          Swal.fire(
+            'Error',
+            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
+            'error'
+          );
+        }
+      );
+  }
+
+  private editarLoteEnLaDb(payload: FormData): void {
+    this.lotesService
+      .editLote(this.loteID, payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res) => {
+          if (res?.meta?.status === 200 || res?.meta?.status === 201) {
+            this.recargarLotes(true);
+            Swal.fire(
+              '¡Excelente!',
+              'Editamos el lote sin problemmas.',
+              'success'
+            );
+          }
+        },
+        (err) => {
+          console.log(err)
+          this.isCreating = false;
+          this.isEditing = false;
+          this.recargarLotes(true);
+          Swal.fire(
+            'Error',
+            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
+            'error'
+          );
+        }
+      );
   }
 
   private getLotes(): void {
@@ -47,6 +168,10 @@ export class LotesComponent implements OnInit {
       .subscribe(
         (zonas: PostalZones) => {
           for (const zona of zonas.data) {
+            this.zonasDeConstruccion.push({
+              id: zona.id,
+              nombre: zona.title,
+            });
             this.httpSrv
               .getLotes(zona.id.toString())
               .pipe(
@@ -97,17 +222,46 @@ export class LotesComponent implements OnInit {
 
   public recargarLotes(recargar: boolean): void {
     if (recargar) {
+      this.resetsetControls();
       this.tableData = [];
+      this.zonasDeConstruccion = [];
+      this.isEditing = false;
+      this.isCreating = false;
       this.getLotes();
     }
   }
 
+  private resetsetControls(): void {
+    this.loteForm.controls.title.setValue('');
+    this.loteForm.controls.description.setValue('');
+    this.loteForm.controls.category.setValue('');
+    this.loteForm.controls.price.setValue('');
+    this.loteForm.controls.sold.setValue('');
+    this.loteForm.controls.image.setValue('');
+    this.imageToShow = '../../../../../assets/no-image.png';
+  }
+
   public creatLote(): void {
-    console.log('estoy creando');
+    this.crudAction = 'Crear';
+    this.isCreating = true;
+    this.isEditing = false;
   }
 
   public editarLote(id: number): void {
     if (this.encontrarLoteSeleccionado(id)) {
+      this.crudAction = 'Editar';
+      this.isEditing = true;
+      this.isCreating = false;
+      const lote = this.lotes.find((lote) => lote.id === id);
+      if (lote) {
+        this.loteID = id;
+        this.loteForm.controls.title.setValue(lote.title);
+        this.loteForm.controls.description.setValue(lote.description);
+        this.loteForm.controls.category.setValue(lote.categories_id);
+        this.loteForm.controls.price.setValue(lote.price);
+        this.loteForm.controls.sold.setValue(lote.sold);
+        this.imageToShow = `${environment.API_IMAGE_URL}/${lote.image}`;
+      }
     }
   }
 
@@ -129,7 +283,7 @@ export class LotesComponent implements OnInit {
       .deleteLote(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        () => {
+        (res) => {
           this.recargarLotes(true);
           Swal.fire(
             '¡Genial!',
