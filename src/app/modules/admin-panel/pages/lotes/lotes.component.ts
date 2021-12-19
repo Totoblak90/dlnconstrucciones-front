@@ -104,63 +104,6 @@ export class LotesComponent implements OnInit {
     }
   }
 
-  private crearLoteEnLaDb(payload: FormData): void {
-    this.lotesService
-      .createLote(payload)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (res) => {
-          if (res?.meta?.status === 200 || res?.meta?.status === 201) {
-            this.recargarLotes(true);
-            Swal.fire(
-              '¡Excelente!',
-              'Creamos el lote sin problemmas.',
-              'success'
-            );
-          }
-        },
-        () => {
-          this.isCreating = false;
-          this.isEditing = false;
-          this.recargarLotes(true);
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
-        }
-      );
-  }
-
-  private editarLoteEnLaDb(payload: FormData): void {
-    this.lotesService
-      .editLote(this.loteID, payload)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(
-        (res) => {
-          if (res?.meta?.status === 200 || res?.meta?.status === 201) {
-            this.recargarLotes(true);
-            Swal.fire(
-              '¡Excelente!',
-              'Editamos el lote sin problemmas.',
-              'success'
-            );
-          }
-        },
-        (err) => {
-          console.log(err)
-          this.isCreating = false;
-          this.isEditing = false;
-          this.recargarLotes(true);
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
-        }
-      );
-  }
-
   private getLotes(): void {
     this.httpSrv
       .getAllZones()
@@ -247,6 +190,34 @@ export class LotesComponent implements OnInit {
     this.isEditing = false;
   }
 
+  private crearLoteEnLaDb(payload: FormData): void {
+    this.lotesService
+      .createLote(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res) => {
+          if (res?.meta?.status === 200 || res?.meta?.status === 201) {
+            this.recargarLotes(true);
+            Swal.fire(
+              '¡Excelente!',
+              'Creamos el lote sin problemmas.',
+              'success'
+            );
+          }
+        },
+        () => {
+          this.isCreating = false;
+          this.isEditing = false;
+          this.recargarLotes(true);
+          Swal.fire(
+            'Error',
+            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
+            'error'
+          );
+        }
+      );
+  }
+
   public editarLote(id: number): void {
     if (this.encontrarLoteSeleccionado(id)) {
       this.crudAction = 'Editar';
@@ -263,6 +234,35 @@ export class LotesComponent implements OnInit {
         this.imageToShow = `${environment.API_IMAGE_URL}/${lote.image}`;
       }
     }
+  }
+
+  private editarLoteEnLaDb(payload: FormData): void {
+    this.lotesService
+      .editLote(this.loteID, payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res) => {
+          if (res?.meta?.status === 200 || res?.meta?.status === 201) {
+            this.recargarLotes(true);
+            Swal.fire(
+              '¡Excelente!',
+              'Editamos el lote sin problemmas.',
+              'success'
+            );
+          }
+        },
+        (err) => {
+          console.log(err);
+          this.isCreating = false;
+          this.isEditing = false;
+          this.recargarLotes(true);
+          Swal.fire(
+            'Error',
+            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
+            'error'
+          );
+        }
+      );
   }
 
   public borrarLote(id: number): void {
