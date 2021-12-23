@@ -62,7 +62,7 @@ export class LotesComponent implements OnInit {
     this.loteForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(6)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      image: ['', Validators.required],
+      image: [''],
       price: ['', [Validators.required, Validators.min(1)]],
       sold: ['false'],
       category: [null, [Validators.required]],

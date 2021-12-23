@@ -2,6 +2,7 @@ import { Component, Host, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { concat, Subject } from 'rxjs';
 import {
   Job,
+  JobMoreInfo,
   TypesOfJobs,
   TypesOfJobsData,
 } from 'src/app/modules/main/interfaces/http/jobs.interface';
@@ -34,6 +35,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   public acceptedFileTypes: boolean = true;
   public categoriaDeTrabajo: TypesOfJobsData[] = [];
   public trabajoID!: number;
+  private jobs: JobMoreInfo[] = [];
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(
@@ -49,7 +51,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       type: [null, Validators.required],
       title: ['', Validators.minLength(6)],
       description: ['', Validators.minLength(10)],
-      image: ['', Validators.required],
+      image: [''],
     });
   }
 
@@ -78,7 +80,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((typesOfJobs: TypesOfJobs) => {
         for (const typeOfJob of typesOfJobs.data) {
-          this.categoriaDeTrabajo.push(typeOfJob)
+          this.categoriaDeTrabajo.push(typeOfJob);
           this.httpSrv
             .getOneTypeOfJob(typeOfJob.id.toString())
             .pipe(
@@ -93,6 +95,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
                   item3: j.description ? j.description : 'Vacío',
                   id: j.id,
                 });
+                this.jobs.push(j);
               });
             });
         }
@@ -101,12 +104,22 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
 
   public recargarTrabajos(recargar: boolean): void {
     if (recargar) {
+      this.resetsetControls();
       this.tableData = [];
+      this.categoriaDeTrabajo = [];
+      this.jobs = [];
       this.isCreating = false;
       this.isEditing = false;
-      this.categoriaDeTrabajo = [];
       this.getTrabajos();
     }
+  }
+
+  private resetsetControls(): void {
+    this.jobForm.controls.title.setValue('');
+    this.jobForm.controls.description.setValue('');
+    this.jobForm.controls.type.setValue('');
+    this.jobForm.controls.image.setValue('');
+    this.imageToShow = '../../../../../assets/no-image.png';
   }
 
   public crearTrabajoRealizado(): void {
@@ -141,9 +154,39 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
     this.crudAction = 'Editar';
     this.isEditing = true;
     this.isCreating = false;
+    const trabajo = this.jobs?.find((job) => job.id === id);
+    if (trabajo) {
+      this.trabajoID = trabajo.id;
+      this.jobForm.controls.title.setValue(trabajo.title);
+      this.jobForm.controls.description.setValue(trabajo.description);
+      this.jobForm.controls.type.setValue(trabajo.types_id);
+      this.imageToShow = `${environment.API_IMAGE_URL}/${trabajo.image}`;
+    }
   }
 
-  private editarTrabajoEnLaDb(formData: FormData) {}
+  private editarTrabajoEnLaDb(formData: FormData) {
+    this.trabajosRealizadosAdminService
+      .editarTrabajoRealizado(this.trabajoID, formData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => {
+          this.recargarTrabajos(true);
+          Swal.fire(
+            '¡Excelente!',
+            'El trabajo se editó correctamente',
+            'success'
+          );
+        },
+        (err) => {
+          console.log(err);
+          Swal.fire(
+            'Error',
+            'No pudimos editar el trabajo, por favor intentá de nuevo recargando la página',
+            'error'
+          );
+        }
+      );
+  }
 
   public borrarTrabajoRealizado(id: number): void {
     Swal.fire({
