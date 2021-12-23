@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { getToken } from '../../main/helpers/functions.helper';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class LotesService {
+export class TrabajosRealizadosAdminService {
   private headers: HttpHeaders = new HttpHeaders({
     'access-token': getToken(),
   });
@@ -15,31 +15,31 @@ export class LotesService {
   constructor(private http: HttpClient) {}
 
   /**
-   * Crea un nuevo lote
+   * Crea un trabajo realizado
    *
    * @param payload: any
    * @return {*}  {Observable<any>}
-   * @memberof LotesService
+   * @memberof TrabajosRealizadosAdminService
    */
-  public createLote(payload: FormData): Observable<any> {
+  public crearTrabajoRealizado(payload: FormData): Observable<any> {
     return this.http.post<any>(
-      `${environment.API_BASE_URL}/batches/create`,
+      `${environment.API_BASE_URL}/jobs/create`,
       payload,
       { headers: this.headers }
     );
   }
 
   /**
-   * Edita un lote
+   * Edita un trabajo Realizado
    *
    * @param id: number
    * @param payload: any
-   * @return {*}  {Observable<any>}
-   * @memberof LotesService
+   * @return {*}  {Observable<TrabajosRealizadosAdminService>}
+   * @memberof TrabajosRealizadosAdminService
    */
-  public editLote(id: number, payload: FormData): Observable<any> {
+  public editarTrabajoRealizado(id: number, payload: FormData): Observable<any> {
     return this.http.patch<any>(
-      `${environment.API_BASE_URL}/batches/edit/${id}`,
+      `${environment.API_BASE_URL}/jobs/edit/${id}`,
       payload,
       { headers: this.headers }
     );
@@ -50,11 +50,11 @@ export class LotesService {
    *
    * @param id: number
    * @return {*}  {Observable<any>}
-   * @memberof LotesService
+   * @memberof TrabajosRealizadosAdminService
    */
-  public deleteLote(id: number): Observable<any> {
+  public borrarTrabajoRealizado(id: number): Observable<any> {
     return this.http.delete<any>(
-      `${environment.API_BASE_URL}/batches/delete/${id}`,
+      `${environment.API_BASE_URL}/jobs/delete/${id}`,
       { headers: this.headers }
     );
   }

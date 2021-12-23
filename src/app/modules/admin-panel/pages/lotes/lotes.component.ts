@@ -41,7 +41,7 @@ export class LotesComponent implements OnInit {
 
   public imageToShow: string = '../../../../../assets/no-image.png';
   public fileToUpload?: File;
-  public fileTypeNoError: boolean = true;
+  public acceptedFileTypes: boolean = true;
 
   private loteID!: number;
   private destroy$: Subject<boolean> = new Subject();
@@ -72,12 +72,12 @@ export class LotesComponent implements OnInit {
   public showSelectedImage(e: any) {
     const file = e.target?.files[0];
 
-    this.fileTypeNoError =
+    this.acceptedFileTypes =
       file.type === 'image/jpg' ||
       file.type === 'image/jpeg' ||
       file.type === 'image/png';
 
-    if (file && this.fileTypeNoError) {
+    if (file && this.acceptedFileTypes) {
       this.fileToUpload = file;
       const reader = new FileReader();
       reader.readAsDataURL(file);

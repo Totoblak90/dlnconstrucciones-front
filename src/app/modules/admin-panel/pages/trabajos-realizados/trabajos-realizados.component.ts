@@ -8,6 +8,9 @@ import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { HttpService } from '../../../../services/http.service';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { FormGroup } from '@angular/forms';
+import Swal, { SweetAlertResult } from 'sweetalert2';
+import { TrabajosRealizadosAdminService } from '../../services/trabajos-realizados-admin.service';
 
 @Component({
   selector: 'app-trabajos-realizados',
@@ -20,9 +23,22 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   public encabezadosTabla: string[] = ['Título', 'Descripción'];
   public tableData: CuerpoTabla[] = [];
   public loading: boolean = true;
+  public jobForm!: FormGroup;
+  public isCreating: boolean = false;
+  public isEditing: boolean = false;
+  public crudAction: string = ''
+  public imageToShow: string = '';
+  public acceptedFileTypes: boolean = false;
+  public categoriaDeTrabajo: any;
   private destroy$: Subject<boolean> = new Subject();
 
-  constructor(private httpSrv: HttpService) {}
+  constructor(private httpSrv: HttpService, private trabajosRealizadosAdminService: TrabajosRealizadosAdminService) {
+    this.createForm();
+  }
+
+  private createForm() {
+
+  }
 
   ngOnInit(): void {
     this.getTrabajos();
@@ -59,6 +75,54 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       this.tableData = [];
       this.getTrabajos();
     }
+  }
+
+  public crearTrabajoRealizado(): void {
+
+  }
+  public editarTrabajoRealizado(id: number): void {
+
+  }
+  public borrarTrabajoRealizado(id: number): void {
+      Swal.fire({
+        title: '¿Seguro querés elimninar el trabajo seleccionado?',
+        showDenyButton: true,
+        confirmButtonText: 'Si, borrar',
+        denyButtonText: `No`,
+      }).then((result: SweetAlertResult<any>) => {
+        result.isConfirmed ? this.borrarTrabajoDeLaDb(id) : null;
+      });
+  }
+
+  private borrarTrabajoDeLaDb(id: number): void {
+    this.trabajosRealizadosAdminService
+      .borrarTrabajoRealizado(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => {
+          this.recargarTrabajos(true);
+          Swal.fire(
+            '¡Genial!',
+            'Hemos completado tu pedido, gracias',
+            'success'
+          );
+        },
+        () => {
+          Swal.fire(
+            '¡Lo sentimos!',
+            'No pudimos realizar el pedido correctamente, por favor actualizá la página e intentá de nuevo',
+            'error'
+          );
+        }
+      );
+  }
+
+  public formSubmit() {
+
+  }
+
+  public showSelectedImage(e: any) {
+
   }
 
   ngOnDestroy(): void {

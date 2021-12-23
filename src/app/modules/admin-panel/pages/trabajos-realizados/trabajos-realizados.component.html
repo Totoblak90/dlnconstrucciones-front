@@ -1,9 +1,154 @@
-<app-table
-  *ngIf="tableData"
-  [title]="'Trabajos realizados'"
-  [loading]="loading"
-  [filasTabla]="tableData"
-  [encabezadosTabla]="encabezadosTabla"
-  [totalSection]="tableData?.length!"
-  (onRecargar)="recargarTrabajos($event)"
-></app-table>
+<div class="row">
+  <div class="col" *ngIf="!isEditing && !isCreating">
+    <div class="card">
+      <div class="card-body">
+        <app-table
+          *ngIf="tableData"
+          [title]="'Trabajos realizados'"
+          [loading]="loading"
+          [filasTabla]="tableData"
+          [encabezadosTabla]="encabezadosTabla"
+          [totalSection]="tableData?.length!"
+          (onRecargar)="recargarTrabajos($event)"
+          (onCreate)="crearTrabajoRealizado()"
+          (onEdit)="editarTrabajoRealizado($event)"
+          (onDelete)="borrarTrabajoRealizado($event)"
+        ></app-table>
+      </div>
+    </div>
+  </div>
+  <div class="col" *ngIf="isCreating || isEditing">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="primary-dark">{{ crudAction }} trabajo realizado</h1>
+      </div>
+      <div class="card-body">
+        <form
+          class="form p-t-20 form-material"
+          [formGroup]="jobForm"
+          (ngSubmit)="formSubmit()"
+        >
+          <div class="card-body">
+            <div class="row justify-content-center">
+              <div class="col-md-4 mb-2" (click)="imageInput.click()">
+                <img class="img-responsive" [src]="imageToShow" alt="Lote" />
+                <input
+                  [hidden]="true"
+                  #imageInput
+                  type="file"
+                  formControlName="image"
+                  (change)="showSelectedImage($event)"
+                />
+                <div class="p-2">
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      jobForm.controls.image.errors?.required &&
+                      jobForm.controls.image.touched
+                    "
+                    >Este dato es requerido</span
+                  >
+                  <span class="text-danger" *ngIf="!acceptedFileTypes"
+                    >Los formatos aceptados son JPG, JPEG y PNG</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Categoría de trabajo*</label>
+              <select
+                formControlName="type"
+                class="form-control custom-select"
+              >
+                <option [value]="null">--Seleccionar una zona--</option>
+                <option
+                  *ngFor="let categoria of categoriaDeTrabajo"
+                  [value]="categoria.id"
+                >
+                  {{ categoria.title }}
+                </option>
+              </select>
+              <div class="p-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    jobForm.controls.type.errors?.required &&
+                    jobForm.controls.type.touched
+                  "
+                  >Este dato es requerido</span
+                >
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="exampleInputuname2"
+                      placeholder="Título*"
+                      formControlName="title"
+                    />
+                    <div class="p-2">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          jobForm.controls.title.errors?.minlength &&
+                          jobForm.controls.title.touched
+                        "
+                        >Debe tener al menos 6 caracteres</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      id="exampleInputuname2"
+                      placeholder="Descripción*"
+                      formControlName="description"
+                      rows="5"
+                    ></textarea>
+                    <div class="p-2">
+                      <span
+                        *ngIf="
+                          jobForm.controls.description.errors?.minlength &&
+                          jobForm.controls.description.touched
+                        "
+                        class="text-danger"
+                        >Debe tener al menos 10 caracteres</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              type="submit"
+              class="
+                btn btn-success
+                waves-effect waves-light
+                m-r-10
+                bgc-primary-dark
+              "
+            >
+              Confirmar
+            </button>
+            <button
+              type="button"
+              (click)="recargarTrabajos(true)"
+              class="btn btn-danger waves-effect waves-light m-r-10"
+            >
+              Volver
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
