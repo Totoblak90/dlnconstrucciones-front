@@ -3,14 +3,16 @@ import { concat, Subject } from 'rxjs';
 import {
   Job,
   TypesOfJobs,
+  TypesOfJobsData,
 } from 'src/app/modules/main/interfaces/http/jobs.interface';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { HttpService } from '../../../../services/http.service';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { TrabajosRealizadosAdminService } from '../../services/trabajos-realizados-admin.service';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-trabajos-realizados',
@@ -26,22 +28,48 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   public jobForm!: FormGroup;
   public isCreating: boolean = false;
   public isEditing: boolean = false;
-  public crudAction: string = ''
-  public imageToShow: string = '';
-  public acceptedFileTypes: boolean = false;
-  public categoriaDeTrabajo: any;
+  public crudAction: string = '';
+  public imageToShow: string = '../../../../../assets/no-image.png';
+  public fileToUpload?: File;
+  public acceptedFileTypes: boolean = true;
+  public categoriaDeTrabajo: TypesOfJobsData[] = [];
+  public trabajoID!: number;
   private destroy$: Subject<boolean> = new Subject();
 
-  constructor(private httpSrv: HttpService, private trabajosRealizadosAdminService: TrabajosRealizadosAdminService) {
+  constructor(
+    private httpSrv: HttpService,
+    private trabajosRealizadosAdminService: TrabajosRealizadosAdminService,
+    private fb: FormBuilder
+  ) {
     this.createForm();
   }
 
   private createForm() {
-
+    this.jobForm = this.fb.group({
+      type: [null, Validators.required],
+      title: ['', Validators.minLength(6)],
+      description: ['', Validators.minLength(10)],
+      image: ['', Validators.required],
+    });
   }
 
   ngOnInit(): void {
     this.getTrabajos();
+  }
+
+  public formSubmit(): void {
+    this.jobForm.markAllAsTouched();
+    if (this.jobForm.valid) {
+      const formData: FormData = new FormData();
+      formData.append('title', this.jobForm.controls.title?.value);
+      formData.append('description', this.jobForm.controls.description?.value);
+      formData.append('image', this.fileToUpload!);
+      formData.append('type', this.jobForm.controls.type?.value);
+
+      this.crudAction === 'Crear'
+        ? this.crearTrabajoEnLaDb(formData)
+        : this.editarTrabajoEnLaDb(formData);
+    }
   }
 
   private getTrabajos(): void {
@@ -50,6 +78,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((typesOfJobs: TypesOfJobs) => {
         for (const typeOfJob of typesOfJobs.data) {
+          this.categoriaDeTrabajo.push(typeOfJob)
           this.httpSrv
             .getOneTypeOfJob(typeOfJob.id.toString())
             .pipe(
@@ -62,7 +91,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
                   imagen: `${environment.API_IMAGE_URL}/${j.image}`,
                   item2: j.title ? j.title : 'Vacío',
                   item3: j.description ? j.description : 'Vacío',
-                  id: j.id
+                  id: j.id,
                 });
               });
             });
@@ -73,25 +102,58 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   public recargarTrabajos(recargar: boolean): void {
     if (recargar) {
       this.tableData = [];
+      this.isCreating = false;
+      this.isEditing = false;
+      this.categoriaDeTrabajo = [];
       this.getTrabajos();
     }
   }
 
   public crearTrabajoRealizado(): void {
-
+    this.crudAction = 'Crear';
+    this.isCreating = true;
+    this.isEditing = false;
   }
+
+  private crearTrabajoEnLaDb(formData: FormData) {
+    this.trabajosRealizadosAdminService
+      .crearTrabajoRealizado(formData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => {
+          this.recargarTrabajos(true);
+          Swal.fire(
+            '¡Excelente!',
+            'El trabajo se creó correctamente',
+            'success'
+          );
+        },
+        (err) =>
+          Swal.fire(
+            'Error',
+            'No pudimos crear el trabajo, por favor intentá de nuevo recargando la página',
+            'error'
+          )
+      );
+  }
+
   public editarTrabajoRealizado(id: number): void {
-
+    this.crudAction = 'Editar';
+    this.isEditing = true;
+    this.isCreating = false;
   }
+
+  private editarTrabajoEnLaDb(formData: FormData) {}
+
   public borrarTrabajoRealizado(id: number): void {
-      Swal.fire({
-        title: '¿Seguro querés elimninar el trabajo seleccionado?',
-        showDenyButton: true,
-        confirmButtonText: 'Si, borrar',
-        denyButtonText: `No`,
-      }).then((result: SweetAlertResult<any>) => {
-        result.isConfirmed ? this.borrarTrabajoDeLaDb(id) : null;
-      });
+    Swal.fire({
+      title: '¿Seguro querés elimninar el trabajo seleccionado?',
+      showDenyButton: true,
+      confirmButtonText: 'Si, borrar',
+      denyButtonText: `No`,
+    }).then((result: SweetAlertResult<any>) => {
+      result.isConfirmed ? this.borrarTrabajoDeLaDb(id) : null;
+    });
   }
 
   private borrarTrabajoDeLaDb(id: number): void {
@@ -117,12 +179,22 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       );
   }
 
-  public formSubmit() {
-
-  }
-
   public showSelectedImage(e: any) {
+    const file = e.target?.files[0];
 
+    this.acceptedFileTypes =
+      file.type === 'image/jpg' ||
+      file.type === 'image/jpeg' ||
+      file.type === 'image/png';
+
+    if (file && this.acceptedFileTypes) {
+      this.fileToUpload = file;
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => (this.imageToShow = reader.result as string);
+    } else {
+      this.imageToShow = '../../../../../assets/no-image.png';
+    }
   }
 
   ngOnDestroy(): void {

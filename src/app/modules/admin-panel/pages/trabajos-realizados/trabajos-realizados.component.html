@@ -31,7 +31,7 @@
           <div class="card-body">
             <div class="row justify-content-center">
               <div class="col-md-4 mb-2" (click)="imageInput.click()">
-                <img class="img-responsive" [src]="imageToShow" alt="Lote" />
+                <img class="img-responsive" [src]="imageToShow" alt="Trabajo realizado" />
                 <input
                   [hidden]="true"
                   #imageInput
@@ -60,7 +60,7 @@
                 formControlName="type"
                 class="form-control custom-select"
               >
-                <option [value]="null">--Seleccionar una zona--</option>
+                <option [value]="null">--Seleccionar una categoría--</option>
                 <option
                   *ngFor="let categoria of categoriaDeTrabajo"
                   [value]="categoria.id"
@@ -87,7 +87,7 @@
                       type="text"
                       class="form-control"
                       id="exampleInputuname2"
-                      placeholder="Título*"
+                      placeholder="Título"
                       formControlName="title"
                     />
                     <div class="p-2">
@@ -108,7 +108,7 @@
                       type="text"
                       class="form-control"
                       id="exampleInputuname2"
-                      placeholder="Descripción*"
+                      placeholder="Descripción"
                       formControlName="description"
                       rows="5"
                     ></textarea>
