@@ -12,8 +12,7 @@ import { takeUntil, finalize } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import Swal, { SweetAlertResult } from 'sweetalert2';
-import { TrabajosRealizadosAdminService } from '../../services/trabajos-realizados-admin.service';
-import { ThisReceiver } from '@angular/compiler';
+import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 
 @Component({
   selector: 'app-trabajos-realizados',
@@ -40,7 +39,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
 
   constructor(
     private httpSrv: HttpService,
-    private trabajosRealizadosAdminService: TrabajosRealizadosAdminService,
+    private adminPanelCrudService: AdminPanelCrudService,
     private fb: FormBuilder
   ) {
     this.createForm();
@@ -129,8 +128,8 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   }
 
   private crearTrabajoEnLaDb(formData: FormData) {
-    this.trabajosRealizadosAdminService
-      .crearTrabajoRealizado(formData)
+    this.adminPanelCrudService
+      .create(formData, 'jobs')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
@@ -165,8 +164,8 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   }
 
   private editarTrabajoEnLaDb(formData: FormData) {
-    this.trabajosRealizadosAdminService
-      .editarTrabajoRealizado(this.trabajoID, formData)
+    this.adminPanelCrudService
+      .edit(this.trabajoID, formData, 'jobs')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {
@@ -177,8 +176,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
             'success'
           );
         },
-        (err) => {
-          console.log(err);
+        () => {
           Swal.fire(
             'Error',
             'No pudimos editar el trabajo, por favor intentá de nuevo recargando la página',
@@ -200,8 +198,8 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   }
 
   private borrarTrabajoDeLaDb(id: number): void {
-    this.trabajosRealizadosAdminService
-      .borrarTrabajoRealizado(id)
+    this.adminPanelCrudService
+      .delete(id, 'jobs')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => {

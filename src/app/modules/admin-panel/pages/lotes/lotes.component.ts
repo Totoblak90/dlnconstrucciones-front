@@ -10,9 +10,9 @@ import {
 } from '../../../main/interfaces/http/batches.interface';
 import { environment } from 'src/environments/environment';
 import Swal, { SweetAlertResult } from 'sweetalert2';
-import { LotesService } from '../../services/lotes.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ZonasDeConstruccion } from '../../interfaces/lotes.interface';
+import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 
 @Component({
   selector: 'app-lotes',
@@ -48,7 +48,7 @@ export class LotesComponent implements OnInit {
 
   constructor(
     private httpSrv: HttpService,
-    private lotesService: LotesService,
+    private adminPanelCrudService: AdminPanelCrudService,
     private fb: FormBuilder
   ) {
     this.crearForm();
@@ -191,8 +191,8 @@ export class LotesComponent implements OnInit {
   }
 
   private crearLoteEnLaDb(payload: FormData): void {
-    this.lotesService
-      .createLote(payload)
+    this.adminPanelCrudService
+      .create(payload, 'batches')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
@@ -237,8 +237,8 @@ export class LotesComponent implements OnInit {
   }
 
   private editarLoteEnLaDb(payload: FormData): void {
-    this.lotesService
-      .editLote(this.loteID, payload)
+    this.adminPanelCrudService
+      .edit(this.loteID, payload, 'batches')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
@@ -251,10 +251,7 @@ export class LotesComponent implements OnInit {
             );
           }
         },
-        (err) => {
-          console.log(err);
-          this.isCreating = false;
-          this.isEditing = false;
+        () => {
           this.recargarLotes(true);
           Swal.fire(
             'Error',
@@ -279,8 +276,8 @@ export class LotesComponent implements OnInit {
   }
 
   private borrarLoteDeLaDb(id: number): void {
-    this.lotesService
-      .deleteLote(id)
+    this.adminPanelCrudService
+      .delete(id, 'batches')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {

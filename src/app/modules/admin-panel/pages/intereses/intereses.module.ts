@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { InteresesRoutingModule } from './intereses-routing.module';
 import { InteresesComponent } from './intereses.component';
 import { ComponentsModule } from '../../components/components.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ComponentsModule } from '../../components/components.module';
   imports: [
     CommonModule,
     InteresesRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    ReactiveFormsModule
   ]
 })
 export class InteresesModule { }
