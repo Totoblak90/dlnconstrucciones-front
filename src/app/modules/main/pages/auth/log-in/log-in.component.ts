@@ -73,7 +73,8 @@ export class LogInComponent implements OnDestroy {
       usuario.role,
       usuario.dni,
       usuario.avatar,
-      usuario.phone
+      usuario.phone,
+      usuario.Projects
     );
     this.authService.setUser(loggedUser);
     this.router.navigateByUrl('/main/auth/profile');

@@ -1,6 +1,6 @@
 import { Component, Host, HostBinding, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
 import { UsersService } from '../../services/users.service';
 import Swal from 'sweetalert2';
@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../main/services/auth.service';
+import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 
 @Component({
   selector: 'app-users',
@@ -31,7 +32,7 @@ export class UsersComponent implements OnInit {
   constructor(
     private usersService: UsersService,
     private router: Router,
-    private authService: AuthService
+    private adminPanelCrudService: AdminPanelCrudService
   ) {}
 
   ngOnInit(): void {
@@ -114,13 +115,25 @@ export class UsersComponent implements OnInit {
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Si',
-      cancelButtonText: 'No'
+      cancelButtonText: 'No',
     }).then((result) => {
-      // if (result.isConfirmed) {
-      //   this.usersService.deleteUser(selectedUser).subscribe(() => {
-      //     this.showConfirmationOfDelete(selectedUser?.nombre!);
-      //   });
-      // }
+      if (result.isConfirmed) {
+        this.adminPanelCrudService
+          .delete(selectedUser?.id!, 'users')
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(
+            () =>
+              this.showConfirmationOfDelete(
+                `${selectedUser?.nombre!} ${selectedUser?.apellido}`
+              ),
+            () =>
+              Swal.fire(
+                'Error',
+                'Tuvimos un problema, por favor intentá nuevamente. Si el problema persiste ponete en contacto con tu proveedor de internet',
+                'error'
+              )
+          );
+      }
     });
   }
 
@@ -137,7 +150,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  changeRole(user: User) {
+  changeRole(id: number) {
     // this.usersService.updateUserFromAdminPanel(user).subscribe(
     //   (res: UpdateUserResponseFromAdminPanel) => null,
     //   (err) => Swal.fire('Error', 'Could not update the user', 'error')

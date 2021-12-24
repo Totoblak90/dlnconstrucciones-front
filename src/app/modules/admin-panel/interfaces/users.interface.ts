@@ -29,9 +29,17 @@ export interface FullUser {
 export interface Project {
   id: number;
   balance: number;
+  total: number;
+  payments: ProyectPayments[];
   cronoflow: any;
   created_at: string;
   updated_at: string;
   deleted_at: null | string;
   users_id: 1;
+}
+
+export interface ProyectPayments {
+  comprobante: number;
+  monto: number;
+  fecha: string;
 }

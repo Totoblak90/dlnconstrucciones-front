@@ -5,10 +5,10 @@ import { Project } from '../modules/admin-panel/interfaces/users.interface';
 export class User {
   constructor(
     public id: number,
-    public nombre?: string,
-    public apellido?: string,
-    public email?: string,
-    public role?: userRole,
+    public nombre: string,
+    public apellido: string,
+    public email: string,
+    public role: userRole,
     public dni?: number,
     public avatar?: string,
     public phone?: string,

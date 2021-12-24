@@ -50,7 +50,8 @@ export class AppComponent {
       user?.role,
       user?.dni,
       user?.avatar,
-      user?.phone
+      user?.phone,
+      user?.Projects
     );
 
     u ? this.authService.setUser(u) : null;

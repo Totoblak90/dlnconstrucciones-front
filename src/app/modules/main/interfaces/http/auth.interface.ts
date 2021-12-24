@@ -1,4 +1,5 @@
 import { Meta } from './batches.interface';
+import { Project } from '../../../admin-panel/interfaces/users.interface';
 
 export interface LoginRes {
   meta: Meta;
@@ -45,6 +46,7 @@ export interface UserData {
   created_at: string;
   updeated_at: string;
   deleted_at?: string;
+  Projects?: Project[]
 }
 
 export interface IdentifyTokenOActualizarUsuario {

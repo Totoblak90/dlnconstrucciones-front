@@ -102,23 +102,17 @@
               </div>
             </div>
             <hr />
-            <h4 class="font-medium m-t-30">Proyecto:</h4>
-            <hr />
-            <h5 class="m-t-30">
-              Wordpress <span class="pull-right">80%</span>
-            </h5>
-            <div class="progress">
-              <div
-                class="progress-bar bg-success"
-                role="progressbar"
-                aria-valuenow="80"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style="width: 80%; height: 6px"
-              >
-                <span class="sr-only">50% Complete</span>
-              </div>
-            </div>
+            <ng-container *ngIf="user?.projects; else noProjects">
+              <app-proyects [user]="user"></app-proyects>
+            </ng-container>
+            <ng-template #noProjects>
+              <h4 class="font-medium m-t-30">Proyectos:</h4>
+              <hr />
+              <h5 class="m-t-30">
+                Todavía no tenes un proyecto asignado
+                <span>¡No te quedes esperando y escribinos!</span>
+              </h5>
+            </ng-template>
           </div>
         </div>
         <div

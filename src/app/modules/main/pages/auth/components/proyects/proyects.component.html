@@ -1,0 +1,71 @@
+<h4 class="font-medium m-t-30">Proyectos:</h4>
+<hr />
+<div *ngFor="let proyecto of user.projects; let i = index">
+  <h5 class="m-t-30 primary-dark">
+    {{ user?.nombre }}_{{ user?.apellido }}_{{ proyecto.id }}
+    <span class="pull-right">{{ porcentaje[i] }}%</span>
+  </h5>
+  <div class="progress">
+    <div
+      class="progress-bar bgc-primary-dark"
+      role="progressbar"
+      aria-valuenow="80"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      [style]="progressBarStyle[i]"
+    ></div>
+  </div>
+  <h5 class="m-t-10 primary-dark">
+    Total <span class="pull-right primary-dark">{{ proyecto.total }}</span>
+  </h5>
+  <h5
+    class="m-t-10"
+    [class]="!proyecto.balance ? 'text-success' : 'text-warning'"
+  >
+    Balance:
+    <br />
+    <span>
+      {{ !proyecto.balance ? "¡Estas al día!" : "Falta pagar" }}
+      <i [class]="!proyecto.balance ? 'ti ti-face-smile' : ''"></i>
+    </span>
+    <span class="pull-right">{{ proyecto.balance }}</span>
+  </h5>
+  <div class="row animated fadeIn rows-container">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th
+                    class="text-nowrap primary-dark"
+                    *ngFor="let encabezado of encabezados"
+                  >
+                    {{ encabezado | titlecase }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let payment of proyecto.payments">
+                  <td>{{ payment.comprobante }}</td>
+                  <td>{{ payment.fecha }}</td>
+                  <td>{{ payment.monto }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cashflow m-t-5 b-b-5">
+    <h5 class="primary-dark"><i class="ti ti-file"></i> Cashflow</h5>
+    <button
+      class="btn bgc-primary-dark text-white"
+      (click)="descargarCashFlow(proyecto.cronoflow)"
+    >
+      Descargar
+    </button>
+  </div>
+</div>

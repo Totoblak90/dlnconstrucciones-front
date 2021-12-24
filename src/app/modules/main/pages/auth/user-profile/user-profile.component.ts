@@ -59,7 +59,19 @@ export class UserProfileComponent implements OnDestroy {
   constructor(private authService: AuthService, private fb: FormBuilder) {}
 
   public get user(): User {
-    return this.authService.getUser();
+    const us = this.authService.getUser();
+    us.projects = us.projects?.map(pr => {
+      pr.total = 10000;
+      pr.payments = [
+        {
+          comprobante: 1234,
+          fecha: new Date().toString(),
+          monto: 10000
+        }
+      ]
+      return pr
+    })
+    return us;
   }
 
   public cambiarFoto(e: any): void {
@@ -67,7 +79,7 @@ export class UserProfileComponent implements OnDestroy {
     const formData: FormData = new FormData();
     formData.append('avatar', file);
     if (formData.get('avatar')) {
-      switch (file.type) {
+      switch (file?.type) {
         case 'image/jpg':
         case 'image/png':
         case 'image/jpeg':
@@ -154,7 +166,7 @@ export class UserProfileComponent implements OnDestroy {
           this.guardarCambiosEnBaseDeDatos();
         }
       })
-      .catch((err) =>
+      .catch(() =>
         Swal.fire(
           '¡Lo sentimos!',
           'No pudimos actualizar tu perfil como queríamos, por favor intentalo nuevamente',
