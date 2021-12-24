@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ZonasRoutingModule } from './zonas-routing.module';
 import { ZonasComponent } from './zonas.component';
 import { ComponentsModule } from '../../components/components.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ComponentsModule } from '../../components/components.module';
   imports: [
     CommonModule,
     ZonasRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    ReactiveFormsModule
   ]
 })
 export class ZonasModule { }
