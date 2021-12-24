@@ -6,6 +6,11 @@ export interface AllUsersRes {
   data: FullUser[];
 }
 
+export interface FullUserRes {
+  meta: Meta;
+  data: FullUser;
+}
+
 export interface FullUser {
   id: number;
   first_name: string;
@@ -22,5 +27,11 @@ export interface FullUser {
 }
 
 export interface Project {
-
+  id: number;
+  balance: number;
+  cronoflow: any;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null | string;
+  users_id: 1;
 }

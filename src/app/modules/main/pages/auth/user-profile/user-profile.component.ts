@@ -69,13 +69,7 @@ export class UserProfileComponent implements OnDestroy {
     if (formData.get('avatar')) {
       switch (file.type) {
         case 'image/jpg':
-          this.formatoImagenNoAceptado = false;
-          this.actualizarImagenEnDB(formData);
-          return;
         case 'image/png':
-          this.formatoImagenNoAceptado = false;
-          this.actualizarImagenEnDB(formData);
-          return;
         case 'image/jpeg':
           this.formatoImagenNoAceptado = false;
           this.actualizarImagenEnDB(formData);
@@ -93,7 +87,6 @@ export class UserProfileComponent implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (user: IdentifyTokenOActualizarUsuario) => {
-          console.log(user);
           if (user.meta.status === 200) {
             this.modifyLoggedUser(user?.data);
           } else {

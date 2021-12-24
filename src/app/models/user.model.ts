@@ -1,5 +1,6 @@
 import { environment } from 'src/environments/environment';
 import { userRole } from '../modules/main/interfaces/http/auth.interface';
+import { Project } from '../modules/admin-panel/interfaces/users.interface';
 
 export class User {
   constructor(
@@ -9,7 +10,8 @@ export class User {
     public role?: userRole,
     public dni?: number,
     public avatar?: string,
-    public phone?: string
+    public phone?: string,
+    public projects?: Project[]
   ) {}
 
   public getAvatar(): string {
