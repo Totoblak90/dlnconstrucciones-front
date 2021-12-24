@@ -4,9 +4,11 @@ import { finalize } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
 import { UsersService } from '../../services/users.service';
 import Swal from 'sweetalert2';
-import { AllUsersRes } from '../../interfaces/users.interface';
+import { AllUsersRes, FullUser } from '../../interfaces/users.interface';
 import { environment } from 'src/environments/environment';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../main/services/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -17,12 +19,20 @@ export class UsersComponent implements OnInit {
   @HostBinding('class.admin-panel-container') someClass: Host = true;
 
   public users: User[] = [];
-  public encabezadosTabla: string[] = ['Nombre', 'Email', 'Teléfono', 'Rol'];
   public tableData: CuerpoTabla[] = [];
   public loading: boolean = true;
   private destroy$: Subject<boolean> = new Subject();
 
-  constructor(private usersService: UsersService) {}
+  public get encabezadosTabla(): string[] {
+    const enc: string[] = ['Nombre', 'Email', 'Teléfono', 'Rol'];
+    return enc;
+  }
+
+  constructor(
+    private usersService: UsersService,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -40,8 +50,9 @@ export class UsersComponent implements OnInit {
   }
 
   private setUsers(data: AllUsersRes): void {
-    this.users = data?.data?.map((user) => {
+    this.users = data?.data?.map((user: FullUser) => {
       return {
+        id: user.id,
         apellido: user.last_name,
         email: user.email,
         nombre: user.first_name,
@@ -49,6 +60,7 @@ export class UsersComponent implements OnInit {
         role: user.role,
         phone: user.phone,
         avatar: user.avatar,
+        project: user.Projects,
         getAvatar: () => {
           let imageUrl = '';
           user.avatar
@@ -68,7 +80,7 @@ export class UsersComponent implements OnInit {
         item3: user.email ? user.email : 'Vacío',
         item4: user.phone ? user.phone : 'Vacío',
         item6: user.role ? user.role : 'Vacío',
-        id: 1
+        id: user.id,
       };
     });
   }
@@ -80,31 +92,42 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  public deleteUser(user: User): void {
-    // if (user.uid === this.users.usuario.uid) {
-    //   Swal.fire('Error', 'You can t delete yourself', 'error');
-    //   return;
-    // }
+  public crearUsuario() {
+    this.router.navigateByUrl('/main/auth/register');
+  }
+
+  public borrarUSuario(id: number): void {
+    const selectedUser = this.users.find((user) => user.id === id);
+
+    if (selectedUser?.role === 'master') {
+      Swal.fire(
+        'Error',
+        `¡${selectedUser.nombre}, no podés borrarte a vos mismo CABALLO!`,
+        'error'
+      );
+      return;
+    }
 
     Swal.fire({
-      title: 'Are you sure?',
-      text: `You are about to delete user: ${user.nombre}`,
+      title: '¿Estas seguro?',
+      text: `Estas a punto de borrar al usuario: ${selectedUser?.nombre} ${selectedUser?.apellido}`,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Yes',
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No'
     }).then((result) => {
-      if (result.isConfirmed) {
-        // this.usersSrv.deleteUser(user.uid).subscribe(() => {
-        //   this.showConfirmationOfDelete(user.nombre);
-        // });
-      }
+      // if (result.isConfirmed) {
+      //   this.usersService.deleteUser(selectedUser).subscribe(() => {
+      //     this.showConfirmationOfDelete(selectedUser?.nombre!);
+      //   });
+      // }
     });
   }
 
   private showConfirmationOfDelete(name: string): void {
     Swal.fire({
-      title: 'Deleted',
-      text: `User ${name} has been succesfully deleted`,
+      title: 'Eliminado',
+      text: `El usuario ${name} fue eliminado con éxito`,
       icon: 'success',
       confirmButtonText: 'OK',
     }).then((result) => {

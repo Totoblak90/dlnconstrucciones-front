@@ -60,6 +60,7 @@ export class RegisterComponent implements OnDestroy {
         .subscribe(
           (res) => {
             const user: User = new User(
+              res?.data?.user?.id,
               res?.data.user?.first_name,
               res?.data?.user?.last_name,
               res?.data?.user?.email,

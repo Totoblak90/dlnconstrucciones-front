@@ -4,6 +4,7 @@ import { Project } from '../modules/admin-panel/interfaces/users.interface';
 
 export class User {
   constructor(
+    public id: number,
     public nombre?: string,
     public apellido?: string,
     public email?: string,

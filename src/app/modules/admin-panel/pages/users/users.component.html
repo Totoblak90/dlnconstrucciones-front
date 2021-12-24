@@ -6,4 +6,6 @@
   [totalSection]="users?.length!"
   [loading]="loading"
   (onRecargar)="recargarUsuarios($event)"
+  (onCreate)="crearUsuario()"
+  (onDelete)="borrarUSuario($event)"
 ></app-table>

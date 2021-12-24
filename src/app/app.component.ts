@@ -43,6 +43,7 @@ export class AppComponent {
 
   private crearYSetearUsuario(user: UserData) {
     const u: User = new User(
+      user?.id,
       user?.first_name,
       user?.last_name,
       user?.email,

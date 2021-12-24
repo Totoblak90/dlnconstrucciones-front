@@ -165,6 +165,7 @@ export class UserProfileComponent implements OnDestroy {
 
   private modifyLoggedUser(usuario: UserData) {
     const user: User = new User(
+      usuario?.id,
       usuario?.first_name,
       usuario?.last_name,
       usuario?.email,

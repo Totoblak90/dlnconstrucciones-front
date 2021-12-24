@@ -49,7 +49,12 @@
               </ng-template>
             </div>
             <div class="title-section-actions">
-              <button class="btn bgc-primary-dark text-white" (click)="create()">Crear {{ title }}</button>
+              <button
+                class="btn bgc-primary-dark text-white"
+                (click)="create()"
+              >
+                Crear {{ title }}
+              </button>
             </div>
           </div>
 
@@ -107,11 +112,10 @@
                   <td
                     class="primary-dark"
                     *ngIf="cuerpo.linkVerMas"
-                    [class.pointer]="cuerpo.linkVerMas.length > 100"
-                    (click)="verMas(cuerpo.linkVerMas)"
+                    [class.pointer]="+cuerpo.linkVerMas.value > 100"
+                    [routerLink]="cuerpo.linkVerMas.route"
                   >
-                    {{ cuerpo.linkVerMas | slice: 0:100
-                    }}{{ cuerpo.linkVerMas?.length! > 100 ? "..." : "" }}
+                    {{ cuerpo.linkVerMas.value }}
                   </td>
                   <td
                     class="primary-dark"
@@ -175,4 +179,3 @@
     </div>
   </div>
 </div>
-

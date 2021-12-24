@@ -66,6 +66,7 @@ export class LogInComponent implements OnDestroy {
 
   private guardarOAlertarUsuarioLogueado(usuario: UserData): void {
     const loggedUser = new User(
+      usuario.id,
       usuario.first_name,
       usuario.last_name,
       usuario.email,
