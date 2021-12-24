@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TipoDeTrabajoRoutingModule } from './tipo-de-trabajo-routing.module';
 import { TipoDeTrabajoComponent } from './tipo-de-trabajo.component';
 import { ComponentsModule } from '../../components/components.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ComponentsModule } from '../../components/components.module';
   imports: [
     CommonModule,
     TipoDeTrabajoRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    ReactiveFormsModule
   ]
 })
 export class TipoDeTrabajoModule { }

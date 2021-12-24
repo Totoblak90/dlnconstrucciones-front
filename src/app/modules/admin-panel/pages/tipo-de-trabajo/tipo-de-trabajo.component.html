@@ -1,9 +1,119 @@
-<app-table
-  *ngIf="tableData"
-  [title]="'Tipos de trabajo'"
-  [loading]="loading"
-  [filasTabla]="tableData"
-  [encabezadosTabla]="encabezadosTabla"
-  [totalSection]="tableData?.length!"
-  (onRecargar)="recargarTrabajos($event)"
-></app-table>
+<div class="row">
+  <div class="col" *ngIf="!isEditing && !isCreating">
+    <div class="card">
+      <div class="card-body">
+        <app-table
+          *ngIf="tableData"
+          [title]="'Tipos de trabajo'"
+          [loading]="loading"
+          [filasTabla]="tableData"
+          [encabezadosTabla]="encabezadosTabla"
+          [totalSection]="tableData?.length!"
+          (onRecargar)="recargarTrabajos($event)"
+          (onCreate)="crearTipoDeTrabajo()"
+          (onEdit)="editarTipoDeTrabajo($event)"
+          (onDelete)="borrarTipoDeTrabajo($event)"
+        ></app-table>
+      </div>
+    </div>
+  </div>
+  <div class="col" *ngIf="isCreating || isEditing">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="primary-dark">{{ crudAction }} servicio</h1>
+      </div>
+      <div class="card-body">
+        <form
+          class="form p-t-20 form-material"
+          [formGroup]="tipoDeTrabajoForm"
+          (ngSubmit)="formSubmit()"
+        >
+          <div class="card-body">
+            <div class="row justify-content-center">
+              <div class="col-md-4 mb-2" (click)="imageInput.click()">
+                <img
+                  class="img-responsive"
+                  [src]="imageToShow"
+                  alt="Trabajo realizado"
+                />
+                <input
+                  [hidden]="true"
+                  #imageInput
+                  type="file"
+                  formControlName="image"
+                  (change)="showSelectedImage($event)"
+                />
+                <div class="p-2">
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      tipoDeTrabajoForm.controls.image.errors?.required &&
+                      tipoDeTrabajoForm.controls.image.touched
+                    "
+                    >Este dato es requerido</span
+                  >
+                  <span class="text-danger" *ngIf="!acceptedFileTypes"
+                    >Los formatos aceptados son JPG, JPEG y PNG</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="exampleInputuname2"
+                      placeholder="Título"
+                      formControlName="title"
+                    />
+                    <div class="p-2">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          tipoDeTrabajoForm.controls.title.errors?.required &&
+                          tipoDeTrabajoForm.controls.title.touched
+                        "
+                        >Este campo es requerido</span
+                      >
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          tipoDeTrabajoForm.controls.title.errors?.minlength &&
+                          tipoDeTrabajoForm.controls.title.touched
+                        "
+                        >Debe tener al menos 6 caracteres</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              type="submit"
+              class="
+                btn btn-success
+                waves-effect waves-light
+                m-r-10
+                bgc-primary-dark
+              "
+            >
+              Confirmar
+            </button>
+            <button
+              type="button"
+              (click)="recargarTrabajos(true)"
+              class="btn btn-danger waves-effect waves-light m-r-10"
+            >
+              Volver
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
