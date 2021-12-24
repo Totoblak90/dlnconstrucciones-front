@@ -1,1 +1,1 @@
-export type AdminPanelCrudRoutes = 'jobs' | 'batches' | 'interests'
+export type AdminPanelCrudRoutes = 'jobs' | 'batches' | 'interests' | 'services'
