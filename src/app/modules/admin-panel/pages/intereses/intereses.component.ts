@@ -50,6 +50,28 @@ export class InteresesComponent implements OnInit {
     });
   }
 
+  /** @todo solucionar el problema del validador de la imágen
+  private setImageErrors(fg: FormGroup): void {
+    const image = fg.get('image')
+    console.log(this.crudAction)
+    if (image && this.crudAction) {
+      return image.setValidators(() => {
+        return { required: true };
+      });
+    }
+    return (formGroup: FormGroup) => {
+      const pass1Control = formGroup.get(pass1);
+      const pass2Control = formGroup.get(pass2);
+
+      if (pass1Control.value === pass2Control.value) {
+        pass2Control.setErrors(null);
+      } else {
+        pass2Control.setErrors({ notMatch: true });
+      }
+    };
+  }
+  */
+
   ngOnInit(): void {
     this.getIntereses();
   }
