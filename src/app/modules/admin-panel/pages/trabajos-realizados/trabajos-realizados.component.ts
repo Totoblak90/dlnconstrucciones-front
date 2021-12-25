@@ -73,6 +73,24 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
     }
   }
 
+  public showSelectedImage(e: any) {
+    const file = e.target?.files[0];
+
+    this.acceptedFileTypes =
+      file.type === 'image/jpg' ||
+      file.type === 'image/jpeg' ||
+      file.type === 'image/png';
+
+    if (file && this.acceptedFileTypes) {
+      this.fileToUpload = file;
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => (this.imageToShow = reader.result as string);
+    } else {
+      this.imageToShow = '../../../../../assets/no-image.png';
+    }
+  }
+
   private getTrabajos(): void {
     this.httpSrv
       .getTypesOfJob()
@@ -136,7 +154,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
           this.recargarTrabajos(true);
           this.alertFailureOrSuccess(res?.meta?.status);
         },
-        (err) =>
+        () =>
           Swal.fire(
             'Error',
             'No pudimos crear el trabajo, por favor intentá de nuevo recargando la página',
@@ -217,24 +235,6 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
         'No pudimos crear la zona, por favor intentá de nuevo recargando la página',
         'error'
       );
-    }
-  }
-
-  public showSelectedImage(e: any) {
-    const file = e.target?.files[0];
-
-    this.acceptedFileTypes =
-      file.type === 'image/jpg' ||
-      file.type === 'image/jpeg' ||
-      file.type === 'image/png';
-
-    if (file && this.acceptedFileTypes) {
-      this.fileToUpload = file;
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => (this.imageToShow = reader.result as string);
-    } else {
-      this.imageToShow = '../../../../../assets/no-image.png';
     }
   }
 

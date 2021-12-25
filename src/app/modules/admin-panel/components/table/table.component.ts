@@ -11,13 +11,13 @@ export class TableComponent {
   @Output() onCreate: EventEmitter<undefined> = new EventEmitter();
   @Output() onEdit: EventEmitter<number> = new EventEmitter();
   @Output() onDelete: EventEmitter<number> = new EventEmitter();
-
   @Output() onRecargar: EventEmitter<boolean> = new EventEmitter();
-  @Input() title: string = '';
-  @Input() totalSection: number = 0;
-  @Input() encabezadosTabla: string[] = [];
-  @Input() filasTabla: CuerpoTabla[] = [];
-  @Input() loading: boolean = true;
+
+  @Input() public title: string = '';
+  @Input() public totalSection: number = 0;
+  @Input() public encabezadosTabla: string[] = [];
+  @Input() public filasTabla: CuerpoTabla[] = [];
+  @Input() public loading: boolean = true;
 
   public searching: boolean = false;
   public searchingResults: number = 0;
