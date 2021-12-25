@@ -196,14 +196,8 @@ export class LotesComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          if (res?.meta?.status === 200 || res?.meta?.status === 201) {
-            this.recargarLotes(true);
-            Swal.fire(
-              '¡Excelente!',
-              'Creamos el lote sin problemmas.',
-              'success'
-            );
-          }
+          this.recargarLotes(true);
+          this.alertFailureOrSuccess(res?.meta?.status);
         },
         () => {
           this.isCreating = false;
@@ -242,14 +236,8 @@ export class LotesComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          if (res?.meta?.status === 200 || res?.meta?.status === 201) {
-            this.recargarLotes(true);
-            Swal.fire(
-              '¡Excelente!',
-              'Editamos el lote sin problemmas.',
-              'success'
-            );
-          }
+          this.recargarLotes(true);
+          this.alertFailureOrSuccess(res?.meta?.status);
         },
         () => {
           this.recargarLotes(true);
@@ -282,11 +270,7 @@ export class LotesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarLotes(true);
-          Swal.fire(
-            '¡Genial!',
-            'Hemos completado tu pedido, gracias',
-            'success'
-          );
+          this.alertFailureOrSuccess(res?.meta?.status);
         },
         () => {
           Swal.fire(
@@ -303,6 +287,18 @@ export class LotesComponent implements OnInit {
       return lote.id === id;
     });
     return loteSeleccionado;
+  }
+
+  private alertFailureOrSuccess(status: number): void {
+    if (status === 200 || status === 201) {
+      Swal.fire('¡Excelente!', 'La zona se creó correctamente', 'success');
+    } else {
+      Swal.fire(
+        'Error',
+        'No pudimos crear la zona, por favor intentá de nuevo recargando la página',
+        'error'
+      );
+    }
   }
 
   ngOnDestroy(): void {

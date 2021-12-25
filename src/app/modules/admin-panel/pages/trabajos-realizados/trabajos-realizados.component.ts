@@ -132,13 +132,9 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       .create(formData, 'jobs')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        () => {
+        (res) => {
           this.recargarTrabajos(true);
-          Swal.fire(
-            '¡Excelente!',
-            'El trabajo se creó correctamente',
-            'success'
-          );
+          this.alertFailureOrSuccess(res?.meta?.status);
         },
         (err) =>
           Swal.fire(
@@ -168,13 +164,9 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       .edit(this.trabajoID, formData, 'jobs')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        () => {
+        (res) => {
           this.recargarTrabajos(true);
-          Swal.fire(
-            '¡Excelente!',
-            'El trabajo se editó correctamente',
-            'success'
-          );
+          this.alertFailureOrSuccess(res?.meta?.status);
         },
         () => {
           Swal.fire(
@@ -202,13 +194,9 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       .delete(id, 'jobs')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        () => {
+        (res) => {
           this.recargarTrabajos(true);
-          Swal.fire(
-            '¡Genial!',
-            'Hemos completado tu pedido, gracias',
-            'success'
-          );
+          this.alertFailureOrSuccess(res?.meta?.status);
         },
         () => {
           Swal.fire(
@@ -218,6 +206,18 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
           );
         }
       );
+  }
+
+  private alertFailureOrSuccess(status: number): void {
+    if (status === 200 || status === 201) {
+      Swal.fire('¡Excelente!', 'La zona se creó correctamente', 'success');
+    } else {
+      Swal.fire(
+        'Error',
+        'No pudimos crear la zona, por favor intentá de nuevo recargando la página',
+        'error'
+      );
+    }
   }
 
   public showSelectedImage(e: any) {

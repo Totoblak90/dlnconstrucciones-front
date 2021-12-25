@@ -160,20 +160,19 @@ export class InteresesComponent implements OnInit {
       .create(formData, 'interests')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        () => {
+        (res) => {
           this.recargarIntereses(true);
-          Swal.fire(
-            '¡Excelente!',
-            'El interés se creó correctamente',
-            'success'
-          );
+          this.alertFailureOrSuccess(res?.meta?.status);
         },
-        () =>
+        (err) => {
+          console.log(err);
+          this.recargarIntereses(true);
           Swal.fire(
             'Error',
             'No pudimos crear el interés, por favor intentá de nuevo recargando la página',
             'error'
-          )
+          );
+        }
       );
   }
 
@@ -195,15 +194,12 @@ export class InteresesComponent implements OnInit {
       .edit(this.interestsID, formData, 'interests')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        () => {
+        (res) => {
           this.recargarIntereses(true);
-          Swal.fire(
-            '¡Excelente!',
-            'Editamos el lote sin problemmas.',
-            'success'
-          );
+          this.alertFailureOrSuccess(res?.meta?.status);
         },
-        () => {
+        (err) => {
+          console.log(err);
           this.recargarIntereses(true);
           Swal.fire(
             'Error',
@@ -229,13 +225,9 @@ export class InteresesComponent implements OnInit {
       .delete(id, 'interests')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        () => {
+        (res) => {
           this.recargarIntereses(true);
-          Swal.fire(
-            '¡Genial!',
-            'Hemos completado tu pedido, gracias',
-            'success'
-          );
+          this.alertFailureOrSuccess(res?.meta?.status);
         },
         () => {
           Swal.fire(
@@ -245,6 +237,18 @@ export class InteresesComponent implements OnInit {
           );
         }
       );
+  }
+
+  private alertFailureOrSuccess(status: number): void {
+    if (status === 200 || status === 201) {
+      Swal.fire('¡Excelente!', 'La zona se creó correctamente', 'success');
+    } else {
+      Swal.fire(
+        'Error',
+        'No pudimos crear la zona, por favor intentá de nuevo recargando la página',
+        'error'
+      );
+    }
   }
 
   ngOnDestroy(): void {

@@ -30,6 +30,12 @@ export class HeaderAdminComponent {
       inMobile: true,
     },
     {
+      description: 'Proyectos',
+      toggle: true,
+      redirectTo: '/admin/proyectos',
+      inMobile: true,
+    },
+    {
       description: 'Servicios',
       toggle: true,
       redirectTo: '/admin/servicios',

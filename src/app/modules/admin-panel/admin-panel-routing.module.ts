@@ -30,6 +30,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'proyectos',
+        loadChildren: () =>
+          import('./pages/proyectos/proyectos.module').then(
+            (m) => m.ProyectosModule
+          ),
+      },
+      {
         path: 'servicios',
         loadChildren: () =>
           import('./pages/servicios/servicios.module').then(
