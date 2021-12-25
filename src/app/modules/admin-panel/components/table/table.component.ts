@@ -8,10 +8,10 @@ import Swal from 'sweetalert2';
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent {
-  @Output() onCreate: EventEmitter<undefined> = new EventEmitter();
-  @Output() onEdit: EventEmitter<number> = new EventEmitter();
-  @Output() onDelete: EventEmitter<number> = new EventEmitter();
-  @Output() onRecargar: EventEmitter<boolean> = new EventEmitter();
+  @Output() private onCreate: EventEmitter<undefined> = new EventEmitter();
+  @Output() private onEdit: EventEmitter<number> = new EventEmitter();
+  @Output() private onDelete: EventEmitter<number> = new EventEmitter();
+  @Output() private onRecargar: EventEmitter<boolean> = new EventEmitter();
 
   @Input() public title: string = '';
   @Input() public totalSection: number = 0;
