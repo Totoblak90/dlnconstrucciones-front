@@ -20,13 +20,9 @@ export class UsersComponent implements OnInit {
 
   public users: User[] = [];
   public tableData: CuerpoTabla[] = [];
+  public encabezadosTabla: string[] = ['Nombre', 'Email', 'Teléfono', 'Rol'];
   public loading: boolean = true;
   private destroy$: Subject<boolean> = new Subject();
-
-  public get encabezadosTabla(): string[] {
-    const enc: string[] = ['Nombre', 'Email', 'Teléfono', 'Rol'];
-    return enc;
-  }
 
   constructor(
     private usersService: UsersService,
