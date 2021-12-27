@@ -1,12 +1,12 @@
 <app-table
-></app-table>
-<!-- *ngIf="users && tableData"
-  title="Usuarios"
+*ngIf="projects && tableData"
+  title="Proyectos"
   [encabezadosTabla]="encabezadosTabla"
   [filasTabla]="tableData"
-  [totalSection]="users?.length!"
+  [totalSection]="projects?.length!"
   [loading]="loading"
-  (onRecargar)="recargarUsuarios($event)"
-  (onCreate)="crearUsuario()"
+  (onRecargar)="recargarProyectos($event)"
+  ></app-table>
+  <!-- (onCreate)="crearUsuario()"
   (onEdit)="changeRole($event)"
   (onDelete)="borrarUSuario($event)" -->

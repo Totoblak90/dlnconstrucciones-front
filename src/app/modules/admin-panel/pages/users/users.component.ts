@@ -8,7 +8,6 @@ import { AllUsersRes, FullUser } from '../../interfaces/users.interface';
 import { environment } from 'src/environments/environment';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../main/services/auth.service';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 
 @Component({

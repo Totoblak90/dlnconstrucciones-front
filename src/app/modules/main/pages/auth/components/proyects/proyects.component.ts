@@ -14,7 +14,7 @@ export class ProyectsComponent {
     const encabezados = [];
 
     this.user.projects?.forEach((pr) =>
-      pr.Payments.forEach((pay) => (propiedadesDePayments = Object.keys(pay)))
+      pr.Payments?.forEach((pay) => (propiedadesDePayments = Object.keys(pay)))
     );
     if (propiedadesDePayments?.length) {
       for (const item of propiedadesDePayments) {

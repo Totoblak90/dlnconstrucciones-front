@@ -12,40 +12,46 @@ export interface FullUserRes {
 }
 
 export interface FullUser {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
   avatar: string;
-  role: userRole;
-  phone?: string;
-  dni?: number;
   created_at: string;
-  updated_at: string;
   deleted_at: string;
+  dni?: number;
+  email: string;
+  first_name: string;
+  id: number;
+  last_name: string;
+  phone?: string;
   Projects: Project[];
+  role: userRole;
+  updated_at: string;
+}
+
+export interface AllProjectsRes {
+  meta: Meta;
+  data: Project[];
 }
 
 export interface Project {
-  id: number;
   balance: number;
-  title: string;
-  total: number;
-  Payments: ProyectPayments[];
   cashflow: any;
   created_at: string;
-  updated_at: string;
   deleted_at: null | string;
+  id: number;
+  Payments?: ProyectPayments[];
+  title: string;
+  total: number;
+  updated_at: string;
   users_id: 1;
+  Users?: FullUser;
 }
 
 export interface ProyectPayments {
-  id: number
   amount: number;
-  receipt: string;
-  datetime: string;
   created_at: string;
-  updated_at: string;
+  datetime: string;
   deleted_at: string | null;
+  id: number;
   projects_id: number;
+  receipt: string;
+  updated_at: string;
 }
