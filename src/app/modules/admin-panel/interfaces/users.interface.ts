@@ -29,9 +29,10 @@ export interface FullUser {
 export interface Project {
   id: number;
   balance: number;
+  title: string;
   total: number;
-  payments: ProyectPayments[];
-  cronoflow: any;
+  Payments: ProyectPayments[];
+  cashflow: any;
   created_at: string;
   updated_at: string;
   deleted_at: null | string;
@@ -39,7 +40,12 @@ export interface Project {
 }
 
 export interface ProyectPayments {
-  comprobante: number;
-  monto: number;
-  fecha: string;
+  id: number
+  amount: number;
+  receipt: string;
+  datetime: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  projects_id: number;
 }

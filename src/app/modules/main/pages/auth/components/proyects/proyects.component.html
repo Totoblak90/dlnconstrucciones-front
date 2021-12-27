@@ -47,10 +47,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let payment of proyecto.payments">
-                  <td>#{{ payment.comprobante }}</td>
-                  <td>{{ payment.fecha | date: "dd/MM/yyyy" }}</td>
-                  <td>{{ payment.monto | currency }}</td>
+                <tr *ngFor="let payment of proyecto.Payments">
+                  <td>#{{ payment.receipt }}</td>
+                  <td>{{ payment.datetime| date: "dd/MM/yyyy" }}</td>
+                  <td>{{ payment.amount| currency }}</td>
                 </tr>
               </tbody>
             </table>
@@ -62,7 +62,7 @@
   <div class="cashflow m-t-5 b-b-5">
     <button
       class="btn bgc-primary-dark text-white"
-      (click)="descargarCashFlow(proyecto.cronoflow)"
+      (click)="descargarCashFlow(proyecto.cashflow)"
     >
       <i class="ti ti-file"></i> Descargar cashflow
     </button>

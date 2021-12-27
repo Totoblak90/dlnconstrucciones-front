@@ -59,19 +59,7 @@ export class UserProfileComponent implements OnDestroy {
   constructor(private authService: AuthService, private fb: FormBuilder) {}
 
   public get user(): User {
-    const us = this.authService.getUser();
-    us.projects = us.projects?.map(pr => {
-      pr.total = 10000;
-      pr.payments = [
-        {
-          comprobante: 1234,
-          fecha: new Date().toString(),
-          monto: 10000
-        }
-      ]
-      return pr
-    })
-    return us;
+    return this.authService.getUser();
   }
 
   public cambiarFoto(e: any): void {
@@ -184,7 +172,8 @@ export class UserProfileComponent implements OnDestroy {
       usuario?.role,
       usuario?.dni,
       usuario?.avatar,
-      usuario?.phone
+      usuario?.phone,
+      usuario?.Projects
     );
     this.authService.setUser(user);
     Swal.fire('¡Excelente!', 'Actualizamos tus datos sin problemas', 'success');
