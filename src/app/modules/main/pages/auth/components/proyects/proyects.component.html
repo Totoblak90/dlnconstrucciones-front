@@ -2,7 +2,11 @@
 <hr />
 <div *ngFor="let proyecto of user.projects; let i = index">
   <h5 class="m-t-30 primary-dark">
-    {{ user?.nombre }}_{{ user?.apellido }}_{{ proyecto.id }}
+    {{
+      proyecto.title
+        ? proyecto.title
+        : user.nombre + "_" + user.apellido + "_" + proyecto.id
+    }}
     <span class="pull-right">{{ porcentaje[i] }}%</span>
   </h5>
   <div class="progress">
@@ -16,7 +20,8 @@
     ></div>
   </div>
   <h5 class="m-t-10 primary-dark">
-    Total <span class="pull-right primary-dark">{{ proyecto.total | currency }}</span>
+    Total
+    <span class="pull-right primary-dark">{{ proyecto.total | currency }}</span>
   </h5>
   <h5
     class="m-t-10"
@@ -49,8 +54,8 @@
               <tbody>
                 <tr *ngFor="let payment of proyecto.Payments">
                   <td>#{{ payment.receipt }}</td>
-                  <td>{{ payment.datetime| date: "dd/MM/yyyy" }}</td>
-                  <td>{{ payment.amount| currency }}</td>
+                  <td>{{ payment.datetime | date: "dd/MM/yyyy" }}</td>
+                  <td>{{ payment.amount | currency }}</td>
                 </tr>
               </tbody>
             </table>

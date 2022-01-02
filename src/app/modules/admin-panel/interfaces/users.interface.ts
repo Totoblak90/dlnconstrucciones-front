@@ -55,3 +55,5 @@ export interface ProyectPayments {
   receipt: string;
   updated_at: string;
 }
+
+export type EditProyect = Omit<Project, 'created_at' | 'updated_at' | 'deleted_at' | 'id'>
