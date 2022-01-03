@@ -1,37 +1,125 @@
-
-  <!-- (onCreate)="crearUsuario()"
-  (onEdit)="changeRole($event)"
-  (onDelete)="borrarUSuario($event)" -->
-
-  <div class="row">
-    <div class="col" *ngIf="!isEditing && !isCreating">
-      <div class="card">
-        <div class="card-body">
-          <app-table
+<div class="row">
+  <div class="col" *ngIf="!isEditing && !isCreating">
+    <div class="card">
+      <div class="card-body">
+        <app-table
           *ngIf="projects && tableData"
-            title="Proyectos"
-            [encabezadosTabla]="encabezadosTabla"
-            [filasTabla]="tableData"
-            [totalSection]="projects?.length!"
-            [loading]="loading"
-            (onRecargar)="recargarProyectos($event)"
-            ></app-table>
-        </div>
+          title="Proyectos"
+          [encabezadosTabla]="encabezadosTabla"
+          [filasTabla]="tableData"
+          [totalSection]="projects?.length!"
+          [loading]="loading"
+          (onRecargar)="recargarProyectos($event)"
+          (onCreate)="crearProyecto()"
+          (onEdit)="editarProyecto($event)"
+          (onDelete)="borrarProyecto($event)"
+        ></app-table>
       </div>
     </div>
-    <div class="col" *ngIf="isCreating || isEditing">
-      <div class="card">
-        <div class="card-header">
-          <h1 class="primary-dark">{{ crudAction }} Interes/es</h1>
-        </div>
-        <div class="card-body">
-          <form
-            class="form p-t-20 form-material"
-            [formGroup]="interestForm"
-            (ngSubmit)="formSubmit()"
-          >
-            <div class="card-body">
-              <div class="row justify-content-center">
+  </div>
+  <div class="col" *ngIf="isCreating || isEditing">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="primary-dark">{{ crudAction }} Proyecto/s</h1>
+      </div>
+      <div class="card-body">
+        <form
+          class="form p-t-20 form-material"
+          [formGroup]="proyectForm"
+          (ngSubmit)="formSubmit()"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="exampleInputuname2"
+                      placeholder="Título"
+                      formControlName="title"
+                    />
+                    <div class="p-2">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          proyectForm.controls.title.errors?.required &&
+                          proyectForm.controls.title.touched
+                        "
+                        >Este campo es requerido</span
+                      >
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          proyectForm.controls.title.errors?.minlength &&
+                          proyectForm.controls.title.touched
+                        "
+                        >Debe tener al menos 6 caracteres</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      id="exampleInputuname2"
+                      placeholder="Descripción"
+                      formControlName="description"
+                      rows="5"
+                    ></textarea>
+                    <div class="p-2">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          proyectForm.controls.description.errors?.required &&
+                          proyectForm.controls.description.touched
+                        "
+                        >Este campo es requerido</span
+                      >
+                      <span
+                        *ngIf="
+                          proyectForm.controls.description.errors?.minlength &&
+                          proyectForm.controls.description.touched
+                        "
+                        class="text-danger"
+                        >Debe tener al menos 10 caracteres</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              type="submit"
+              class="
+                btn btn-success
+                waves-effect waves-light
+                m-r-10
+                bgc-primary-dark
+              "
+            >
+              Confirmar
+            </button>
+            <button
+              type="button"
+              (click)="recargarProyectos(true)"
+              class="btn btn-danger waves-effect waves-light m-r-10"
+            >
+              Volver
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="row justify-content-center">
                 <div class="col-md-4 mb-2" (click)="imageInput.click()">
                   <img
                     class="img-responsive"
@@ -49,8 +137,8 @@
                     <span
                       class="text-danger"
                       *ngIf="
-                        interestForm.controls.image.errors?.required &&
-                        interestForm.controls.image.touched
+                        proyectForm.controls.image.errors?.required &&
+                        proyectForm.controls.image.touched
                       "
                       >Este dato es requerido</span
                     >
@@ -59,94 +147,4 @@
                     >
                   </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <div class="form-group">
-                    <div class="input-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="exampleInputuname2"
-                        placeholder="Título"
-                        formControlName="title"
-                      />
-                      <div class="p-2">
-                        <span
-                          class="text-danger"
-                          *ngIf="
-                            interestForm.controls.title.errors?.required &&
-                            interestForm.controls.title.touched
-                          "
-                          >Este campo es requerido</span
-                        >
-                        <span
-                          class="text-danger"
-                          *ngIf="
-                            interestForm.controls.title.errors?.minlength &&
-                            interestForm.controls.title.touched
-                          "
-                          >Debe tener al menos 6 caracteres</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="input-group">
-                      <textarea
-                        type="text"
-                        class="form-control"
-                        id="exampleInputuname2"
-                        placeholder="Descripción"
-                        formControlName="description"
-                        rows="5"
-                      ></textarea>
-                      <div class="p-2">
-                        <span
-                          class="text-danger"
-                          *ngIf="
-                            interestForm.controls.description.errors?.required &&
-                            interestForm.controls.description.touched
-                          "
-                          >Este campo es requerido</span
-                        >
-                        <span
-                          *ngIf="
-                            interestForm.controls.description.errors?.minlength &&
-                            interestForm.controls.description.touched
-                          "
-                          class="text-danger"
-                          >Debe tener al menos 10 caracteres</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer">
-              <button
-                type="submit"
-                class="
-                  btn btn-success
-                  waves-effect waves-light
-                  m-r-10
-                  bgc-primary-dark
-                "
-              >
-                Confirmar
-              </button>
-              <button
-                type="button"
-                (click)="recargarProyectos(true)"
-                class="btn btn-danger waves-effect waves-light m-r-10"
-              >
-                Volver
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
+              </div> -->

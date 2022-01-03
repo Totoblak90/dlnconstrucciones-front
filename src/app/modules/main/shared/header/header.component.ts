@@ -40,7 +40,7 @@ export class HeaderComponent {
       inMobile: true,
     },
     {
-      description: 'ACREDITARSE',
+      description: 'CUENTA',
       moreOptions: true,
       toggle: true,
       inMobile: false,
@@ -62,7 +62,7 @@ export class HeaderComponent {
   ];
 
   private _acreditarse: Menu = {
-    description: 'ACREDITARSE',
+    description: 'CUENTA',
     moreOptions: true,
     toggle: true,
     inMobile: true,
@@ -89,11 +89,11 @@ export class HeaderComponent {
   public get user(): User {
     if (this.authService.getUser()) {
       this.menu = this.menu.filter(
-        (menuItems) => menuItems.description !== 'ACREDITARSE'
+        (menuItems) => menuItems.description !== 'CUENTA'
       );
     } else {
       if (
-        !this.menu.find((menuItem) => menuItem.description === 'ACREDITARSE')
+        !this.menu.find((menuItem) => menuItem.description === 'CUENTA')
       ) {
         this.menu.push(this._acreditarse);
       }

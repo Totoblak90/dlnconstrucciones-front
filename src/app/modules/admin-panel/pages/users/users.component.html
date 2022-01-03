@@ -1,12 +1,73 @@
-<app-table
-*ngIf="users && tableData"
-  title="Usuarios"
-  [encabezadosTabla]="encabezadosTabla"
-  [filasTabla]="tableData"
-  [totalSection]="users?.length!"
-  [loading]="loading"
-  (onRecargar)="recargarUsuarios($event)"
-  (onCreate)="crearUsuario()"
-  (onEdit)="changeRole($event)"
-  (onDelete)="borrarUSuario($event)"
-></app-table>
+<div class="row">
+  <div class="col" *ngIf="!isEditingRole">
+    <div class="card">
+      <div class="card-body">
+        <app-table
+          *ngIf="users && tableData && !isEditingRole"
+          title="Usuarios"
+          [encabezadosTabla]="encabezadosTabla"
+          [filasTabla]="tableData"
+          [totalSection]="users?.length!"
+          [loading]="loading"
+          (onRecargar)="recargarUsuarios($event)"
+          (onCreate)="crearUsuario()"
+          (onEdit)="changeRole($event)"
+          (onDelete)="borrarUSuario($event)"
+        ></app-table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col" *ngIf="isEditingRole">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="primary-dark">Editar usuario</h1>
+      </div>
+      <form
+        class="form p-t-20 form-material"
+        [formGroup]="editRoleForm"
+        (ngSubmit)="formSubmit()"
+      >
+        <div class="card-body">
+          <div class="form-group">
+            <label>Rol del usuario*</label>
+            <select formControlName="role" class="form-control custom-select">
+              <option value="user">Usuario común</option>
+              <option value="admin">Usuario adminitrativo</option>
+            </select>
+            <div class="p-2">
+              <span
+                class="text-danger"
+                *ngIf="
+                  editRoleForm.controls.role.errors?.required &&
+                  editRoleForm.controls.role.touched
+                "
+                >Este dato es requerido</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button
+            type="submit"
+            class="
+              btn btn-success
+              waves-effect waves-light
+              m-r-10
+              bgc-primary-dark
+            "
+          >
+            Confirmar
+          </button>
+          <button
+            type="button"
+            (click)="recargarUsuarios(true)"
+            class="btn btn-danger waves-effect waves-light m-r-10"
+          >
+            Volver
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

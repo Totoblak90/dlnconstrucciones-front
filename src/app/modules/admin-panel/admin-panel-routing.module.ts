@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminPanelComponent } from './admin-panel.component';
 import { AdminGuard } from './guards/admin.guard';
+import { MasterGuard } from './guards/master.guard';
 
 const routes: Routes = [
   {
@@ -31,6 +32,8 @@ const routes: Routes = [
       },
       {
         path: 'proyectos',
+        canActivate: [MasterGuard],
+        canLoad: [MasterGuard],
         loadChildren: () =>
           import('./pages/proyectos/proyectos.module').then(
             (m) => m.ProyectosModule
@@ -59,6 +62,8 @@ const routes: Routes = [
       },
       {
         path: 'users',
+        canActivate: [MasterGuard],
+        canLoad: [MasterGuard],
         loadChildren: () =>
           import('./pages/users/users.module').then((m) => m.UsersModule),
       },

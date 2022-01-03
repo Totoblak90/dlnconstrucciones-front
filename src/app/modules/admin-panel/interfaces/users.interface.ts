@@ -56,4 +56,8 @@ export interface ProyectPayments {
   updated_at: string;
 }
 
+export interface editUserRoleReq {
+  role: 'admin' | 'user'
+}
+
 export type EditProyect = Omit<Project, 'created_at' | 'updated_at' | 'deleted_at' | 'id'>

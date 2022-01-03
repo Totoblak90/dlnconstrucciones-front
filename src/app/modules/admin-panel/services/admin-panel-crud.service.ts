@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { getToken } from '../../main/helpers/functions.helper';
 import { AdminPanelCrudRoutes } from '../interfaces/general.interface';
+import { editUserRoleReq } from '../interfaces/users.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,22 @@ export class AdminPanelCrudService {
       { headers: this.headers }
     );
   }
+
+    /**
+   * Edita un registro en la tabla indicada
+   *
+   * @param id: number
+   * @param payload: FormData
+   * @return {*}  {Observable<any>}
+   * @memberof AdminPanelCrudService
+   */
+     public editUserRole(id: number, payload: editUserRoleReq): Observable<any> {
+      return this.http.patch<any>(
+        `${environment.API_BASE_URL}/users/role/${id}`,
+        payload,
+        { headers: this.headers }
+      );
+    }
 
   /**
    * Elimina un registro en la tabla indicada

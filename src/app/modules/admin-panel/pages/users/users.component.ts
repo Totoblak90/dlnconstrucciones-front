@@ -9,6 +9,9 @@ import { environment } from 'src/environments/environment';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { Router } from '@angular/router';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { userRole } from '../../../main/interfaces/http/auth.interface';
+import { AuthService } from '../../../main/services/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -22,16 +25,39 @@ export class UsersComponent implements OnInit {
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = ['Nombre', 'Email', 'Teléfono', 'Rol'];
   public loading: boolean = true;
+  public editRoleForm!: FormGroup;
+  public isEditingRole: boolean = false;
+  private userID!: number;
   private destroy$: Subject<boolean> = new Subject();
+
+  public get activeUserRole(): userRole {
+    return this.authService.getUser().role;
+  }
 
   constructor(
     private usersService: UsersService,
     private router: Router,
-    private adminPanelCrudService: AdminPanelCrudService
-  ) {}
+    private adminPanelCrudService: AdminPanelCrudService,
+    private fb: FormBuilder,
+    private authService: AuthService
+  ) {
+    this.createForm();
+  }
+
+  private createForm(): void {
+    this.editRoleForm = this.fb.group({
+      role: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     this.loadUsers();
+  }
+
+  public formSubmit(): void {
+    this.editRoleForm.valid
+      ? this.changeRoleEnLaDb()
+      : this.editRoleForm.markAllAsTouched();
   }
 
   public loadUsers(): void {
@@ -84,6 +110,7 @@ export class UsersComponent implements OnInit {
   public recargarUsuarios(recargar: boolean): void {
     if (recargar) {
       this.tableData = [];
+      this.isEditingRole = false;
       this.loadUsers();
     }
   }
@@ -92,44 +119,103 @@ export class UsersComponent implements OnInit {
     this.router.navigateByUrl('/main/auth/register');
   }
 
-  public borrarUSuario(id: number): void {
-    const selectedUser = this.users.find((user) => user.id === id);
-
-    if (selectedUser?.role === 'master') {
-      Swal.fire(
-        'Error',
-        `¡${selectedUser.nombre}, no podés borrarte a vos mismo CABALLO!`,
-        'error'
-      );
-      return;
-    }
-
-    Swal.fire({
-      title: '¿Estas seguro?',
-      text: `Estas a punto de borrar al usuario: ${selectedUser?.nombre} ${selectedUser?.apellido}`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Si',
-      cancelButtonText: 'No',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.adminPanelCrudService
-          .delete(selectedUser?.id!, 'users')
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(
-            () =>
-              this.showConfirmationOfDelete(
-                `${selectedUser?.nombre!} ${selectedUser?.apellido}`
-              ),
-            () =>
-              Swal.fire(
-                'Error',
-                'Tuvimos un problema, por favor intentá nuevamente. Si el problema persiste ponete en contacto con tu proveedor de internet',
-                'error'
-              )
+  public changeRole(id: number): void {
+    if (this.verificarNiverDeUsuario()) {
+      const usuarioSeleccionado = this.users.find((user) => user.id === id);
+      if (usuarioSeleccionado) {
+        if (usuarioSeleccionado.role === 'master') {
+          Swal.fire(
+            'Prohibido',
+            'El rol de este usuario no se puede editar',
+            'warning'
           );
+          return;
+        }
+
+        this.isEditingRole = true;
+        this.userID = usuarioSeleccionado.id;
+        this.editRoleForm.controls.role.setValue(usuarioSeleccionado.role);
       }
-    });
+    }
+  }
+
+  private changeRoleEnLaDb(): void {
+    this.adminPanelCrudService
+      .editUserRole(this.userID, this.editRoleForm.value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res) => {
+          this.recargarUsuarios(true);
+          this.alertFailureOrSuccess(res?.meta?.status);
+        },
+        () =>
+          Swal.fire(
+            '¡Lo sentimos!',
+            'Error inesperado, recargar página. Si el problema persiste llamar al administrador o a su proveedor de internet',
+            'error'
+          )
+      );
+  }
+
+  public borrarUSuario(id: number): void {
+    if (this.verificarNiverDeUsuario()) {
+      const selectedUser = this.users.find((user) => user.id === id);
+
+      if (selectedUser) {
+        if (selectedUser?.role === 'master') {
+          Swal.fire(
+            '¡Prohibido!',
+            `¡Este usuario no se puede borrar!`,
+            'warning'
+          );
+          return;
+        }
+
+        Swal.fire({
+          title: '¿Estas seguro?',
+          text: `Estas a punto de borrar al usuario: ${selectedUser?.nombre} ${selectedUser?.apellido}`,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.borrarUsuarioDeLaDb(selectedUser);
+          }
+        });
+      }
+    }
+  }
+
+  private borrarUsuarioDeLaDb(selectedUser: User) {
+    this.adminPanelCrudService
+      .delete(selectedUser?.id!, 'users')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () =>
+          this.showConfirmationOfDelete(
+            `${selectedUser?.nombre} ${selectedUser?.apellido}`
+          ),
+        () =>
+          Swal.fire(
+            'Error',
+            'Tuvimos un problema, por favor intentá nuevamente. Si el problema persiste ponete en contacto con tu proveedor de internet',
+            'error'
+          )
+      );
+  }
+
+  private verificarNiverDeUsuario(): boolean {
+    if (this.activeUserRole === 'master') {
+      return true;
+    } else {
+      Swal.fire(
+        'No permitido',
+        'No tenés los permisos para realizar esa acción. Comunicate con el dueño de la página',
+        'warning'
+      );
+      return false;
+    }
   }
 
   private showConfirmationOfDelete(name: string): void {
@@ -140,16 +226,21 @@ export class UsersComponent implements OnInit {
       confirmButtonText: 'OK',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.loadUsers();
+        this.recargarUsuarios(true);
       }
     });
   }
 
-  changeRole(id: number) {
-    // this.usersService.updateUserFromAdminPanel(user).subscribe(
-    //   (res: UpdateUserResponseFromAdminPanel) => null,
-    //   (err) => Swal.fire('Error', 'Could not update the user', 'error')
-    // );
+  private alertFailureOrSuccess(status: number): void {
+    if (status === 200 || status === 201) {
+      Swal.fire('¡Excelente!', 'El usuario se editó correctamente', 'success');
+    } else {
+      Swal.fire(
+        'Error',
+        'No pudimos editar el usuario, por favor intentá de nuevo recargando la página',
+        'error'
+      );
+    }
   }
 
   ngOnDestroy(): void {

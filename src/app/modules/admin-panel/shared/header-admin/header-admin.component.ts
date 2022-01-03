@@ -76,6 +76,12 @@ export class HeaderAdminComponent {
   constructor(private authService: AuthService) {}
 
   public get user(): User {
+    if (this.authService.getUser().role !== 'master') {
+      this.menu = this.menu.filter(
+        (item) =>
+          item.description !== 'Proyectos' && item.description !== 'Usuarios'
+      );
+    }
     return this.authService.getUser();
   }
 

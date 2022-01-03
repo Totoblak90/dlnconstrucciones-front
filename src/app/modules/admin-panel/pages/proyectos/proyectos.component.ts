@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { CurrencyPipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { userRole } from '../../../main/interfaces/http/auth.interface';
+import { AuthService } from '../../../main/services/auth.service';
 
 @Component({
   selector: 'app-proyectos',
@@ -36,7 +38,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   public isCreating: boolean = false;
   public isEditing: boolean = false;
   public crudAction: string = '';
-  public interestForm!: FormGroup;
+  public proyectForm!: FormGroup;
   public imageToShow: string = '../../../../../assets/no-image.png';
   public fileToUpload?: File;
   public acceptedFileTypes: boolean = true;
@@ -48,13 +50,14 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private adminPanelCrudService: AdminPanelCrudService,
     private currencyPipe: CurrencyPipe,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService
   ) {
     this.createForm();
   }
 
   private createForm(): void {
-    this.interestForm = this.fb.group({
+    this.proyectForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(6)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       image: [''],
@@ -66,19 +69,19 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   }
 
   public formSubmit(): void {
-    this.interestForm.markAllAsTouched();
-    if (this.interestForm.valid) {
+    this.proyectForm.markAllAsTouched();
+    if (this.proyectForm.valid) {
       const formData: FormData = new FormData();
-      formData.append('title', this.interestForm.controls.title?.value);
+      formData.append('title', this.proyectForm.controls.title?.value);
       formData.append(
         'description',
-        this.interestForm.controls.description?.value
+        this.proyectForm.controls.description?.value
       );
       formData.append('image', this.fileToUpload!);
 
       this.crudAction === 'Crear'
-        ? this.crearInteresEnLaDb(formData)
-        : this.editarInteresEnLaDb(formData);
+        ? this.crearProyectoEnLaDb(formData)
+        : this.editarProyectoEnLaDb(formData);
     }
   }
 
@@ -155,6 +158,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     if (recargar) {
       this.resetsetControls();
       this.tableData = [];
+      this.projects = [];
       this.isCreating = false;
       this.isEditing = false;
       this.getProyects();
@@ -162,21 +166,21 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   }
 
   private resetsetControls(): void {
-    this.interestForm.controls.title.setValue('');
-    this.interestForm.controls.description.setValue('');
-    this.interestForm.controls.image.setValue('');
+    this.proyectForm.controls.title.setValue('');
+    this.proyectForm.controls.description.setValue('');
+    this.proyectForm.controls.image.setValue('');
     this.imageToShow = '../../../../../assets/no-image.png';
   }
 
-  public crearInteres(): void {
+  public crearProyecto(): void {
     this.crudAction = 'Crear';
     this.isCreating = true;
     this.isEditing = false;
   }
 
-  public crearInteresEnLaDb(formData: FormData): void {
+  public crearProyectoEnLaDb(formData: FormData): void {
     this.adminPanelCrudService
-      .create(formData, 'interests')
+      .create(formData, 'projects')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
@@ -194,20 +198,20 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       );
   }
 
-  public editarInteres(id: number): void {
+  public editarProyecto(id: number): void {
     this.crudAction = 'Editar';
     this.isEditing = true;
     this.isCreating = false;
     const proyecto = this.projects.find((proj) => proj.id === id);
     if (proyecto) {
       this.projectID = id;
-      this.interestForm.controls.title.setValue(proyecto.title);
+      this.proyectForm.controls.title.setValue(proyecto.title);
     }
   }
 
-  public editarInteresEnLaDb(formData: FormData): void {
+  public editarProyectoEnLaDb(formData: FormData): void {
     this.adminPanelCrudService
-      .edit(this.projectID, formData, 'interests')
+      .edit(this.projectID, formData, 'projects')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res: any) => {
@@ -225,19 +229,19 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       );
   }
 
-  public borrarInteres(id: number): void {
+  public borrarProyecto(id: number): void {
     Swal.fire({
       title: '¿Seguro querés elimninar el trabajo seleccionado?',
       showDenyButton: true,
       confirmButtonText: 'Si, borrar',
       denyButtonText: `No`,
     }).then((result: SweetAlertResult<any>) => {
-      result.isConfirmed ? this.borrarInteresesDeLaDb(id) : null;
+      result.isConfirmed ? this.borrarProyectoEnLaDb(id) : null;
     });
   }
-  public borrarInteresesDeLaDb(id: number): void {
+  public borrarProyectoEnLaDb(id: number): void {
     this.adminPanelCrudService
-      .delete(id, 'interests')
+      .delete(id, 'projects')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
