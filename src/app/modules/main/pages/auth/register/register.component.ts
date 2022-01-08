@@ -5,6 +5,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -13,8 +14,6 @@ import { User } from 'src/app/models/user.model';
 })
 export class RegisterComponent implements OnDestroy {
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
-  private passwordPattern: string =
-    '^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[$@$!%*?&#.$($)$-$_])[A-Za-zd$@$!%*?&#.$($)$-$_]{8,}$';
   private destroy$: Subject<boolean> = new Subject();
 
   public registerForm: FormGroup = this.fb.group(
@@ -30,18 +29,15 @@ export class RegisterComponent implements OnDestroy {
         ],
       ],
       email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
-      password: [
-        '',
-        [
-          Validators.required,
-          // Validators.pattern(this.passwordPattern)
-        ],
-      ],
+      password: ['', Validators.required],
       passwordRepeat: ['', [Validators.required]],
       terminosYCondiciones: [false, [Validators.required]],
     },
     {
-      validator: this.passwordMatchFormValidator('password', 'passwordRepeat'),
+      validator: [
+        this.passwordMatchFormValidator('password', 'passwordRepeat'),
+        this.validateStrongPassword,
+      ],
     }
   );
 
@@ -58,24 +54,13 @@ export class RegisterComponent implements OnDestroy {
         .register(this.registerForm.value)
         .pipe(takeUntil(this.destroy$))
         .subscribe(
-          (res) => {
-            const user: User = new User(
-              res?.data?.user?.id,
-              res?.data.user?.first_name,
-              res?.data?.user?.last_name,
-              res?.data?.user?.email,
-              res?.data?.user?.role,
-              res?.data?.user?.dni,
-              res?.data?.user?.avatar,
-              res?.data?.user?.phone
-            );
-            this.authService.setUser(user);
-            if (res?.data?.token) {
-              localStorage.setItem('access-token', res?.data?.token);
-            }
-            this.router.navigateByUrl('/main/auth/profile');
-          },
-          (err) => console.log(err)
+          () => this.router.navigateByUrl('/main/auth/login'),
+          () =>
+            Swal.fire(
+              'Error',
+              'Lo sentimos, tuvimos un problema de conexión, por favor actualizá la página y si el problema persiste probá contactarte con el administrador.',
+              'error'
+            )
         );
     }
   }
@@ -94,6 +79,32 @@ export class RegisterComponent implements OnDestroy {
         pass2Control!.setErrors({ notMatch: true });
       }
     };
+  }
+
+  private validateStrongPassword(form: FormGroup): void {
+    const password = form.get('password');
+    if (!/\d/.test(password?.value)) {
+      password?.setErrors({ notDigits: true });
+    } else if (!/[a-z]/.test(password?.value)) {
+      password?.setErrors({ noLowercase: true });
+    } else if (!/[A-Z]/.test(password?.value)) {
+      password?.setErrors({ noUppercase: true });
+    } else if (!/[*._%+-]/.test(password?.value)) {
+      password?.setErrors({ notSymbols: true });
+    } else if (password?.value.length < 8) {
+      password?.setErrors({ minlength: true });
+    }
+  }
+
+  public showStrongPasswordErrorMsgs(): boolean {
+    return (
+      this.registerForm.controls.password.touched &&
+      (this.registerForm.controls.password.errors?.notDigits ||
+        this.registerForm.controls.password.errors?.noLowercase ||
+        this.registerForm.controls.password.errors?.noUppercase ||
+        this.registerForm.controls.password.errors?.notSymbols ||
+        this.registerForm.controls.password.errors?.minlength)
+    );
   }
 
   ngOnDestroy(): void {
