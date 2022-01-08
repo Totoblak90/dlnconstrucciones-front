@@ -33,7 +33,11 @@
         </li>
         <!-- Tarjeta de usuario -->
         <li role="separator" class="divider" *ngIf="user"></li>
-        <li class="nav-item dropdown" *ngIf="user">
+        <li
+          routerLink="/main/auth/profile"
+          class="nav-item dropdown"
+          *ngIf="user"
+        >
           <a class="nav-link waves-effect waves-dark primary-dark"
             ><img [src]="getUserImg()" alt="user" class="profile-pic" />
             {{ user?.nombre }} {{ user?.apellido }}
@@ -43,12 +47,7 @@
         <li *ngFor="let m of menu" class="nav-item dropdown">
           <ng-container *ngIf="m.toggle">
             <a
-              class="
-                nav-link
-                dropdown-toggle
-                waves-effect waves-dark
-                primary-dark
-              "
+              class="nav-link dropdown-toggle waves-effect waves-dark primary-dark"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"

@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { User } from '../../../../../../models/user.model';
+import { Project } from '../../../../../admin-panel/interfaces/users.interface';
 
 @Component({
   selector: 'app-proyects',
@@ -57,7 +59,15 @@ export class ProyectsComponent {
     return porcentajes;
   }
 
+  public setAssetUrl(assetName: string): string {
+    return `${environment.API_IMAGE_URL}/${assetName}`;
+  }
+
   public descargarCashFlow(cashflow: string): void {
     console.log(cashflow);
+  }
+
+  public checkProyect(data: Project) {
+    console.log(data)
   }
 }
