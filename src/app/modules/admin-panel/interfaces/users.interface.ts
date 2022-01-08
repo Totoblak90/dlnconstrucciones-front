@@ -32,18 +32,19 @@ export interface AllProjectsRes {
 }
 
 export interface Project {
+  Assets: ProyectAssets[];
   balance: number;
   cashflow: any;
-  created_at: string;
-  deleted_at: null | string;
+  description: string;
   id: number;
   Payments?: ProyectPayments[];
   title: string;
   total: number;
-  updated_at: string;
-  users_id: 1;
   Users?: FullUser;
-  Assets: ProyectAssets[];
+  users_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null | string;
 }
 
 export interface ProyectAssets {

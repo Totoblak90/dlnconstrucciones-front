@@ -21,6 +21,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = [
     'Nombre del proyecto',
+    'Anotaciones',
     'Total',
     'Debe',
     'Usuario',
@@ -30,7 +31,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   public isEditing: boolean = false;
   public crudAction: string = '';
   public proyectForm!: FormGroup;
-  public fileToUpload!: File | null;
+  public fileToUpload: File | null = null;
   public acceptedFileTypes: boolean = true;
   public projectID!: number;
 
@@ -48,7 +49,8 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.proyectForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(6)]],
-      total: [0, [Validators.required, Validators.min(0)]],
+      description: ['', [Validators.minLength(6)]],
+      total: [null, [Validators.required, Validators.min(0)]],
       cashflow: [null],
       user: [null, Validators.required],
     });
@@ -63,6 +65,10 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     if (this.proyectForm.valid) {
       const formData: FormData = new FormData();
       formData.append('title', this.proyectForm.controls.title?.value);
+      formData.append(
+        'description',
+        this.proyectForm.controls.description?.value
+      );
       formData.append('total', this.proyectForm.controls.total?.value);
       formData.append('cashflow', this.fileToUpload!);
       formData.append('user', this.proyectForm.controls.user?.value!);
@@ -119,15 +125,16 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       this.tableData.push({
         imagen: '../../../../../assets/no-image.png',
         id: proyecto.id,
-        item2: proyecto.title
-          ? proyecto.title
-          : `Proyecto usuario: ${proyecto.Users?.first_name} ${proyecto.Users?.last_name}`,
-        item3: proyecto.total ? this.setCurrencyFormat(proyecto.total) : 'NULL',
-        item4:
+        item2:
+          proyecto.title ||
+          `Proyecto usuario: ${proyecto.Users?.first_name} ${proyecto.Users?.last_name}`,
+        item3: proyecto.description || '-',
+        item4: proyecto.total ? this.setCurrencyFormat(proyecto.total) : 'NULL',
+        item6:
           proyecto.balance !== null || proyecto.balance !== undefined
             ? this.setCurrencyFormat(proyecto.balance)
             : 'NULL',
-        item6: `${proyecto.Users?.first_name} ${proyecto.Users?.last_name}`,
+        item7: `${proyecto.Users?.first_name} ${proyecto.Users?.last_name}`,
       })
     );
   }
@@ -150,6 +157,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   private resetsetControls(): void {
     this.proyectForm.controls.title?.setValue('');
     this.proyectForm.controls.total?.setValue('');
+    this.proyectForm.controls.description?.setValue('');
     this.proyectForm.controls.user?.setValue('');
   }
 
@@ -185,10 +193,13 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     this.crudAction = 'Editar';
     this.isEditing = true;
     this.isCreating = false;
-    const proyecto = this.projects.find((proj) => proj.id === id);
+    const proyecto: Project | undefined = this.projects.find(
+      (proj) => proj.id === id
+    );
     if (proyecto) {
       this.projectID = id;
       this.proyectForm.controls.title.setValue(proyecto.title);
+      this.proyectForm.controls.title.setValue(proyecto.description);
       this.proyectForm.controls.total.setValue(proyecto.total);
       this.proyectForm.controls.user.setValue(proyecto.Users?.id);
     }

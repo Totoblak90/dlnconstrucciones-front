@@ -33,10 +33,11 @@
             <div class="row">
               <div class="col">
                 <div class="form-group">
-                  <label>Usuario*</label>
+                  <label for="userSelectInput">Usuario*</label>
                   <select
                     formControlName="user"
                     class="form-control custom-select"
+                    id="userSelectInput"
                   >
                     <option [value]="null">--Seleccionar un usuario--</option>
                     <option
@@ -64,12 +65,16 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label *ngIf="crudAction === 'Editar'" for="titleInput"
+                    >Título*</label
+                  >
                   <div class="input-group">
                     <input
                       type="text"
                       class="form-control"
                       placeholder="Título"
                       formControlName="title"
+                      id="titleInput"
                     />
                     <div class="p-2">
                       <span
@@ -92,12 +97,43 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label
+                    *ngIf="crudAction === 'Editar'"
+                    for="descriptionTextArea"
+                    >Descripción</label
+                  >
+                  <div class="input-group">
+                    <textarea
+                      class="form-control"
+                      id="descriptionTextArea"
+                      placeholder="Descripción"
+                      formControlName="description"
+                      cols="30"
+                      rows="5"
+                    ></textarea>
+                    <div class="p-2">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          proyectForm.controls.description.errors?.minlength &&
+                          proyectForm.controls.description.touched
+                        "
+                        >Debe tener al menos 6 caracteres</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label *ngIf="crudAction === 'Editar'" for="totalInput"
+                    >Total*</label
+                  >
                   <div class="input-group">
                     <input
                       type="number"
                       class="form-control"
                       placeholder="Total"
                       formControlName="total"
+                      id="totalInput"
                     />
                     <div class="p-2">
                       <span
@@ -120,12 +156,16 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label *ngIf="crudAction === 'Editar'" for="cashFlowInput"
+                    >Cashflow</label
+                  >
                   <div class="input-group">
                     <input
                       type="file"
                       class="form-control"
                       placeholder="Cashflow"
                       formControlName="cashflow"
+                      id="cashFlowInput"
                       (change)="validateCashflowExtension($event)"
                     />
                     <div class="p-2">
