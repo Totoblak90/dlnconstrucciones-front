@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Host, HostBinding, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Host,
+  HostBinding,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import Swal from 'sweetalert2';
 
@@ -12,13 +20,17 @@ export class TableComponent {
   @Output() private onEdit: EventEmitter<number> = new EventEmitter();
   @Output() private onDelete: EventEmitter<number> = new EventEmitter();
   @Output() private onRecargar: EventEmitter<boolean> = new EventEmitter();
+  @Output() private onAddPayments: EventEmitter<number> = new EventEmitter();
+  @Output() private onAddAssets: EventEmitter<number> = new EventEmitter();
 
   @Input() public title: string = '';
   @Input() public totalSection: number = 0;
   @Input() public encabezadosTabla: string[] = [];
   @Input() public filasTabla: CuerpoTabla[] = [];
   @Input() public loading: boolean = true;
-  @Input() public noImage: boolean = false;
+  @Input() public noImage?: boolean = false;
+  @Input() public addAssets?: boolean = false;
+  @Input() public addPayments?: boolean = false;
 
   public searching: boolean = false;
   public searchingResults: number = 0;
@@ -63,6 +75,13 @@ export class TableComponent {
     this.onDelete.emit(value);
   }
 
+  public addPayment(value: number): void {
+    this.onAddPayments.emit(value);
+  }
+
+  public addAsset(value: number): void {
+    this.onAddAssets.emit(value);
+  }
 
   public search(term: string): void {
     this.searching = true;

@@ -6,17 +6,14 @@ import { ProyectosComponent } from './proyectos.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from '../../components/components.module';
 
-
 @NgModule({
-  declarations: [
-    ProyectosComponent
-  ],
+  declarations: [ProyectosComponent],
   imports: [
     CommonModule,
     ProyectosRoutingModule,
     ReactiveFormsModule,
-    ComponentsModule
+    ComponentsModule,
   ],
-  providers: [CurrencyPipe]
+  providers: [CurrencyPipe],
 })
-export class ProyectosModule { }
+export class ProyectosModule {}

@@ -62,7 +62,9 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th *ngIf="!noImage" class="text-nowrap primary-dark w100">Imágen / Avatar</th>
+                  <th *ngIf="!noImage" class="text-nowrap primary-dark w100">
+                    Imágen / Avatar
+                  </th>
                   <th
                     *ngFor="let encabezado of encabezadosTabla"
                     class="primary-dark"
@@ -168,6 +170,20 @@
                     </a>
                     <a class="pointer" (click)="delete(cuerpo.id)">
                       <i class="fa fa-close text-danger primary-dark"></i>
+                    </a>
+                    <a
+                      *ngIf="addPayments"
+                      class="pointer"
+                      (click)="addPayment(cuerpo.id)"
+                    >
+                      <i class="ti ti-money text-danger primary-dark"></i>
+                    </a>
+                    <a
+                      *ngIf="addAssets"
+                      class="pointer"
+                      (click)="addAsset(cuerpo.id)"
+                    >
+                      <i class="ti ti-image text-danger primary-dark"></i>
                     </a>
                   </td>
                 </tr>

@@ -40,6 +40,24 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'proyectos/payments',
+        canActivate: [MasterGuard],
+        canLoad: [MasterGuard],
+        loadChildren: () =>
+          import('./pages/payments/payments.module').then(
+            (m) => m.PaymentsModule
+          ),
+      },
+      {
+        path: 'proyectos/assets',
+        canActivate: [MasterGuard],
+        canLoad: [MasterGuard],
+        loadChildren: () =>
+          import(
+            './pages/manage-proyect-assets/manage-proyect-assets.module'
+          ).then((m) => m.ManageProyectAssetsModule),
+      },
+      {
         path: 'servicios',
         loadChildren: () =>
           import('./pages/servicios/servicios.module').then(

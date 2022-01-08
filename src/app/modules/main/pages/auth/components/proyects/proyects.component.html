@@ -73,7 +73,10 @@
       <i class="ti ti-file"></i> Descargar cashflow
     </button>
   </div>
-  <div class="container row proyect-carrousel m-t-5 b-b-5">
+  <div
+    *ngIf="proyecto.Assets.length"
+    class="container row proyect-carrousel m-t-5 b-b-5"
+  >
     <h6>Galería:</h6>
     <hr />
     <div *ngFor="let a of proyecto.Assets" class="col-lg-4 col-md-6">

@@ -10,10 +10,14 @@
           [totalSection]="projects?.length!"
           [loading]="loading"
           [noImage]="true"
+          [addAssets]="true"
+          [addPayments]="true"
           (onRecargar)="recargarProyectos($event)"
           (onCreate)="crearProyecto()"
           (onEdit)="editarProyecto($event)"
           (onDelete)="borrarProyecto($event)"
+          (onAddPayments)="addPayment($event)"
+          (onAddAssets)="addAsset($event)"
         ></app-table>
       </div>
     </div>

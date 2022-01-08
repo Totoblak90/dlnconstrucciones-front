@@ -8,6 +8,7 @@ import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { CurrencyPipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-proyectos',
@@ -41,7 +42,8 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private adminPanelCrudService: AdminPanelCrudService,
     private currencyPipe: CurrencyPipe,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     this.createForm();
   }
@@ -253,6 +255,18 @@ export class ProyectosComponent implements OnInit, OnDestroy {
           );
         }
       );
+  }
+
+  public addPayment(projectId: number): void {
+    this.router.navigateByUrl('/admin/proyectos/payments', {
+      state: { id: projectId },
+    });
+  }
+
+  public addAsset(projectId: number): void {
+    this.router.navigateByUrl('/admin/proyectos/assets', {
+      state: { id: projectId },
+    });
   }
 
   private alertFailureOrSuccess(status: number): void {
