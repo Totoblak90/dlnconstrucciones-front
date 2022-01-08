@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 import { User } from '../../../../../../models/user.model';
 import { Project } from '../../../../../admin-panel/interfaces/users.interface';
 
@@ -68,6 +69,20 @@ export class ProyectsComponent {
   }
 
   public checkProyect(data: Project) {
-    console.log(data)
+    console.log(data);
+  }
+
+  public expandImage(img: string) {
+    Swal.fire({
+      imageUrl: img,
+      imageWidth: 400,
+      imageHeight: 400,
+      showClass: {
+        popup: 'animate__animated animate__fadeInDown',
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOutUp',
+      },
+    });
   }
 }
