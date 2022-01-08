@@ -43,6 +43,17 @@ export interface Project {
   updated_at: string;
   users_id: 1;
   Users?: FullUser;
+  Assets: ProyectAssets[];
+}
+
+export interface ProyectAssets {
+  id: number;
+  asset: string;
+  type: 'image' | 'video';
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+  projects_id: number;
 }
 
 export interface ProyectPayments {
@@ -57,7 +68,10 @@ export interface ProyectPayments {
 }
 
 export interface editUserRoleReq {
-  role: 'admin' | 'user'
+  role: 'admin' | 'user';
 }
 
-export type EditProyect = Omit<Project, 'created_at' | 'updated_at' | 'deleted_at' | 'id'>
+export type EditProyect = Omit<
+  Project,
+  'created_at' | 'updated_at' | 'deleted_at' | 'id'
+>;

@@ -9,6 +9,7 @@
           [filasTabla]="tableData"
           [totalSection]="projects?.length!"
           [loading]="loading"
+          [noImage]="true"
           (onRecargar)="recargarProyectos($event)"
           (onCreate)="crearProyecto()"
           (onEdit)="editarProyecto($event)"
@@ -32,11 +33,41 @@
             <div class="row">
               <div class="col">
                 <div class="form-group">
+                  <label>Usuario*</label>
+                  <select
+                    formControlName="user"
+                    class="form-control custom-select"
+                  >
+                    <option [value]="null">--Seleccionar un usuario--</option>
+                    <option
+                      *ngFor="let project of projects"
+                      [value]="project.Users?.id!"
+                    >
+                      {{
+                        project.Users?.first_name! +
+                          " " +
+                          project.Users?.last_name! +
+                          " / email: " +
+                          project.Users?.email!
+                      }}
+                    </option>
+                  </select>
+                  <div class="p-2">
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        proyectForm.controls.user.errors?.required &&
+                        proyectForm.controls.user.touched
+                      "
+                      >Este dato es requerido</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group">
                   <div class="input-group">
                     <input
                       type="text"
                       class="form-control"
-                      id="exampleInputuname2"
                       placeholder="Título"
                       formControlName="title"
                     />
@@ -62,30 +93,44 @@
                 </div>
                 <div class="form-group">
                   <div class="input-group">
-                    <textarea
-                      type="text"
+                    <input
+                      type="number"
                       class="form-control"
-                      id="exampleInputuname2"
-                      placeholder="Descripción"
-                      formControlName="description"
-                      rows="5"
-                    ></textarea>
+                      placeholder="Total"
+                      formControlName="total"
+                    />
                     <div class="p-2">
                       <span
                         class="text-danger"
                         *ngIf="
-                          proyectForm.controls.description.errors?.required &&
-                          proyectForm.controls.description.touched
+                          proyectForm.controls.total.errors?.required &&
+                          proyectForm.controls.total.touched
                         "
                         >Este campo es requerido</span
                       >
                       <span
-                        *ngIf="
-                          proyectForm.controls.description.errors?.minlength &&
-                          proyectForm.controls.description.touched
-                        "
                         class="text-danger"
-                        >Debe tener al menos 10 caracteres</span
+                        *ngIf="
+                          proyectForm.controls.total.errors?.min &&
+                          proyectForm.controls.total.touched
+                        "
+                        >El valor debe ser mayor a 0</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input
+                      type="file"
+                      class="form-control"
+                      placeholder="Cashflow"
+                      formControlName="cashflow"
+                      (change)="validateCashflowExtension($event)"
+                    />
+                    <div class="p-2">
+                      <span class="text-danger" *ngIf="!acceptedFileTypes"
+                        >Los formatos aceptados son PDF o XLSX</span
                       >
                     </div>
                   </div>
@@ -96,12 +141,7 @@
           <div class="card-footer">
             <button
               type="submit"
-              class="
-                btn btn-success
-                waves-effect waves-light
-                m-r-10
-                bgc-primary-dark
-              "
+              class="btn btn-success waves-effect waves-light m-r-10 bgc-primary-dark"
             >
               Confirmar
             </button>
@@ -118,33 +158,3 @@
     </div>
   </div>
 </div>
-
-<!-- <div class="row justify-content-center">
-                <div class="col-md-4 mb-2" (click)="imageInput.click()">
-                  <img
-                    class="img-responsive"
-                    [src]="imageToShow"
-                    alt="Trabajo realizado"
-                  />
-                  <input
-                    [hidden]="true"
-                    #imageInput
-                    type="file"
-                    formControlName="image"
-                    (change)="showSelectedImage($event)"
-                  />
-                  <div class="p-2">
-                    <span
-                      class="text-danger"
-                      *ngIf="
-                        proyectForm.controls.image.errors?.required &&
-                        proyectForm.controls.image.touched
-                      "
-                      >Este dato es requerido</span
-                    >
-                    <span class="text-danger" *ngIf="!acceptedFileTypes"
-                      >Los formatos aceptados son JPG, JPEG y PNG</span
-                    >
-                  </div>
-                </div>
-              </div> -->

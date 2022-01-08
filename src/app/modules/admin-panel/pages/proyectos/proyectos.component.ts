@@ -1,22 +1,13 @@
 import { Component, Host, HostBinding, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { User } from 'src/app/models/user.model';
 import { UsersService } from '../../services/users.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
-import {
-  AllUsersRes,
-  FullUser,
-  Project,
-} from '../../interfaces/users.interface';
-import { environment } from 'src/environments/environment';
+import { Project } from '../../interfaces/users.interface';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
-import { Router } from '@angular/router';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { CurrencyPipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { userRole } from '../../../main/interfaces/http/auth.interface';
-import { AuthService } from '../../../main/services/auth.service';
 
 @Component({
   selector: 'app-proyectos',
@@ -39,8 +30,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   public isEditing: boolean = false;
   public crudAction: string = '';
   public proyectForm!: FormGroup;
-  public imageToShow: string = '../../../../../assets/no-image.png';
-  public fileToUpload?: File;
+  public fileToUpload!: File | null;
   public acceptedFileTypes: boolean = true;
   public projectID!: number;
 
@@ -50,8 +40,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private adminPanelCrudService: AdminPanelCrudService,
     private currencyPipe: CurrencyPipe,
-    private fb: FormBuilder,
-    private authService: AuthService
+    private fb: FormBuilder
   ) {
     this.createForm();
   }
@@ -59,8 +48,9 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.proyectForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(6)]],
-      description: ['', [Validators.required, Validators.minLength(10)]],
-      image: [''],
+      total: [0, [Validators.required, Validators.min(0)]],
+      cashflow: [null],
+      user: [null, Validators.required],
     });
   }
 
@@ -73,11 +63,9 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     if (this.proyectForm.valid) {
       const formData: FormData = new FormData();
       formData.append('title', this.proyectForm.controls.title?.value);
-      formData.append(
-        'description',
-        this.proyectForm.controls.description?.value
-      );
-      formData.append('image', this.fileToUpload!);
+      formData.append('total', this.proyectForm.controls.total?.value);
+      formData.append('cashflow', this.fileToUpload!);
+      formData.append('user', this.proyectForm.controls.user?.value!);
 
       this.crudAction === 'Crear'
         ? this.crearProyectoEnLaDb(formData)
@@ -85,22 +73,16 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     }
   }
 
-  public showSelectedImage(e: any) {
-    const file = e.target?.files[0];
-
+  public validateCashflowExtension(e: any): void {
+    const file: File = e.target?.files[0];
     this.acceptedFileTypes =
-      file.type === 'image/jpg' ||
-      file.type === 'image/jpeg' ||
-      file.type === 'image/png';
+      file.type ===
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+      file.type === 'application/pdf';
 
-    if (file && this.acceptedFileTypes) {
-      this.fileToUpload = file;
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => (this.imageToShow = reader.result as string);
-    } else {
-      this.imageToShow = '../../../../../assets/no-image.png';
-    }
+    this.acceptedFileTypes
+      ? (this.fileToUpload = file)
+      : (this.fileToUpload = null);
   }
 
   private getProyects(): void {
@@ -133,7 +115,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   }
 
   private setTableData(): void {
-    this.projects.forEach((proyecto) =>
+    this.projects.forEach((proyecto: Project) =>
       this.tableData.push({
         imagen: '../../../../../assets/no-image.png',
         id: proyecto.id,
@@ -166,10 +148,9 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   }
 
   private resetsetControls(): void {
-    this.proyectForm.controls.title.setValue('');
-    this.proyectForm.controls.description.setValue('');
-    this.proyectForm.controls.image.setValue('');
-    this.imageToShow = '../../../../../assets/no-image.png';
+    this.proyectForm.controls.title?.setValue('');
+    this.proyectForm.controls.total?.setValue('');
+    this.proyectForm.controls.user?.setValue('');
   }
 
   public crearProyecto(): void {
@@ -184,14 +165,16 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
+          console.log(res);
           this.recargarProyectos(true);
           this.alertFailureOrSuccess(res?.meta?.status);
         },
-        () => {
+        (err) => {
+          console.log(err);
           this.recargarProyectos(true);
           Swal.fire(
             'Error',
-            'No pudimos crear el interés, por favor intentá de nuevo recargando la página',
+            'No pudimos crear el proyecto, por favor intentá de nuevo recargando la página',
             'error'
           );
         }
@@ -206,6 +189,8 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     if (proyecto) {
       this.projectID = id;
       this.proyectForm.controls.title.setValue(proyecto.title);
+      this.proyectForm.controls.total.setValue(proyecto.total);
+      this.proyectForm.controls.user.setValue(proyecto.Users?.id);
     }
   }
 
@@ -231,7 +216,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
   public borrarProyecto(id: number): void {
     Swal.fire({
-      title: '¿Seguro querés elimninar el trabajo seleccionado?',
+      title: '¿Seguro querés elimninar el proyecto seleccionado?',
       showDenyButton: true,
       confirmButtonText: 'Si, borrar',
       denyButtonText: `No`,
@@ -239,6 +224,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       result.isConfirmed ? this.borrarProyectoEnLaDb(id) : null;
     });
   }
+
   public borrarProyectoEnLaDb(id: number): void {
     this.adminPanelCrudService
       .delete(id, 'projects')
@@ -260,7 +246,11 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
   private alertFailureOrSuccess(status: number): void {
     if (status === 200 || status === 201) {
-      Swal.fire('¡Excelente!', 'La zona se creó correctamente', 'success');
+      Swal.fire(
+        '¡Excelente!',
+        'El proyecto se eliminó correctamente',
+        'success'
+      );
     } else {
       Swal.fire(
         '¡Lo sentimos!',

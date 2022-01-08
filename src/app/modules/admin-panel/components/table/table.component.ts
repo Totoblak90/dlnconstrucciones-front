@@ -18,6 +18,7 @@ export class TableComponent {
   @Input() public encabezadosTabla: string[] = [];
   @Input() public filasTabla: CuerpoTabla[] = [];
   @Input() public loading: boolean = true;
+  @Input() public noImage: boolean = false;
 
   public searching: boolean = false;
   public searchingResults: number = 0;
