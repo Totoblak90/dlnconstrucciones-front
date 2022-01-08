@@ -31,6 +31,11 @@ export interface AllProjectsRes {
   data: Project[];
 }
 
+export interface OneProjectRes {
+  meta: Meta;
+  data: Project;
+}
+
 export interface Project {
   Assets: ProyectAssets[];
   balance: number;

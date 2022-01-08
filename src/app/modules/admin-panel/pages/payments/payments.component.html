@@ -1,1 +1,145 @@
-<p>payments works!</p>
+<div class="row">
+  <div class="col" *ngIf="!isEditing && !isCreating">
+    <div class="card">
+      <div class="card-body">
+        <app-table
+          *ngIf="payments && tableData"
+          title="Pagos"
+          [encabezadosTabla]="encabezadosTabla"
+          [filasTabla]="tableData"
+          [totalSection]="payments?.length!"
+          [loading]="loading"
+          [noImage]="true"
+          (onRecargar)="recargarPagos($event)"
+          (onCreate)="crearPagos()"
+          (onEdit)="editarPagos($event)"
+          (onDelete)="borrarPagos($event)"
+        ></app-table>
+      </div>
+    </div>
+  </div>
+  <div class="col" *ngIf="isCreating || isEditing">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="primary-dark">{{ crudAction }} Proyecto/s</h1>
+      </div>
+      <div class="card-body">
+        <form
+          class="form p-t-20 form-material"
+          [formGroup]="paymentsForm"
+          (ngSubmit)="formSubmit()"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label *ngIf="crudAction === 'Editar'" for="comprobanteInput"
+                    >Número de comprobante*</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="comprobanteInput"
+                      placeholder="Número de comprobante"
+                      formControlName="receipt"
+                    />
+                    <div class="p-2">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          paymentsForm.controls.receipt.errors?.required &&
+                          paymentsForm.controls.receipt.touched
+                        "
+                        >Este campo es requerido</span
+                      >
+                      <span
+                      class="text-danger"
+                      *ngIf="
+                        paymentsForm.controls.receipt.errors?.minlength &&
+                        paymentsForm.controls.receipt.touched
+                      "
+                      >Debe tener al menos 5 caractéres</span
+                    >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label *ngIf="crudAction === 'Editar'" for="amountInput"
+                    >Monto del pago*</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      placeholder="Monto del pago"
+                      formControlName="amount"
+                      id="amountInput"
+                    />
+                    <div class="p-2">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          paymentsForm.controls.amount.errors?.required &&
+                          paymentsForm.controls.amount.touched
+                        "
+                        >Este campo es requerido</span
+                      >
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          paymentsForm.controls.amount.errors?.min &&
+                          paymentsForm.controls.amount.touched
+                        "
+                        >El valor debe ser mayor a 0</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label *ngIf="crudAction === 'Editar'" for="fechaPagoInput"
+                    >Fecha del pago*</label
+                  >
+                  <div class="input-group">
+                    <input
+                      type="datetime-local"
+                      class="form-control"
+                      placeholder="Fecha del pago"
+                      formControlName="datetime"
+                      id="fechaPagoInput"
+                    />
+                    <div class="p-2">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          paymentsForm.controls.datetime.errors?.required &&
+                          paymentsForm.controls.datetime.touched
+                        "
+                        >Este campo es requerido</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              type="submit"
+              class="btn btn-success waves-effect waves-light m-r-10 bgc-primary-dark"
+            >
+              Confirmar
+            </button>
+            <button
+              type="button"
+              (click)="recargarPagos(true)"
+              class="btn btn-danger waves-effect waves-light m-r-10"
+            >
+              Volver
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

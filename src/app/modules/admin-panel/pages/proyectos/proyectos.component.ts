@@ -1,7 +1,6 @@
 import { Component, Host, HostBinding, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { UsersService } from '../../services/users.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { Project } from '../../interfaces/users.interface';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
@@ -9,6 +8,7 @@ import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { CurrencyPipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ProjectsService } from '../../services/projects.service';
 
 @Component({
   selector: 'app-proyectos',
@@ -39,11 +39,11 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(
-    private usersService: UsersService,
     private adminPanelCrudService: AdminPanelCrudService,
     private currencyPipe: CurrencyPipe,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private projectService: ProjectsService
   ) {
     this.createForm();
   }
@@ -94,7 +94,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   }
 
   private getProyects(): void {
-    this.usersService
+    this.projectService
       .getAllProjects()
       .pipe(
         takeUntil(this.destroy$),
@@ -175,12 +175,10 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          console.log(res);
           this.recargarProyectos(true);
           this.alertFailureOrSuccess(res?.meta?.status);
         },
         (err) => {
-          console.log(err);
           this.recargarProyectos(true);
           Swal.fire(
             'Error',

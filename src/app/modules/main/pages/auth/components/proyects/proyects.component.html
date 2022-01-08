@@ -36,7 +36,10 @@
     </span>
     <span class="pull-right">{{ proyecto.balance | currency }}</span>
   </h5>
-  <div class="row animated fadeIn rows-container">
+  <div
+    *ngIf="proyecto.Payments?.length"
+    class="row animated fadeIn rows-container"
+  >
     <div class="col-12">
       <div class="card">
         <div class="card-body">

@@ -3,7 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { getToken } from '../../main/helpers/functions.helper';
-import { AllProjectsRes, AllUsersRes, Project } from '../interfaces/users.interface';
+import {
+  AllProjectsRes,
+  AllUsersRes,
+  OneProjectRes,
+  Project,
+} from '../interfaces/users.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -26,16 +31,4 @@ export class UsersService {
       headers: this.headers,
     });
   }
-
-    /**
-   * Obtiene una lista de todos los proyectos existentes en la app con su información completa.
-   *
-   * @return {*}  {Observable<AllProjectsRes>}
-   * @memberof UsersService
-   */
-     public getAllProjects(): Observable<AllProjectsRes> {
-      return this.http.get<AllProjectsRes>(`${environment.API_BASE_URL}/projects`, {
-        headers: this.headers,
-      });
-    }
 }

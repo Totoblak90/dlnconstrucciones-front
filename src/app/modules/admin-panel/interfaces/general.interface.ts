@@ -6,4 +6,6 @@ export type AdminPanelCrudRoutes =
   | 'users'
   | 'types'
   | 'categories'
-  | 'projects';
+  | 'projects'
+  | 'payments'
+  | 'assets';
