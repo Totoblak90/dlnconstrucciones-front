@@ -37,6 +37,7 @@ export class InteresesComponent implements OnInit {
   public fileToUpload?: File;
   public acceptedFileTypes: boolean = true;
   public interestsID!: number;
+  public interestCreationImageValidator: string = '';
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(
@@ -61,7 +62,16 @@ export class InteresesComponent implements OnInit {
 
   public formSubmit(): void {
     this.interestForm.markAllAsTouched();
+    if (
+      this.crudAction === 'Crear' &&
+      !this.interestForm.controls.image.value
+    ) {
+      this.interestCreationImageValidator = 'La imágen es obligatoria';
+      return;
+    }
+
     if (this.interestForm.valid) {
+      this.interestCreationImageValidator = '';
       const formData: FormData = new FormData();
       formData.append('title', this.interestForm.controls.title?.value);
       formData.append(
@@ -126,6 +136,16 @@ export class InteresesComponent implements OnInit {
   }
 
   public showSelectedImage(e: any) {
+    if (
+      this.crudAction === 'Crear' &&
+      !this.interestForm.controls.image.value
+    ) {
+      this.interestCreationImageValidator = 'La imágen es obligatoria';
+      return;
+    } else {
+      this.interestCreationImageValidator = '';
+    }
+
     const file = e.target?.files[0];
 
     this.acceptedFileTypes =

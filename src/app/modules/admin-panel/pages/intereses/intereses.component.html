@@ -47,11 +47,8 @@
                 <div class="p-2">
                   <span
                     class="text-danger"
-                    *ngIf="
-                      interestForm.controls.image.errors?.required &&
-                      interestForm.controls.image.touched
-                    "
-                    >Este dato es requerido</span
+                    *ngIf="interestCreationImageValidator"
+                    >{{ interestCreationImageValidator }}</span
                   >
                   <span class="text-danger" *ngIf="!acceptedFileTypes"
                     >Los formatos aceptados son JPG, JPEG y PNG</span
@@ -126,12 +123,7 @@
           <div class="card-footer">
             <button
               type="submit"
-              class="
-                btn btn-success
-                waves-effect waves-light
-                m-r-10
-                bgc-primary-dark
-              "
+              class="btn btn-success waves-effect waves-light m-r-10 bgc-primary-dark"
             >
               Confirmar
             </button>
