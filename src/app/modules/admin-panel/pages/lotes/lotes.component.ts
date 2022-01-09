@@ -47,6 +47,7 @@ export class LotesComponent implements OnInit {
   public imageToShow: string = '../../../../../assets/no-image.png';
   public fileToUpload?: File;
   public acceptedFileTypes: boolean = true;
+  public creationImageError: string = '';
 
   private loteID!: number;
   private destroy$: Subject<boolean> = new Subject();
@@ -75,6 +76,13 @@ export class LotesComponent implements OnInit {
   }
 
   public showSelectedImage(e: any) {
+    if (this.crudAction === 'Crear' && !this.loteForm.controls.image.value) {
+      this.creationImageError = 'La imágen es obligatoria';
+      return;
+    } else {
+      this.creationImageError = '';
+    }
+
     const file = e.target?.files[0];
 
     this.acceptedFileTypes =
@@ -94,6 +102,14 @@ export class LotesComponent implements OnInit {
 
   public formSubmit(): void {
     this.loteForm.markAllAsTouched();
+    if (
+      this.crudAction === 'Crear' &&
+      !this.loteForm.controls.image.value
+    ) {
+      this.creationImageError = 'La imágen es obligatoria';
+      return;
+    }
+
     if (this.loteForm.valid) {
       const formData: FormData = new FormData();
       formData.append('title', this.loteForm.controls.title?.value);
