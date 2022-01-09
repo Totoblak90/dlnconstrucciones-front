@@ -34,9 +34,10 @@ export class TipoDeTrabajoComponent implements OnInit {
   public imageToShow: string = '../../../../../assets/no-image.png';
   public acceptedFileTypes: boolean = true;
   public tipoDeTrabajoID!: number;
-  private destroy$: Subject<boolean> = new Subject();
+  public creationImageError: string = '';
 
   private fileToUpload!: File;
+  private destroy$: Subject<boolean> = new Subject();
 
   constructor(
     private httpSrv: HttpService,
@@ -87,6 +88,14 @@ export class TipoDeTrabajoComponent implements OnInit {
 
   public formSubmit(): void {
     this.tipoDeTrabajoForm.markAllAsTouched();
+    if (
+      this.crudAction === 'Crear' &&
+      !this.tipoDeTrabajoForm.controls.image.value
+    ) {
+      this.creationImageError = 'La imágen es obligatoria';
+      return;
+    }
+
     if (this.tipoDeTrabajoForm.valid) {
       const formData: FormData = new FormData();
       formData.append('title', this.tipoDeTrabajoForm.controls.title?.value);
@@ -116,6 +125,16 @@ export class TipoDeTrabajoComponent implements OnInit {
   }
 
   public showSelectedImage(e: any) {
+    if (
+      this.crudAction === 'Crear' &&
+      !this.tipoDeTrabajoForm.controls.image.value
+    ) {
+      this.creationImageError = 'La imágen es obligatoria';
+      return;
+    } else {
+      this.creationImageError = '';
+    }
+
     const file = e.target?.files[0];
 
     this.acceptedFileTypes =
