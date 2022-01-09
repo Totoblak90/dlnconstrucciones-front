@@ -8,6 +8,10 @@ import {
 } from '../../../../interfaces/http/batches.interface';
 import { environment } from 'src/environments/environment';
 import { HttpService } from 'src/app/services/http.service';
+import {
+  noConnectionAlert,
+  unknownErrorAlert,
+} from '../../../../../../helpers/alerts';
 
 @Component({
   selector: 'app-detalle-lote',
@@ -37,10 +41,17 @@ export class DetalleLoteComponent implements OnInit, OnDestroy {
     this.http
       .getDetalleLote(this.loteId)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((lote: BatchComplete) => {
-        this.lote = lote?.data;
-        this.lote.image = `${environment.API_IMAGE_URL}/${this.lote.image}`;
-      });
+      .subscribe(
+        (lote: BatchComplete) => {
+          if (lote.meta.status.toString().includes('20')) {
+            this.lote = lote?.data;
+            this.lote.image = `${environment.API_IMAGE_URL}/${this.lote.image}`;
+          } else {
+            unknownErrorAlert(lote);
+          }
+        },
+        (err) => noConnectionAlert(err)
+      );
   }
 
   public navigateBack(): void {

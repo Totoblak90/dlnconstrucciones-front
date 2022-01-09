@@ -7,6 +7,7 @@ import { Batch, Lotes } from '../../../interfaces/http/batches.interface';
 import { environment } from 'src/environments/environment';
 import { HttpService } from 'src/app/services/http.service';
 import Swal from 'sweetalert2';
+import { unknownErrorAlert, noConnectionAlert } from '../../../../../helpers/alerts';
 
 @Component({
   selector: 'app-lote',
@@ -33,21 +34,19 @@ export class LoteComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res: Lotes) => {
-          this.lotes = res?.data?.Batches;
-          this.lotes?.forEach((lote) => {
-            lote.url = `/main/lotes/${lote.categories_id}/detalle/${lote.id}`;
-            lote.image = `${environment.API_IMAGE_URL}/${lote.image}`;
-          });
-          this.mapLotesToPresent();
-          this.checkLotesLength();
+          if (res.meta.status.toString().includes('20')) {
+            this.lotes = res?.data?.Batches;
+            this.lotes?.forEach((lote) => {
+              lote.url = `/main/lotes/${lote.categories_id}/detalle/${lote.id}`;
+              lote.image = `${environment.API_IMAGE_URL}/${lote.image}`;
+            });
+            this.mapLotesToPresent();
+            this.checkLotesLength();
+          } else {
+            unknownErrorAlert(res)
+          }
         },
-        (err) => {
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos cargar la información, probá recargando la página. Si el problema persiste contactate con el adminitrador',
-            'error'
-          );
-        }
+        (err) => noConnectionAlert(err)
       );
   }
 
