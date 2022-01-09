@@ -36,6 +36,8 @@ export class ZonasComponent implements OnInit {
   public imageToShow: string = '../../../../../assets/no-image.png';
   public acceptedFileTypes: boolean = true;
   public zonaID!: number;
+  public creationImageError: string = '';
+
   private fileToUpload!: File;
   private destroy$: Subject<boolean> = new Subject();
 
@@ -87,6 +89,11 @@ export class ZonasComponent implements OnInit {
 
   public formSubmit(): void {
     this.zonasForm.markAllAsTouched();
+    if (this.crudAction === 'Crear' && !this.zonasForm.controls.image.value) {
+      this.creationImageError = 'La imágen es obligatoria';
+      return;
+    }
+
     if (this.zonasForm.valid) {
       const formData: FormData = new FormData();
       formData.append('title', this.zonasForm.controls.title?.value);
@@ -117,6 +124,13 @@ export class ZonasComponent implements OnInit {
   }
 
   public showSelectedImage(e: any) {
+    if (this.crudAction === 'Crear' && !this.zonasForm.controls.image.value) {
+      this.creationImageError = 'La imágen es obligatoria';
+      return;
+    } else {
+      this.creationImageError = '';
+    }
+
     const file = e.target?.files[0];
 
     this.acceptedFileTypes =
