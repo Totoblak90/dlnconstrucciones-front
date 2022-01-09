@@ -1,12 +1,15 @@
 <div class="row animate__animated animate__fadeIn animate__slow">
   <div class="col-lg-6">
     <div class="card">
-      <div class="card-body">
-        <form
-          class="form-horizontal form-material p-t-20"
-          [formGroup]="loginForm"
-          (ngSubmit)="login()"
-        >
+      <div class="card-header">
+        <h2 class="primary-dark">Iniciar sesión</h2>
+      </div>
+      <form
+        class="form-horizontal form-material p-t-20"
+        [formGroup]="loginForm"
+        (ngSubmit)="login()"
+      >
+        <div class="card-body">
           <div class="form-group row">
             <label for="exampleInputEmail3" class="col-sm-3 control-label"
               >Email*</label
@@ -75,8 +78,10 @@
               </div>
             </div>
           </div>
-          <div class="form-group row m-b-0">
-            <div class="offset-sm-3 col-sm-9">
+        </div>
+        <div class="card-footer text-center">
+          <div>
+            <div>
               <button
                 type="submit"
                 class="btn btn-success waves-effect waves-light bgc-primary-dark"
@@ -85,13 +90,22 @@
               </button>
             </div>
           </div>
-        </form>
-        <div class="mt-2">
-          <span>
-            ¿Olvidaste tu contraseña? <a class="pointer">Recuperar</a>
-          </span>
+          <div class="mt-2">
+            <span>
+              ¿Olvidaste tu contraseña?
+              <a class="pointer primary-dark">Recuperar</a>
+            </span>
+          </div>
+          <div class="mt-2">
+            <span>
+              ¿No tenés cuenta?
+              <a routerLink="/main/auth/register" class="pointer primary-dark"
+                >Registrate</a
+              >
+            </span>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>
