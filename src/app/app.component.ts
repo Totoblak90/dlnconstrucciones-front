@@ -9,6 +9,8 @@ import {
 } from './modules/main/interfaces/http/auth.interface';
 import Swal from 'sweetalert2';
 
+declare function customInitFunctions(): void;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,6 +18,7 @@ import Swal from 'sweetalert2';
 })
 export class AppComponent {
   constructor(private authService: AuthService) {
+    customInitFunctions();
     this.loguearUsuarioConToken();
   }
 

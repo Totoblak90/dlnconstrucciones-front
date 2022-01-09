@@ -21,57 +21,66 @@ import {
 })
 export class UserProfileComponent implements OnDestroy {
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
-  public editProfileForm: FormGroup = this.fb.group(
-    {
-      first_name: [
-        this.user?.nombre,
-        [Validators.required, Validators.minLength(3)],
-      ],
-      last_name: [
-        this.user?.apellido,
-        [Validators.required, Validators.minLength(3)],
-      ],
-      dni: [
-        this.user?.dni,
-        [
-          Validators.required,
-          Validators.max(999999999),
-          Validators.min(1000000),
-        ],
-      ],
-      email: [
-        this.user?.email,
-        [Validators.required, Validators.pattern(this.emailPattern)],
-      ],
-      phone: [this.user?.phone],
-      password: [''],
-      passwordRepeat: ['', [Validators.required]],
-    },
-    {
-      validator: [
-        this.passwordMatchFormValidator('password', 'passwordRepeat'),
-        this.validateStrongPassword,
-      ],
-    }
-  );
-  public mostrarRepetirContrasena: boolean = false;
-  public formatoImagenNoAceptado: boolean = false;
   private destroy$: Subject<boolean> = new Subject();
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {}
+  public editProfileForm!: FormGroup;
+  public mostrarRepetirContrasena: boolean = false;
+  public formatoImagenNoAceptado: boolean = false;
+
+  constructor(private authService: AuthService, private fb: FormBuilder) {
+    this.createForm();
+  }
+
+  private createForm(): void {
+    this.editProfileForm = this.fb.group(
+      {
+        first_name: [
+          this.user?.nombre,
+          [Validators.required, Validators.minLength(3)],
+        ],
+        last_name: [
+          this.user?.apellido,
+          [Validators.required, Validators.minLength(3)],
+        ],
+        dni: [
+          this.user?.dni,
+          [
+            Validators.required,
+            Validators.max(999999999),
+            Validators.min(1000000),
+          ],
+        ],
+        email: [
+          this.user?.email,
+          [Validators.required, Validators.pattern(this.emailPattern)],
+        ],
+        phone: [this.user?.phone],
+        password: [''],
+        passwordRepeat: ['', [Validators.required]],
+      },
+      {
+        validator: [
+          this.passwordMatchFormValidator('password', 'passwordRepeat'),
+          this.validateStrongPassword,
+        ],
+      }
+    );
+  }
 
   private validateStrongPassword(form: FormGroup): void {
     const password = form.get('password');
-    if (!/\d/.test(password?.value)) {
-      password?.setErrors({ notDigits: true });
-    } else if (!/[a-z]/.test(password?.value)) {
-      password?.setErrors({ noLowercase: true });
-    } else if (!/[A-Z]/.test(password?.value)) {
-      password?.setErrors({ noUppercase: true });
-    } else if (!/[*._%+-]/.test(password?.value)) {
-      password?.setErrors({ notSymbols: true });
-    } else if (password?.value.length < 8) {
-      password?.setErrors({ minlength: true });
+    if (password?.value) {
+      if (!/\d/.test(password?.value)) {
+        password?.setErrors({ notDigits: true });
+      } else if (!/[a-z]/.test(password?.value)) {
+        password?.setErrors({ noLowercase: true });
+      } else if (!/[A-Z]/.test(password?.value)) {
+        password?.setErrors({ noUppercase: true });
+      } else if (!/[*._%+-]/.test(password?.value)) {
+        password?.setErrors({ notSymbols: true });
+      } else if (password?.value.length < 8) {
+        password?.setErrors({ minlength: true });
+      }
     }
   }
 
