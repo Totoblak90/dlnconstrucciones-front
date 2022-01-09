@@ -68,7 +68,7 @@
       </div>
     </div>
   </div>
-  <div class="cashflow m-t-5 b-b-5">
+  <div *ngIf="proyecto.cashflow" class="cashflow m-t-5 b-b-5">
     <button
       class="btn bgc-primary-dark text-white"
       (click)="descargarCashFlow(proyecto.cashflow)"
