@@ -45,7 +45,7 @@ export class ProyectsComponent {
   public get progressBarStyle(): string[] {
     const pb_Style: string[] = [];
     this.user?.projects?.forEach((pr) => {
-      const num: number = (pr.total - pr.balance) / 100;
+      const num: number = this.setPers(pr.total, pr.balance);
       pb_Style.push(`width: ${num}%`);
     });
     return pb_Style;
@@ -54,10 +54,16 @@ export class ProyectsComponent {
   public get porcentaje(): number[] {
     const porcentajes: number[] = [];
     this.user?.projects?.forEach((pr) => {
-      const num: number = (pr.total - pr.balance) / 100;
+      const num: number = this.setPers(pr.total, pr.balance);
       porcentajes.push(num);
     });
     return porcentajes;
+  }
+
+  private setPers(total: number, pagado: number): number {
+    let result: number = total - pagado;
+    result = (result * 100) / total;
+    return result;
   }
 
   public setAssetUrl(assetName: string): string {
