@@ -12,6 +12,12 @@ import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { userRole } from '../../../main/interfaces/http/auth.interface';
 import { AuthService } from '../../../main/services/auth.service';
+import {
+  customMessageAlert,
+  alertFailureOrSuccessOnCRUDAction,
+  noConnectionAlert,
+  unknownErrorAlert,
+} from '../../../../helpers/alerts';
 
 @Component({
   selector: 'app-users',
@@ -65,10 +71,17 @@ export class UsersComponent implements OnInit {
     this.usersService
       .getAllUsers()
       .pipe(finalize(() => (this.loading = false)))
-      .subscribe((res: AllUsersRes) => {
-        this.setUsers(res);
-        this.mapUsersForTable();
-      });
+      .subscribe(
+        (res: AllUsersRes) => {
+          if (res.meta.status.toString().includes('20')) {
+            this.setUsers(res);
+            this.mapUsersForTable();
+          } else {
+            unknownErrorAlert(res);
+          }
+        },
+        (err) => noConnectionAlert(err)
+      );
   }
 
   private setUsers(data: AllUsersRes): void {
@@ -124,9 +137,10 @@ export class UsersComponent implements OnInit {
       const usuarioSeleccionado = this.users.find((user) => user.id === id);
       if (usuarioSeleccionado) {
         if (usuarioSeleccionado.role === 'master') {
-          Swal.fire(
+          customMessageAlert(
             'Prohibido',
             'El rol de este usuario no se puede editar',
+            'OK',
             'warning'
           );
           return;
@@ -146,14 +160,12 @@ export class UsersComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarUsuarios(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'editó', 'usuario');
         },
-        () =>
-          Swal.fire(
-            '¡Lo sentimos!',
-            'Error inesperado, recargar página. Si el problema persiste llamar al administrador o a su proveedor de internet',
-            'error'
-          )
+        (err) => {
+          this.recargarUsuarios(true);
+          noConnectionAlert(err);
+        }
       );
   }
 
@@ -163,9 +175,10 @@ export class UsersComponent implements OnInit {
 
       if (selectedUser) {
         if (selectedUser?.role === 'master') {
-          Swal.fire(
-            '¡Prohibido!',
-            `¡Este usuario no se puede borrar!`,
+          customMessageAlert(
+            'Prohibido',
+            'Este usuario no se puede borrar',
+            'OK',
             'warning'
           );
           return;
@@ -196,12 +209,7 @@ export class UsersComponent implements OnInit {
           this.showConfirmationOfDelete(
             `${selectedUser?.nombre} ${selectedUser?.apellido}`
           ),
-        () =>
-          Swal.fire(
-            'Error',
-            'Tuvimos un problema, por favor intentá nuevamente. Si el problema persiste ponete en contacto con tu proveedor de internet',
-            'error'
-          )
+        (err) => noConnectionAlert(err)
       );
   }
 
@@ -229,18 +237,6 @@ export class UsersComponent implements OnInit {
         this.recargarUsuarios(true);
       }
     });
-  }
-
-  private alertFailureOrSuccess(status: number): void {
-    if (status === 200 || status === 201) {
-      Swal.fire('¡Excelente!', 'El usuario se editó correctamente', 'success');
-    } else {
-      Swal.fire(
-        'Error',
-        'No pudimos editar el usuario, por favor intentá de nuevo recargando la página',
-        'error'
-      );
-    }
   }
 
   ngOnDestroy(): void {
