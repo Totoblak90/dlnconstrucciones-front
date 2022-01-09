@@ -39,6 +39,8 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   public acceptedFileTypes: boolean = true;
   public categoriaDeTrabajo: TypesOfJobsData[] = [];
   public trabajoID!: number;
+  public creationImageError: string = '';
+
   private jobs: JobMoreInfo[] = [];
   private destroy$: Subject<boolean> = new Subject();
 
@@ -65,6 +67,12 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
 
   public formSubmit(): void {
     this.jobForm.markAllAsTouched();
+
+    if (this.crudAction === 'Crear' && !this.jobForm.controls.image.value) {
+      this.creationImageError = 'La imágen es obligatoria';
+      return;
+    }
+
     if (this.jobForm.valid) {
       const formData: FormData = new FormData();
       formData.append('title', this.jobForm.controls.title?.value);
@@ -79,6 +87,13 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   }
 
   public showSelectedImage(e: any) {
+    if (this.crudAction === 'Crear' && !this.jobForm.controls.image.value) {
+      this.creationImageError = 'La imágen es obligatoria';
+      return;
+    } else {
+      this.creationImageError = '';
+    }
+
     const file = e.target?.files[0];
 
     this.acceptedFileTypes =

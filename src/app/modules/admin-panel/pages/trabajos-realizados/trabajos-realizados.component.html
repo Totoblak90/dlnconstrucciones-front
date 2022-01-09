@@ -31,7 +31,11 @@
           <div class="card-body">
             <div class="row justify-content-center">
               <div class="col-md-4 mb-2" (click)="imageInput.click()">
-                <img class="img-responsive" [src]="imageToShow" alt="Trabajo realizado" />
+                <img
+                  class="img-responsive"
+                  [src]="imageToShow"
+                  alt="Trabajo realizado"
+                />
                 <input
                   [hidden]="true"
                   #imageInput
@@ -40,14 +44,9 @@
                   (change)="showSelectedImage($event)"
                 />
                 <div class="p-2">
-                  <span
-                    class="text-danger"
-                    *ngIf="
-                      jobForm.controls.image.errors?.required &&
-                      jobForm.controls.image.touched
-                    "
-                    >Este dato es requerido</span
-                  >
+                  <span class="text-danger" *ngIf="creationImageError">{{
+                    creationImageError
+                  }}</span>
                   <span class="text-danger" *ngIf="!acceptedFileTypes"
                     >Los formatos aceptados son JPG, JPEG y PNG</span
                   >
@@ -56,10 +55,7 @@
             </div>
             <div class="form-group">
               <label>Categoría de trabajo*</label>
-              <select
-                formControlName="type"
-                class="form-control custom-select"
-              >
+              <select formControlName="type" class="form-control custom-select">
                 <option [value]="null">--Seleccionar una categoría--</option>
                 <option
                   *ngFor="let categoria of categoriaDeTrabajo"
@@ -130,12 +126,7 @@
           <div class="card-footer">
             <button
               type="submit"
-              class="
-                btn btn-success
-                waves-effect waves-light
-                m-r-10
-                bgc-primary-dark
-              "
+              class="btn btn-success waves-effect waves-light m-r-10 bgc-primary-dark"
             >
               Confirmar
             </button>
