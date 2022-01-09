@@ -11,6 +11,11 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { environment } from 'src/environments/environment';
+import {
+  alertFailureOrSuccessOnCRUDAction,
+  noConnectionAlert,
+  unknownErrorAlert,
+} from '../../../../helpers/alerts';
 
 @Component({
   selector: 'app-zonas',
@@ -61,24 +66,23 @@ export class ZonasComponent implements OnInit {
         finalize(() => (this.loading = false))
       )
       .subscribe(
-        (zonas: PostalZones) => {
-          zonas?.data?.forEach((zona) => {
-            this.tableData.push({
-              imagen: `${environment.API_IMAGE_URL}/${zona.image}`,
-              item2: zona.title,
-              id: zona.id,
-            });
-            this.zonas.push(zona);
-          });
-        },
-        () => {
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
-        }
+        (zonas: PostalZones) =>
+          zonas.meta.status.toString().includes('20')
+            ? this.setTableData(zonas)
+            : unknownErrorAlert(zonas),
+        (err) => noConnectionAlert(err)
       );
+  }
+
+  private setTableData(zonas: PostalZones): void {
+    zonas?.data?.forEach((zona) => {
+      this.tableData.push({
+        imagen: `${environment.API_IMAGE_URL}/${zona.image}`,
+        item2: zona.title,
+        id: zona.id,
+      });
+      this.zonas.push(zona);
+    });
   }
 
   public formSubmit(): void {
@@ -143,15 +147,11 @@ export class ZonasComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.recargarZonas(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'creó', 'zona');
         },
-        () => {
+        (err) => {
           this.recargarZonas(true);
-          Swal.fire(
-            'Error',
-            'No pudimos crear la zona, por favor intentá de nuevo recargando la página',
-            'error'
-          );
+          noConnectionAlert(err);
         }
       );
   }
@@ -175,22 +175,18 @@ export class ZonasComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarZonas(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'editó', 'zona');
         },
-        () => {
+        (err) => {
           this.recargarZonas(true);
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
+          noConnectionAlert(err);
         }
       );
   }
 
   public openBorrarZona(id: number): void {
     Swal.fire({
-      title: '¿Seguro querés elimninar el trabajo seleccionado?',
+      title: '¿Seguro querés elimninar la zona seleccionada?',
       showDenyButton: true,
       confirmButtonText: 'Si, borrar',
       denyButtonText: `No`,
@@ -206,33 +202,10 @@ export class ZonasComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarZonas(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'borró', 'zona');
         },
-        () => {
-          this.recargarZonas(true)
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos realizar el pedido correctamente, por favor actualizá la página e intentá de nuevo',
-            'error'
-          );
-        }
+        (err) => noConnectionAlert(err)
       );
-  }
-
-  private alertFailureOrSuccess(status: number): void {
-    if (status === 200 || status === 201) {
-      Swal.fire(
-        '¡Excelente!',
-        'La zona se creó correctamente',
-        'success'
-      );
-    } else {
-      Swal.fire(
-        'Error',
-        'No pudimos crear la zona, por favor intentá de nuevo recargando la página',
-        'error'
-      );
-    }
   }
 
   ngOnDestroy(): void {
