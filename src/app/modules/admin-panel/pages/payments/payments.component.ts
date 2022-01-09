@@ -3,9 +3,15 @@ import { Router } from '@angular/router';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import {
+  FormGroup,
+  Validators,
+  FormBuilder,
+  ValidationErrors,
+} from '@angular/forms';
 import {
   OneProjectRes,
+  Project,
   ProyectPayments,
 } from '../../interfaces/users.interface';
 import Swal, { SweetAlertResult } from 'sweetalert2';
@@ -33,6 +39,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   public crudAction: string = '';
   public paymentsForm!: FormGroup;
   public pagoId!: number;
+  public invalidPaymentMsg: string = '';
+  private project!: Project;
   private projectID!: number;
   private destroy$: Subject<boolean> = new Subject();
 
@@ -57,6 +65,20 @@ export class PaymentsComponent implements OnInit, OnDestroy {
       receipt: ['', [Validators.required, Validators.minLength(5)]],
       datetime: [null, Validators.required],
     });
+  }
+
+  public checkAmountInputValue(): void {
+    this.paymentsForm.controls.amount?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.validatePaymentAmount(res);
+      });
+  }
+
+  private validatePaymentAmount(amount: number): void {
+    if (this.project.balance < amount) {
+      this.paymentsForm.controls.amount?.setErrors({ invalidAmount: true });
+    }
   }
 
   public formSubmit(): void {
@@ -92,6 +114,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
       .subscribe(
         (res: OneProjectRes) => {
           if (res?.meta?.status.toString().includes('20')) {
+            this.project = res.data;
             this.payments = res?.data?.Payments!;
             this.setTableData();
           } else {
