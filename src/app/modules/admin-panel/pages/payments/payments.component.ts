@@ -61,7 +61,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.paymentsForm = this.fb.group({
       amount: [null, [Validators.required, Validators.min(1)]],
-      receipt: ['', [Validators.required, Validators.minLength(5)]],
+      receipt: ['', [Validators.required]],
       datetime: [null, Validators.required],
     });
   }
