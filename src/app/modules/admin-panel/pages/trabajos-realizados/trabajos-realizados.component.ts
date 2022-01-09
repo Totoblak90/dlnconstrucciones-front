@@ -1,5 +1,5 @@
 import { Component, Host, HostBinding, OnDestroy, OnInit } from '@angular/core';
-import { concat, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import {
   Job,
   JobMoreInfo,
@@ -13,6 +13,11 @@ import { environment } from 'src/environments/environment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
+import {
+  noConnectionAlert,
+  unknownErrorAlert,
+  alertFailureOrSuccessOnCRUDAction,
+} from '../../../../helpers/alerts';
 
 @Component({
   selector: 'app-trabajos-realizados',
@@ -104,19 +109,28 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
               takeUntil(this.destroy$),
               finalize(() => (this.loading = false))
             )
-            .subscribe((job: Job) => {
-              job?.data?.Jobs.forEach((j) => {
-                this.tableData.push({
-                  imagen: `${environment.API_IMAGE_URL}/${j.image}`,
-                  item2: j.title ? j.title : 'Vacío',
-                  item3: j.description ? j.description : 'Vacío',
-                  id: j.id,
-                });
-                this.jobs.push(j);
-              });
-            });
+            .subscribe(
+              (job: Job) => {
+                job.meta.status.toString().includes('20')
+                  ? this.setTableData(job)
+                  : unknownErrorAlert(job);
+              },
+              (err) => noConnectionAlert(err)
+            );
         }
       });
+  }
+
+  private setTableData(job: Job): void {
+    job?.data?.Jobs.forEach((j) => {
+      this.tableData.push({
+        imagen: `${environment.API_IMAGE_URL}/${j.image}`,
+        item2: j.title ? j.title : 'Vacío',
+        item3: j.description ? j.description : 'Vacío',
+        id: j.id,
+      });
+      this.jobs.push(j);
+    });
   }
 
   public recargarTrabajos(recargar: boolean): void {
@@ -152,14 +166,12 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.recargarTrabajos(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'creó', 'trabajo realizado');
         },
-        () =>
-          Swal.fire(
-            'Error',
-            'No pudimos crear el trabajo, por favor intentá de nuevo recargando la página',
-            'error'
-          )
+        (err) => {
+          this.recargarTrabajos(true);
+          noConnectionAlert(err);
+        }
       );
   }
 
@@ -184,21 +196,18 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.recargarTrabajos(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'editó', 'trabajo realizado');
         },
-        () => {
-          Swal.fire(
-            'Error',
-            'No pudimos editar el trabajo, por favor intentá de nuevo recargando la página',
-            'error'
-          );
+        (err) => {
+          this.recargarTrabajos(true);
+          noConnectionAlert(err);
         }
       );
   }
 
   public borrarTrabajoRealizado(id: number): void {
     Swal.fire({
-      title: '¿Seguro querés elimninar el trabajo seleccionado?',
+      title: '¿Seguro querés elimninar el trabajo realizado seleccionado?',
       showDenyButton: true,
       confirmButtonText: 'Si, borrar',
       denyButtonText: `No`,
@@ -214,28 +223,10 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.recargarTrabajos(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'borró', 'trabajo realizado');
         },
-        () => {
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos realizar el pedido correctamente, por favor actualizá la página e intentá de nuevo',
-            'error'
-          );
-        }
+        (err) => noConnectionAlert(err)
       );
-  }
-
-  private alertFailureOrSuccess(status: number): void {
-    if (status === 200 || status === 201) {
-      Swal.fire('¡Excelente!', 'La zona se creó correctamente', 'success');
-    } else {
-      Swal.fire(
-        'Error',
-        'No pudimos crear la zona, por favor intentá de nuevo recargando la página',
-        'error'
-      );
-    }
   }
 
   ngOnDestroy(): void {
