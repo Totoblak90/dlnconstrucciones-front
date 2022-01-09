@@ -63,7 +63,7 @@ export class ProyectsComponent {
   private setPers(total: number, pagado: number): number {
     let result: number = total - pagado;
     result = (result * 100) / total;
-    return result;
+    return Math.round(result);
   }
 
   public setAssetUrl(assetName: string): string {

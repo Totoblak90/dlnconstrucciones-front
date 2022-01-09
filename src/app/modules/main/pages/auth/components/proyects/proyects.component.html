@@ -84,7 +84,7 @@
     <hr />
     <div *ngFor="let a of proyecto.Assets" class="col-lg-4 col-md-6">
       <div class="card">
-        <ng-container *ngIf="a.type === 'image'; else videoAsset">
+        <ng-container *ngIf="a.type === 'image'; else videoTemplate">
           <img
             class="img-responsive"
             [src]="setAssetUrl(a.asset)"
@@ -94,7 +94,7 @@
         </ng-container>
         <ng-template
           class="embed-responsive embed-responsive-21by9"
-          #videoAsset
+          #videoTemplate
         >
           <video
             class="embed-responsive-item"
