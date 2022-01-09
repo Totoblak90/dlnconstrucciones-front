@@ -6,6 +6,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import {
+  unknownErrorAlert,
+  noConnectionAlert,
+} from '../../../../../helpers/alerts';
+import {
   IdentifyTokenOActualizarUsuario,
   UserData,
 } from '../../../interfaces/http/auth.interface';
@@ -40,16 +44,14 @@ export class UserProfileComponent implements OnDestroy {
         [Validators.required, Validators.pattern(this.emailPattern)],
       ],
       phone: [this.user?.phone],
-      password: [
-        '',
-        [
-          /** Validators.pattern(this.passwordPattern)*/
-        ],
-      ],
+      password: [''],
       passwordRepeat: ['', [Validators.required]],
     },
     {
-      validator: this.passwordMatchFormValidator('password', 'passwordRepeat'),
+      validator: [
+        this.passwordMatchFormValidator('password', 'passwordRepeat'),
+        this.validateStrongPassword,
+      ],
     }
   );
   public mostrarRepetirContrasena: boolean = false;
@@ -57,6 +59,32 @@ export class UserProfileComponent implements OnDestroy {
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(private authService: AuthService, private fb: FormBuilder) {}
+
+  private validateStrongPassword(form: FormGroup): void {
+    const password = form.get('password');
+    if (!/\d/.test(password?.value)) {
+      password?.setErrors({ notDigits: true });
+    } else if (!/[a-z]/.test(password?.value)) {
+      password?.setErrors({ noLowercase: true });
+    } else if (!/[A-Z]/.test(password?.value)) {
+      password?.setErrors({ noUppercase: true });
+    } else if (!/[*._%+-]/.test(password?.value)) {
+      password?.setErrors({ notSymbols: true });
+    } else if (password?.value.length < 8) {
+      password?.setErrors({ minlength: true });
+    }
+  }
+
+  public showStrongPasswordErrorMsgs(): boolean {
+    return (
+      this.editProfileForm.controls.password.touched &&
+      (this.editProfileForm.controls.password.errors?.notDigits ||
+        this.editProfileForm.controls.password.errors?.noLowercase ||
+        this.editProfileForm.controls.password.errors?.noUppercase ||
+        this.editProfileForm.controls.password.errors?.notSymbols ||
+        this.editProfileForm.controls.password.errors?.minlength)
+    );
+  }
 
   public get user(): User {
     return this.authService.getUser();
@@ -87,23 +115,13 @@ export class UserProfileComponent implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (user: IdentifyTokenOActualizarUsuario) => {
-          if (user.meta.status === 200) {
+          if (user.meta.status.toString().includes('20')) {
             this.modifyLoggedUser(user?.data);
           } else {
-            Swal.fire(
-              '¡Lo sentimos!',
-              'No podemos actualizar tu información por favor ponete en contacto con el administrador de la página',
-              'error'
-            );
+            unknownErrorAlert(user);
           }
         },
-        (err) => {
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos actualizar tu perfil como queríamos, por favor intentalo nuevamente',
-            'error'
-          );
-        }
+        (err) => noConnectionAlert(err)
       );
   }
 
@@ -122,23 +140,13 @@ export class UserProfileComponent implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res: IdentifyTokenOActualizarUsuario) => {
-          if (res?.meta?.status === 200) {
+          if (res?.meta?.status.toString().includes('20')) {
             this.modifyLoggedUser(res?.data);
           } else {
-            Swal.fire(
-              '¡Lo sentimos!',
-              'No podemos actualizar tu información por favor ponete en contacto con el administrador de la página',
-              'warning'
-            );
+            unknownErrorAlert(res);
           }
         },
-        () => {
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos actualizar tu perfil como queríamos, por favor intentalo nuevamente',
-            'error'
-          );
-        }
+        (err) => noConnectionAlert(err)
       );
   }
 
@@ -154,13 +162,7 @@ export class UserProfileComponent implements OnDestroy {
           this.guardarCambiosEnBaseDeDatos();
         }
       })
-      .catch(() =>
-        Swal.fire(
-          '¡Lo sentimos!',
-          'No pudimos actualizar tu perfil como queríamos, por favor intentalo nuevamente',
-          'error'
-        )
-      );
+      .catch((err) => noConnectionAlert(err));
   }
 
   private modifyLoggedUser(usuario: UserData) {

@@ -280,6 +280,26 @@
                     símbolo</span
                   >
                 </div>
+                <div *ngIf="showStrongPasswordErrorMsgs()" class="p-2">
+                  <ul class="form-text text-danger list-unstyled">
+                    <li *ngIf="showStrongPasswordErrorMsgs()">
+                      La contraseña debe tener al menos 8 caracteres
+                    </li>
+                    <li *ngIf="showStrongPasswordErrorMsgs()">
+                      La contraseña debe contener al menos un número
+                    </li>
+                    <li *ngIf="showStrongPasswordErrorMsgs()">
+                      La contraseña debe contener al menos una letra minúscula
+                    </li>
+                    <li *ngIf="showStrongPasswordErrorMsgs()">
+                      La contraseña debe tener al menos una letra mayúscula
+                    </li>
+                    <li *ngIf="showStrongPasswordErrorMsgs()">
+                      La contraseña debe tener al menos alguno de los siguientes
+                      símbolos *._%+-
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div
                 class="

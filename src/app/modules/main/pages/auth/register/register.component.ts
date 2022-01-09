@@ -4,8 +4,8 @@ import { Subject } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import { User } from 'src/app/models/user.model';
 import Swal from 'sweetalert2';
+import { noConnectionAlert } from '../../../../../helpers/alerts';
 
 @Component({
   selector: 'app-register',
@@ -55,12 +55,7 @@ export class RegisterComponent implements OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           () => this.router.navigateByUrl('/main/auth/login'),
-          () =>
-            Swal.fire(
-              'Error',
-              'Lo sentimos, tuvimos un problema de conexión, por favor actualizá la página y si el problema persiste probá contactarte con el administrador.',
-              'error'
-            )
+          (err) => noConnectionAlert(err)
         );
     }
   }

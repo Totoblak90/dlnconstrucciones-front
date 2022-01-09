@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { User } from '../../../../../models/user.model';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { noConnectionAlert } from '../../../../../helpers/alerts';
 
 @Component({
   selector: 'app-log-in',
@@ -53,13 +54,7 @@ export class LogInComponent implements OnDestroy {
               ? this.guardarOAlertarUsuarioLogueado(res?.data?.user)
               : this.alertUsuarioInexistente();
           },
-          (err) => {
-            Swal.fire(
-              '¡Lo sentimos!',
-              'Tuvimos un inconveniente, por favor intentá nuevamente',
-              'error'
-            );
-          }
+          (err) => noConnectionAlert(err)
         );
     }
   }
