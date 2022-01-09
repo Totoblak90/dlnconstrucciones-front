@@ -7,7 +7,6 @@ import {
   FormGroup,
   Validators,
   FormBuilder,
-  ValidationErrors,
 } from '@angular/forms';
 import {
   OneProjectRes,

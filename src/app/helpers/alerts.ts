@@ -65,6 +65,7 @@ export function alertFailureOrSuccessOnCRUDAction(
     | 'proyecto'
     | 'lote'
     | 'pago'
+    | 'archivo'
     | 'servicio'
     | 'tipo de trabajo'
     | 'trabajo realizado'
