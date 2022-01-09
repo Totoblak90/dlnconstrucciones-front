@@ -9,6 +9,11 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { TypesOfJobsData } from '../../../main/interfaces/http/jobs.interface';
+import {
+  alertFailureOrSuccessOnCRUDAction,
+  unknownErrorAlert,
+  noConnectionAlert,
+} from '../../../../helpers/alerts';
 
 @Component({
   selector: 'app-tipo-de-trabajo',
@@ -61,23 +66,23 @@ export class TipoDeTrabajoComponent implements OnInit {
       )
       .subscribe(
         (typesOfJob: TypesOfJobs) => {
-          typesOfJob.data.forEach((typeOfJob) => {
-            this.tableData.push({
-              imagen: `${environment.API_IMAGE_URL}/${typeOfJob.image}`,
-              item2: typeOfJob.title,
-              id: typeOfJob.id,
-            });
-            this.tiposDeTrabajo.push(typeOfJob);
-          });
+          typesOfJob.meta?.status?.toString().includes('20')
+            ? this.setTableData(typesOfJob)
+            : unknownErrorAlert(typesOfJob);
         },
-        () => {
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
-        }
+        (err) => noConnectionAlert(err)
       );
+  }
+
+  private setTableData(typesOfJob: TypesOfJobs): void {
+    typesOfJob.data.forEach((typeOfJob) => {
+      this.tableData.push({
+        imagen: `${environment.API_IMAGE_URL}/${typeOfJob.image}`,
+        item2: typeOfJob.title,
+        id: typeOfJob.id,
+      });
+      this.tiposDeTrabajo.push(typeOfJob);
+    });
   }
 
   public formSubmit(): void {
@@ -141,14 +146,12 @@ export class TipoDeTrabajoComponent implements OnInit {
       .subscribe(
         (res: any) => {
           this.recargarTrabajos(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'creó', 'tipo de trabajo');
         },
-        () =>
-          Swal.fire(
-            'Error',
-            'No pudimos crear el tipo de trabajo, por favor intentá de nuevo recargando la página',
-            'error'
-          )
+        (err) => {
+          this.recargarTrabajos(true);
+          noConnectionAlert(err);
+        }
       );
   }
   public editarTipoDeTrabajo(id: number): void {
@@ -170,22 +173,18 @@ export class TipoDeTrabajoComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarTrabajos(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'editó', 'tipo de trabajo');
         },
-        () => {
+        (err) => {
           this.recargarTrabajos(true);
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
+          noConnectionAlert(err);
         }
       );
   }
 
   public borrarTipoDeTrabajo(id: number): void {
     Swal.fire({
-      title: '¿Seguro querés elimninar el trabajo seleccionado?',
+      title: '¿Seguro querés elimninar el tipo de trabajo seleccionado?',
       showDenyButton: true,
       confirmButtonText: 'Si, borrar',
       denyButtonText: `No`,
@@ -201,28 +200,10 @@ export class TipoDeTrabajoComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarTrabajos(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'borró', 'tipo de trabajo');
         },
-        () => {
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos realizar el pedido correctamente, por favor actualizá la página e intentá de nuevo',
-            'error'
-          );
-        }
+        (err) => noConnectionAlert(err)
       );
-  }
-
-  private alertFailureOrSuccess(status: number): void {
-    if (status === 200 || status === 201) {
-      Swal.fire('¡Excelente!', 'El tipo de trabajo se creó correctamente', 'success');
-    } else {
-      Swal.fire(
-        'Error',
-        'No pudimos crear el tipo de trabajo, por favor intentá de nuevo recargando la página',
-        'error'
-      );
-    }
   }
 
   ngOnDestroy(): void {
