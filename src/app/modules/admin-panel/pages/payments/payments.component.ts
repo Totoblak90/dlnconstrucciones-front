@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -15,16 +15,15 @@ import { ProjectPaymentsReq } from '../../interfaces/projects.interface';
 import {
   alertFailureOrSuccessOnCRUDAction,
   unknownErrorAlert,
-  noConnectionAlert
+  noConnectionAlert,
 } from '../../../../helpers/alerts';
-
 
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.scss'],
 })
-export class PaymentsComponent implements OnInit {
+export class PaymentsComponent implements OnInit, OnDestroy {
   public payments: ProyectPayments[] = [];
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = ['Comprobante', 'Total', 'Fecha'];
@@ -210,5 +209,10 @@ export class PaymentsComponent implements OnInit {
         },
         (err) => unknownErrorAlert(err)
       );
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

@@ -167,6 +167,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       this.imageToShow = `${environment.API_IMAGE_URL}/${servicio.image}`;
     }
   }
+
   public editarServicioEnLaDb(formData: FormData): void {
     this.adminPanelCrudService
       .edit(this.servicioID, formData, 'services')
@@ -193,6 +194,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       result.isConfirmed ? this.borrarServicioEnLaDb(id) : null;
     });
   }
+
   public borrarServicioEnLaDb(id: number): void {
     this.adminPanelCrudService
       .delete(id, 'services')
