@@ -4,8 +4,16 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HttpService } from 'src/app/services/http.service';
 import { environment } from 'src/environments/environment';
-import { Job, JobBaseData, JobMoreInfo } from '../../../interfaces/http/jobs.interface';
+import {
+  Job,
+  JobBaseData,
+  JobMoreInfo,
+} from '../../../interfaces/http/jobs.interface';
 import { PresentationCard } from '../../../interfaces/presentation-card.interface';
+import {
+  unknownErrorAlert,
+  noConnectionAlert,
+} from '../../../../../helpers/alerts';
 
 @Component({
   selector: 'app-tipo-trabajo',
@@ -25,30 +33,41 @@ export class TipoTrabajoComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.getJob();
+  }
+
+  private getJob(): void {
     const idTipoTrabajo: string =
       this.activatedRoute.snapshot.params.idTipoTrabajo;
     this.httpService
       .getOneTypeOfJob(idTipoTrabajo)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((jobFull: Job) => {
-        this.trabajoCompleto = jobFull;
-        this.trabajoBaseInfo = jobFull?.data;
-        this.trabajoInfo = jobFull?.data?.Jobs;
-        this.trabajoInfo?.forEach((trabajo: JobMoreInfo) => {
-          trabajo.image = `${environment.API_IMAGE_URL}/${trabajo.image}`;
-        });
-        this.mapTrabajosToPresent();
-      });
+      .subscribe(
+        (jobFull: Job) => {
+          if (jobFull.meta.status.toString().includes('20')) {
+            this.trabajoCompleto = jobFull;
+            this.trabajoBaseInfo = jobFull?.data;
+            this.trabajoInfo = jobFull?.data?.Jobs;
+            this.trabajoInfo?.forEach((trabajo: JobMoreInfo) => {
+              trabajo.image = `${environment.API_IMAGE_URL}/${trabajo.image}`;
+            });
+            this.mapTrabajosToPresent();
+          } else {
+            unknownErrorAlert(jobFull);
+          }
+        },
+        (err) => noConnectionAlert(err)
+      );
   }
 
   private mapTrabajosToPresent(): void {
-    this.trabajoInfo.forEach( trabajo => {
+    this.trabajoInfo.forEach((trabajo) => {
       this.tipoTrabajoToPresent.push({
         titulo: trabajo.title,
         urlFoto: trabajo.image,
-        openModal: true
-      })
-    })
+        openModal: true,
+      });
+    });
   }
 
   ngOnDestroy(): void {
