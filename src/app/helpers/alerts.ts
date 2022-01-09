@@ -1,7 +1,7 @@
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 
 export function noConnectionAlert(err: any): void {
-  console.log(err)
+  console.log(err);
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: 'btn bgc-primary-dark',
@@ -18,7 +18,9 @@ export function noConnectionAlert(err: any): void {
   });
 }
 
-export function unknownErrorAlert(): void {
+export function unknownErrorAlert(data?: any): void {
+  data ? console.log(data) : null;
+
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: 'btn bgc-primary-dark',
@@ -42,7 +44,7 @@ export function customMessageAlert(
 ): void {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
-      confirmButton: 'btn bgc-primary-dark',
+      confirmButton: 'btn bgc-primary-dark text-white',
       cancelButton: 'btn btn-danger',
     },
     buttonsStyling: false,
@@ -53,4 +55,20 @@ export function customMessageAlert(
     icon,
     confirmButtonText: buttonText,
   });
+}
+
+export function alertFailureOrSuccessOnCRUDAction(
+  data: any,
+  action: 'creó' | 'editó' | 'borró'
+): void {
+  if (data?.meta?.status?.toString().includes('20')) {
+    customMessageAlert(
+      'Excelente',
+      `El interés se ${action} correctamente`,
+      'OK',
+      'success'
+    );
+  } else {
+    unknownErrorAlert(data);
+  }
 }

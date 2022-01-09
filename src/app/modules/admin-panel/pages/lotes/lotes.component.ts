@@ -13,6 +13,10 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ZonasDeConstruccion } from '../../interfaces/lotes.interface';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
+import {
+  noConnectionAlert,
+  alertFailureOrSuccessOnCRUDAction,
+} from '../../../../helpers/alerts';
 
 @Component({
   selector: 'app-lotes',
@@ -123,38 +127,28 @@ export class LotesComponent implements OnInit {
               )
               .subscribe(
                 (lotes: Lotes) => {
-                  lotes?.data?.Batches.forEach((lote) => {
-                    this.tableData.push({
-                      imagen: `${environment.API_IMAGE_URL}/${lote.image}`,
-                      item2: lote.title ? lote.title : 'Vacío',
-                      item3: lote.description ? lote.description : 'Vacío',
-                      item4: lote.price?.toString()
-                        ? lote.price?.toString()
-                        : 'Vacío',
-                      item6: this.setearElEstadoVendidoONo(lote.sold),
-                      id: lote.id,
-                    });
-                    this.lotes.push(lote);
-                  });
-                },
-                () => {
-                  Swal.fire(
-                    'Error',
-                    'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-                    'error'
+                  lotes?.data?.Batches.forEach((lote: Batch) =>
+                    this.setTableData(lote)
                   );
-                }
+                },
+                (err) => noConnectionAlert(err)
               );
           }
         },
-        (err) => {
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
-        }
+        (err) => noConnectionAlert(err)
       );
+  }
+
+  private setTableData(lote: Batch): void {
+    this.tableData.push({
+      imagen: `${environment.API_IMAGE_URL}/${lote.image}`,
+      item2: lote.title ? lote.title : 'Vacío',
+      item3: lote.description ? lote.description : 'Vacío',
+      item4: lote.price?.toString() ? lote.price?.toString() : 'Vacío',
+      item6: this.setearElEstadoVendidoONo(lote.sold),
+      id: lote.id,
+    });
+    this.lotes.push(lote);
   }
 
   private setearElEstadoVendidoONo(palabra: string): string {
@@ -168,6 +162,7 @@ export class LotesComponent implements OnInit {
       this.resetsetControls();
       this.tableData = [];
       this.zonasDeConstruccion = [];
+      this.lotes = [];
       this.isEditing = false;
       this.isCreating = false;
       this.getLotes();
@@ -197,17 +192,11 @@ export class LotesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarLotes(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'creó');
         },
-        () => {
-          this.isCreating = false;
-          this.isEditing = false;
+        (err) => {
           this.recargarLotes(true);
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
+          noConnectionAlert(err);
         }
       );
   }
@@ -237,15 +226,11 @@ export class LotesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarLotes(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'editó');
         },
-        () => {
+        (err) => {
           this.recargarLotes(true);
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
+          noConnectionAlert(err);
         }
       );
   }
@@ -270,14 +255,11 @@ export class LotesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarLotes(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'borró');
         },
-        () => {
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos realizar el pedido correctamente, por favor actualizá la página e intentá de nuevo',
-            'error'
-          );
+        (err) => {
+          this.recargarLotes(true);
+          noConnectionAlert(err);
         }
       );
   }
@@ -287,18 +269,6 @@ export class LotesComponent implements OnInit {
       return lote.id === id;
     });
     return loteSeleccionado;
-  }
-
-  private alertFailureOrSuccess(status: number): void {
-    if (status === 200 || status === 201) {
-      Swal.fire('¡Excelente!', 'La zona se creó correctamente', 'success');
-    } else {
-      Swal.fire(
-        'Error',
-        'No pudimos crear la zona, por favor intentá de nuevo recargando la página',
-        'error'
-      );
-    }
   }
 
   ngOnDestroy(): void {

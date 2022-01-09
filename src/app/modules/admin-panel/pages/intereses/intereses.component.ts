@@ -11,6 +11,11 @@ import { environment } from 'src/environments/environment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
+import {
+  noConnectionAlert,
+  unknownErrorAlert,
+  alertFailureOrSuccessOnCRUDAction,
+} from '../../../../helpers/alerts';
 
 @Component({
   selector: 'app-intereses',
@@ -50,28 +55,6 @@ export class InteresesComponent implements OnInit {
     });
   }
 
-  /** @todo solucionar el problema del validador de la imágen
-  private setImageErrors(fg: FormGroup): void {
-    const image = fg.get('image')
-    console.log(this.crudAction)
-    if (image && this.crudAction) {
-      return image.setValidators(() => {
-        return { required: true };
-      });
-    }
-    return (formGroup: FormGroup) => {
-      const pass1Control = formGroup.get(pass1);
-      const pass2Control = formGroup.get(pass2);
-
-      if (pass1Control.value === pass2Control.value) {
-        pass2Control.setErrors(null);
-      } else {
-        pass2Control.setErrors({ notMatch: true });
-      }
-    };
-  }
-  */
-
   ngOnInit(): void {
     this.getIntereses();
   }
@@ -100,17 +83,28 @@ export class InteresesComponent implements OnInit {
         takeUntil(this.destroy$),
         finalize(() => (this.loading = false))
       )
-      .subscribe((interests: Interests) => {
-        interests.data.forEach((int: InterestsData) => {
-          this.tableData.push({
-            imagen: `${environment.API_IMAGE_URL}/${int.image}`,
-            item2: int.title,
-            item3: int.description,
-            id: int.id,
-          });
-          this.interestData.push(int);
-        });
-      });
+      .subscribe(
+        (interests: Interests) => {
+          if (interests.meta?.status.toString().includes('20')) {
+            interests.data.forEach((int: InterestsData) =>
+              this.setTableData(int)
+            );
+          } else {
+            unknownErrorAlert(interests);
+          }
+        },
+        (err) => noConnectionAlert(err)
+      );
+  }
+
+  private setTableData(interes: InterestsData): void {
+    this.tableData.push({
+      imagen: `${environment.API_IMAGE_URL}/${interes.image}`,
+      item2: interes.title,
+      item3: interes.description,
+      id: interes.id,
+    });
+    this.interestData.push(interes);
   }
 
   public recargarIntereses(recargar: boolean): void {
@@ -162,16 +156,11 @@ export class InteresesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarIntereses(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'creó');
         },
         (err) => {
-          console.log(err);
           this.recargarIntereses(true);
-          Swal.fire(
-            'Error',
-            'No pudimos crear el interés, por favor intentá de nuevo recargando la página',
-            'error'
-          );
+          noConnectionAlert(err);
         }
       );
   }
@@ -196,16 +185,11 @@ export class InteresesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarIntereses(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'editó');
         },
         (err) => {
-          console.log(err);
           this.recargarIntereses(true);
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
+          noConnectionAlert(err);
         }
       );
   }
@@ -227,28 +211,13 @@ export class InteresesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarIntereses(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'borró');
         },
-        () => {
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos realizar el pedido correctamente, por favor actualizá la página e intentá de nuevo',
-            'error'
-          );
+        (err) => {
+          this.recargarIntereses(true);
+          noConnectionAlert(err);
         }
       );
-  }
-
-  private alertFailureOrSuccess(status: number): void {
-    if (status === 200 || status === 201) {
-      Swal.fire('¡Excelente!', 'La zona se creó correctamente', 'success');
-    } else {
-      Swal.fire(
-        'Error',
-        'No pudimos crear la zona, por favor intentá de nuevo recargando la página',
-        'error'
-      );
-    }
   }
 
   ngOnDestroy(): void {

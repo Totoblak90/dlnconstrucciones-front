@@ -26,7 +26,6 @@ export class AdminPanelCrudService {
    * @memberof AdminPanelCrudService
    */
   public create(payload: FormData, tabla: AdminPanelCrudRoutes): Observable<any> {
-    console.log(payload)
     return this.http.post<any>(
       `${environment.API_BASE_URL}/${tabla}/create`,
       payload,

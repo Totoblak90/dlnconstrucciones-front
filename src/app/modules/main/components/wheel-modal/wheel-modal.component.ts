@@ -39,7 +39,7 @@ export class WheelModalComponent implements OnInit {
             ? this.setInterests(interestsFull)
             : unknownErrorAlert();
         },
-        () => noConnectionAlert()
+        (err) => noConnectionAlert(err)
       );
   }
 
