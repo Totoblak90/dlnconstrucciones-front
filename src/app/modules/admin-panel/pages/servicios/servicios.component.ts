@@ -36,6 +36,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   public imageToShow: string = '../../../../../assets/no-image.png';
   public acceptedFileTypes: boolean = true;
   public servicioID!: number;
+  public creationImageError: string = '';
 
   private fileToUpload!: File;
   private destroy$: Subject<boolean> = new Subject();
@@ -89,6 +90,13 @@ export class ServiciosComponent implements OnInit, OnDestroy {
 
   public formSubmit(): void {
     this.servicesForm.markAllAsTouched();
+    if (
+      this.crudAction === 'Crear' &&
+      !this.servicesForm.controls.image.value
+    ) {
+      this.creationImageError = 'La imágen es obligatoria';
+      return;
+    }
     if (this.servicesForm.valid) {
       const formData: FormData = new FormData();
       formData.append('title', this.servicesForm.controls.title?.value);
@@ -118,6 +126,15 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   }
 
   public showSelectedImage(e: any) {
+    if (
+      this.crudAction === 'Crear' &&
+      !this.servicesForm.controls.image.value
+    ) {
+      this.creationImageError = 'La imágen es obligatoria';
+      return;
+    } else {
+      this.creationImageError = '';
+    }
     const file = e.target?.files[0];
 
     this.acceptedFileTypes =
