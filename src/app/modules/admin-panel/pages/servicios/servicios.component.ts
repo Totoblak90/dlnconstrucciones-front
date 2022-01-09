@@ -1,17 +1,21 @@
 import { Component, Host, HostBinding, OnDestroy, OnInit } from '@angular/core';
-import { concat, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { HttpService } from '../../../../services/http.service';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { takeUntil, finalize } from 'rxjs/operators';
 import {
   Services,
   ServicesData,
-  TipoServicio,
 } from 'src/app/modules/main/interfaces/http/services.interface';
 import { environment } from 'src/environments/environment';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
+import {
+  noConnectionAlert,
+  unknownErrorAlert,
+  alertFailureOrSuccessOnCRUDAction,
+} from '../../../../helpers/alerts';
 
 @Component({
   selector: 'app-servicios',
@@ -64,23 +68,23 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (servicios: Services) => {
-          servicios?.data?.forEach((servicio) => {
-            this.tableData.push({
-              imagen: `${environment.API_IMAGE_URL}/${servicio.image}`,
-              item2: servicio.title,
-              id: servicio.id,
-            });
-            this.servicios.push(servicio);
-          });
+          servicios.meta?.status.toString().includes('20')
+            ? this.setTableData(servicios)
+            : unknownErrorAlert(servicios);
         },
-        () => {
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos cargar los servicios como esperabamos, intentá de nuevo y sino ponete en contacto con tu proveedor de internet',
-            'warning'
-          );
-        }
+        (err) => noConnectionAlert(err)
       );
+  }
+
+  private setTableData(servicios: Services): void {
+    servicios?.data?.forEach((servicio) => {
+      this.tableData.push({
+        imagen: `${environment.API_IMAGE_URL}/${servicio.image}`,
+        item2: servicio.title,
+        id: servicio.id,
+      });
+      this.servicios.push(servicio);
+    });
   }
 
   public formSubmit(): void {
@@ -143,14 +147,12 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.recargarServicios(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'creó', 'servicio');
         },
-        () =>
-          Swal.fire(
-            'Error',
-            'No pudimos crear el interés, por favor intentá de nuevo recargando la página',
-            'error'
-          )
+        (err) => {
+          this.recargarServicios(true);
+          unknownErrorAlert(err);
+        }
       );
   }
 
@@ -172,22 +174,18 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.recargarServicios(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'creó', 'servicio');
         },
-        () => {
+        (err) => {
           this.recargarServicios(true);
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
+          unknownErrorAlert(err);
         }
       );
   }
 
   public borrarServicio(id: number): void {
     Swal.fire({
-      title: '¿Seguro querés elimninar el trabajo seleccionado?',
+      title: '¿Seguro querés elimninar el servicio seleccionado?',
       showDenyButton: true,
       confirmButtonText: 'Si, borrar',
       denyButtonText: `No`,
@@ -202,28 +200,12 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.recargarServicios(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'borró', 'servicio');
         },
-        () => {
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos realizar el pedido correctamente, por favor actualizá la página e intentá de nuevo',
-            'error'
-          );
+        (err) => {
+          unknownErrorAlert(err);
         }
       );
-  }
-
-  private alertFailureOrSuccess(status: number): void {
-    if (status === 200 || status === 201) {
-      Swal.fire('¡Excelente!', 'La zona se creó correctamente', 'success');
-    } else {
-      Swal.fire(
-        'Error',
-        'No pudimos crear la zona, por favor intentá de nuevo recargando la página',
-        'error'
-      );
-    }
   }
 
   ngOnDestroy(): void {
