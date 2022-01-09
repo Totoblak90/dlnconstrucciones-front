@@ -9,6 +9,11 @@ import { CurrencyPipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProjectsService } from '../../services/projects.service';
+import {
+  alertFailureOrSuccessOnCRUDAction,
+  noConnectionAlert,
+  unknownErrorAlert,
+} from '../../../../helpers/alerts';
 
 @Component({
   selector: 'app-proyectos',
@@ -106,19 +111,10 @@ export class ProyectosComponent implements OnInit, OnDestroy {
             this.projects = res?.data;
             this.setTableData();
           } else {
-            Swal.fire(
-              '¡Lo sentimos!',
-              'No pudimos cargar la información, por favor recarga la página',
-              'error'
-            );
+            unknownErrorAlert(res);
           }
         },
-        () =>
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos cargar la información, por favor recarga la página',
-            'error'
-          )
+        (err) => noConnectionAlert(err)
       );
   }
 
@@ -176,15 +172,11 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.recargarProyectos(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'creó', 'proyecto');
         },
         (err) => {
           this.recargarProyectos(true);
-          Swal.fire(
-            'Error',
-            'No pudimos crear el proyecto, por favor intentá de nuevo recargando la página',
-            'error'
-          );
+          noConnectionAlert(err);
         }
       );
   }
@@ -212,15 +204,11 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       .subscribe(
         (res: any) => {
           this.recargarProyectos(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'editó', 'proyecto');
         },
-        () => {
+        (err) => {
           this.recargarProyectos(true);
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
+          noConnectionAlert(err);
         }
       );
   }
@@ -243,15 +231,9 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           this.recargarProyectos(true);
-          this.alertFailureOrSuccess(res?.meta?.status);
+          alertFailureOrSuccessOnCRUDAction(res, 'borró', 'proyecto');
         },
-        () => {
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos realizar el pedido correctamente, por favor actualizá la página e intentá de nuevo',
-            'error'
-          );
-        }
+        (err) => noConnectionAlert(err)
       );
   }
 

@@ -15,6 +15,7 @@ import { ZonasDeConstruccion } from '../../interfaces/lotes.interface';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import {
   noConnectionAlert,
+  unknownErrorAlert,
   alertFailureOrSuccessOnCRUDAction,
 } from '../../../../helpers/alerts';
 
@@ -127,9 +128,13 @@ export class LotesComponent implements OnInit {
               )
               .subscribe(
                 (lotes: Lotes) => {
-                  lotes?.data?.Batches.forEach((lote: Batch) =>
-                    this.setTableData(lote)
-                  );
+                  if (lotes?.meta?.status.toString().includes('20')) {
+                    lotes?.data?.Batches.forEach((lote: Batch) =>
+                      this.setTableData(lote)
+                    );
+                  } else {
+                    unknownErrorAlert(lotes);
+                  }
                 },
                 (err) => noConnectionAlert(err)
               );
@@ -192,7 +197,7 @@ export class LotesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarLotes(true);
-          alertFailureOrSuccessOnCRUDAction(res, 'creó');
+          alertFailureOrSuccessOnCRUDAction(res, 'creó', 'lote');
         },
         (err) => {
           this.recargarLotes(true);
@@ -226,7 +231,7 @@ export class LotesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarLotes(true);
-          alertFailureOrSuccessOnCRUDAction(res, 'editó');
+          alertFailureOrSuccessOnCRUDAction(res, 'editó', 'lote');
         },
         (err) => {
           this.recargarLotes(true);
@@ -255,7 +260,7 @@ export class LotesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarLotes(true);
-          alertFailureOrSuccessOnCRUDAction(res, 'borró');
+          alertFailureOrSuccessOnCRUDAction(res, 'borró', 'lote');
         },
         (err) => {
           this.recargarLotes(true);

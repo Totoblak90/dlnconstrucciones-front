@@ -156,7 +156,7 @@ export class InteresesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarIntereses(true);
-          alertFailureOrSuccessOnCRUDAction(res, 'creó');
+          alertFailureOrSuccessOnCRUDAction(res, 'creó', 'interés');
         },
         (err) => {
           this.recargarIntereses(true);
@@ -185,7 +185,7 @@ export class InteresesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarIntereses(true);
-          alertFailureOrSuccessOnCRUDAction(res, 'editó');
+          alertFailureOrSuccessOnCRUDAction(res, 'editó', 'interés');
         },
         (err) => {
           this.recargarIntereses(true);
@@ -211,7 +211,7 @@ export class InteresesComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarIntereses(true);
-          alertFailureOrSuccessOnCRUDAction(res, 'borró');
+          alertFailureOrSuccessOnCRUDAction(res, 'borró', 'interés');
         },
         (err) => {
           this.recargarIntereses(true);

@@ -59,12 +59,13 @@ export function customMessageAlert(
 
 export function alertFailureOrSuccessOnCRUDAction(
   data: any,
-  action: 'creó' | 'editó' | 'borró'
+  action: 'creó' | 'editó' | 'borró',
+  table: 'interés' | 'proyecto' | 'lote'
 ): void {
   if (data?.meta?.status?.toString().includes('20')) {
     customMessageAlert(
       'Excelente',
-      `El interés se ${action} correctamente`,
+      `El ${table} se ${action} correctamente`,
       'OK',
       'success'
     );
