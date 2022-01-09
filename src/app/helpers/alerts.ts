@@ -1,6 +1,7 @@
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 
-export function noConnectionAlert(): void {
+export function noConnectionAlert(err: any): void {
+  console.log(err)
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: 'btn bgc-primary-dark',
@@ -36,8 +37,8 @@ export function unknownErrorAlert(): void {
 export function customMessageAlert(
   title: string,
   text: string,
-  icon: SweetAlertIcon | undefined = undefined,
-  buttonText: string
+  buttonText: string,
+  icon?: SweetAlertIcon
 ): void {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {

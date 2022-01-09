@@ -7,12 +7,25 @@ import Swal from 'sweetalert2';
 import { HttpService } from '../../../../services/http.service';
 import {
   Batch,
+  Lotes,
   PostalZones,
 } from 'src/app/modules/main/interfaces/http/batches.interface';
-import { Services, ServicesData } from 'src/app/modules/main/interfaces/http/services.interface';
-import { Job, JobMoreInfo, TypesOfJobs } from 'src/app/modules/main/interfaces/http/jobs.interface';
+import {
+  Services,
+  ServicesData,
+} from 'src/app/modules/main/interfaces/http/services.interface';
+import {
+  Job,
+  JobMoreInfo,
+  TypesOfJobs,
+} from 'src/app/modules/main/interfaces/http/jobs.interface';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from '../../../main/services/auth.service';
+import {
+  noConnectionAlert,
+  customMessageAlert,
+  unknownErrorAlert,
+} from '../../../../helpers/alerts';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,10 +46,11 @@ export class DashboardComponent implements OnInit {
     private usersService: UsersService,
     private httpService: HttpService,
     private authService: AuthService
-  ) {}
+  ) {
+    this.getLoggedUser();
+  }
 
   ngOnInit(): void {
-    this.getLoggedUser();
     this.getAllUsers();
     this.getAllLotes();
     this.getAllServices();
@@ -52,13 +66,16 @@ export class DashboardComponent implements OnInit {
       .getAllUsers()
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        (res: AllUsersRes) => (this.cantidadDeUsuarios = res?.data.length),
-        (err) =>
-          Swal.fire(
-            'Error',
-            'No pudimos cargar los usuarios, por favor intentalo nuevamente',
-            'error'
-          )
+        (res: AllUsersRes) =>
+          res?.meta?.status.toString().includes('20')
+            ? (this.cantidadDeUsuarios = res?.data.length)
+            : customMessageAlert(
+                'Error',
+                'Probá tu conexión a internet o ponete en contacto con tu proveedor del mismo. Si el problema persiste, ponete en contacto con el administrador de la página',
+                'OK',
+                'error'
+              ),
+        (err) => noConnectionAlert(err)
       );
   }
 
@@ -73,26 +90,22 @@ export class DashboardComponent implements OnInit {
               .getLotes(zona.id.toString())
               .pipe(takeUntil(this.destroy$))
               .subscribe(
-                (lotes) => {
-                  lotes?.data?.Batches?.forEach((lote) => {
-                    this.lotes.push(lote);
-                  });
-                },
-                () =>
-                  Swal.fire(
-                    'Error',
-                    'No pudimos cargar los lotes, por favor intentalo nuevamente',
-                    'error'
-                  )
+                (lotes: Lotes) =>
+                  lotes?.meta?.status.toString().includes('20')
+                    ? lotes?.data?.Batches?.forEach((lote: Batch) => {
+                        this.lotes.push(lote);
+                      })
+                    : customMessageAlert(
+                        'Error',
+                        'Probá tu conexión a internet o ponete en contacto con tu proveedor del mismo. Si el problema persiste, ponete en contacto con el administrador de la página',
+                        'OK',
+                        'error'
+                      ),
+                (err) => noConnectionAlert(err)
               );
           }
         },
-        () =>
-          Swal.fire(
-            'Error',
-            'No pudimos cargar los lotes, por favor intentalo nuevamente',
-            'error'
-          )
+        (err) => noConnectionAlert(err)
       );
   }
 
@@ -101,10 +114,16 @@ export class DashboardComponent implements OnInit {
       .getAllServices()
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        (res: Services) => {
-          res?.data?.forEach(servicio => this.servicios.push(servicio))
-        },
-        (err) => console.log(err)
+        (res: Services) =>
+          res?.meta.status.toString().includes('20')
+            ? res?.data?.forEach((servicio) => this.servicios.push(servicio))
+            : customMessageAlert(
+                'Error',
+                'Probá tu conexión a internet o ponete en contacto con tu proveedor del mismo. Si el problema persiste, ponete en contacto con el administrador de la página',
+                'OK',
+                'error'
+              ),
+        (err) => noConnectionAlert(err)
       );
   }
 
@@ -116,14 +135,21 @@ export class DashboardComponent implements OnInit {
         for (const typeOfJob of typesOfJobs.data) {
           this.httpService
             .getOneTypeOfJob(typeOfJob.id.toString())
-            .pipe(
-              takeUntil(this.destroy$)
-            )
-            .subscribe((job: Job) => {
-              job?.data?.Jobs.forEach((j: JobMoreInfo) => {
-                this.trabajos.push(j)
-              });
-            });
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+              (job: Job) =>
+                job?.meta.status.toString().includes('20')
+                  ? job?.data?.Jobs.forEach((j: JobMoreInfo) => {
+                      this.trabajos.push(j);
+                    })
+                  : customMessageAlert(
+                      'Error',
+                      'Probá tu conexión a internet o ponete en contacto con tu proveedor del mismo. Si el problema persiste, ponete en contacto con el administrador de la página',
+                      'OK',
+                      'error'
+                    ),
+              (err) => noConnectionAlert(err)
+            );
         }
       });
   }
