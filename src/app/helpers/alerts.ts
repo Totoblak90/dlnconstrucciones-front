@@ -60,7 +60,7 @@ export function customMessageAlert(
 export function alertFailureOrSuccessOnCRUDAction(
   data: any,
   action: 'creó' | 'editó' | 'borró',
-  table: 'interés' | 'proyecto' | 'lote'
+  table: 'interés' | 'proyecto' | 'lote' | 'pago'
 ): void {
   if (data?.meta?.status?.toString().includes('20')) {
     customMessageAlert(

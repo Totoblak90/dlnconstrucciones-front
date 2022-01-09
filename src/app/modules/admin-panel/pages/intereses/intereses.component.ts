@@ -196,7 +196,7 @@ export class InteresesComponent implements OnInit {
 
   public borrarInteres(id: number): void {
     Swal.fire({
-      title: '¿Seguro querés elimninar el trabajo seleccionado?',
+      title: '¿Seguro querés elimninar el interés seleccionado?',
       showDenyButton: true,
       confirmButtonText: 'Si, borrar',
       denyButtonText: `No`,

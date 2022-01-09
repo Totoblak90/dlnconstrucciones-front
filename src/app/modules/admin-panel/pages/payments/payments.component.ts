@@ -1,15 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UsersService } from '../../services/users.service';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ProyectPayments } from '../../interfaces/users.interface';
+import {
+  OneProjectRes,
+  ProyectPayments,
+} from '../../interfaces/users.interface';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { ProjectsService } from '../../services/projects.service';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { ProjectPaymentsReq } from '../../interfaces/projects.interface';
+import {
+  alertFailureOrSuccessOnCRUDAction,
+  unknownErrorAlert,
+  noConnectionAlert
+} from '../../../../helpers/alerts';
+
 
 @Component({
   selector: 'app-payments',
@@ -26,7 +34,6 @@ export class PaymentsComponent implements OnInit {
   public crudAction: string = '';
   public paymentsForm!: FormGroup;
   public pagoId!: number;
-  private userId!: number;
   private projectID!: number;
   private destroy$: Subject<boolean> = new Subject();
 
@@ -38,6 +45,7 @@ export class PaymentsComponent implements OnInit {
   ) {
     this.getprojectId();
     if (this.projectID) this.createForm();
+    else this.router.navigateByUrl('/admin/proyectos');
   }
 
   public getprojectId(): void {
@@ -71,6 +79,30 @@ export class PaymentsComponent implements OnInit {
     }
   }
 
+  ngOnInit(): void {
+    this.getProject();
+  }
+
+  private getProject(): void {
+    this.projectsService
+      .getOneProject(this.projectID)
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => (this.loading = false))
+      )
+      .subscribe(
+        (res: OneProjectRes) => {
+          if (res?.meta?.status.toString().includes('20')) {
+            this.payments = res?.data?.Payments!;
+            this.setTableData();
+          } else {
+            unknownErrorAlert(res);
+          }
+        },
+        (err) => noConnectionAlert(err)
+      );
+  }
+
   private setTableData(): void {
     this.payments.forEach((payment: ProyectPayments) =>
       this.tableData.push({
@@ -80,43 +112,6 @@ export class PaymentsComponent implements OnInit {
         item4: payment.datetime.substring(0, 10),
       })
     );
-  }
-
-  ngOnInit(): void {
-    this.getProject();
-  }
-
-  private getProject(): void {
-    if (this.projectID) {
-      this.projectsService
-        .getOneProject(this.projectID)
-        .pipe(
-          takeUntil(this.destroy$),
-          finalize(() => (this.loading = false))
-        )
-        .subscribe(
-          (res) => {
-            if (res?.meta?.status.toString().includes('20')) {
-              this.payments = res?.data?.Payments!;
-              this.setTableData();
-            } else {
-              Swal.fire(
-                '¡Lo sentimos!',
-                'No pudimos cargar la información, por favor recarga la página',
-                'error'
-              );
-            }
-          },
-          (err) =>
-            Swal.fire(
-              '¡Lo sentimos!',
-              'No pudimos cargar la información, por favor recarga la página',
-              'error'
-            )
-        );
-    } else {
-      this.router.navigateByUrl('/admin/proyectos');
-    }
   }
 
   public recargarPagos(recargar: boolean): void {
@@ -149,18 +144,11 @@ export class PaymentsComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarPagos(true);
-          this.alertFailureOrSuccess(
-            res?.meta?.status,
-            'El pago se creó correctamente'
-          );
+          alertFailureOrSuccessOnCRUDAction(res, 'creó', 'pago');
         },
         (err) => {
           this.recargarPagos(true);
-          Swal.fire(
-            'Error',
-            'No pudimos crear el proyecto, por favor intentá de nuevo recargando la página',
-            'error'
-          );
+          unknownErrorAlert(err);
         }
       );
   }
@@ -190,21 +178,12 @@ export class PaymentsComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res: any) => {
-          console.log(res);
           this.recargarPagos(true);
-          this.alertFailureOrSuccess(
-            res?.meta?.status,
-            'El pago se editó correctamente'
-          );
+          alertFailureOrSuccessOnCRUDAction(res, 'editó', 'pago');
         },
         (err) => {
-          console.log(err);
           this.recargarPagos(true);
-          Swal.fire(
-            'Error',
-            'Tuvimos un error desconocido, por favor intenta recargar la página o espera un rato.',
-            'error'
-          );
+          unknownErrorAlert(err);
         }
       );
   }
@@ -227,30 +206,9 @@ export class PaymentsComponent implements OnInit {
       .subscribe(
         (res) => {
           this.recargarPagos(true);
-          this.alertFailureOrSuccess(
-            res?.meta?.status,
-            'El pago se eliminó correctamente'
-          );
+          alertFailureOrSuccessOnCRUDAction(res, 'borró', 'pago');
         },
-        () => {
-          Swal.fire(
-            '¡Lo sentimos!',
-            'No pudimos realizar el pedido correctamente, por favor actualizá la página e intentá de nuevo',
-            'error'
-          );
-        }
+        (err) => unknownErrorAlert(err)
       );
-  }
-
-  private alertFailureOrSuccess(status: number, message: string): void {
-    if (status === 200 || status === 201) {
-      Swal.fire('¡Excelente!', message, 'success');
-    } else {
-      Swal.fire(
-        '¡Lo sentimos!',
-        'No pudimos cargar la información, por favor recarga la página',
-        'error'
-      );
-    }
   }
 }
