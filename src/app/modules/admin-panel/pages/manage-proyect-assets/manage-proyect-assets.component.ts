@@ -35,7 +35,7 @@ export class ManageProyectAssetsComponent implements OnInit {
   public assetsForm!: FormGroup;
   public assetId!: number;
   public imageToShow: string = '../../../../../assets/no-image.png';
-  public fileToUpload?: File;
+  public fileToUpload?: File | null;
   public acceptedFileTypes: boolean = true;
   public creationImageError: string = '';
   private project!: Project;
@@ -94,13 +94,14 @@ export class ManageProyectAssetsComponent implements OnInit {
       }
     } else {
       this.imageToShow = '../../../../../assets/no-image.png';
+      this.fileToUpload = null;
     }
   }
 
   public formSubmit(): void {
     this.assetsForm.markAllAsTouched();
 
-    if (this.crudAction === 'Crear' && !this.assetsForm.controls.asset?.value) {
+    if (!this.assetsForm.controls.asset?.value) {
       this.creationImageError = 'El archivo es obligatorio';
       return;
     }
@@ -160,13 +161,14 @@ export class ManageProyectAssetsComponent implements OnInit {
       this.assets = [];
       this.isCreating = false;
       this.isEditing = false;
+      this.fileToUpload = null;
+      this.imageToShow = '../../../../../assets/no-image.png';
       this.getAssets();
     }
   }
 
   private resetsetControls(): void {
     this.assetsForm.controls.asset?.setValue('');
-    this.imageToShow = '../../../../../assets/no-image.png';
   }
 
   public crearAsset(): void {
