@@ -5,7 +5,6 @@
         <app-table
           *ngIf="tableData"
           [title]="'Tipos de trabajo'"
-          [loading]="loading"
           [filasTabla]="tableData"
           [encabezadosTabla]="encabezadosTabla"
           [totalSection]="tableData?.length!"
@@ -90,12 +89,7 @@
           <div class="card-footer">
             <button
               type="submit"
-              class="
-                btn btn-success
-                waves-effect waves-light
-                m-r-10
-                bgc-primary-dark
-              "
+              class="btn btn-success waves-effect waves-light m-r-10 bgc-primary-dark"
             >
               Confirmar
             </button>

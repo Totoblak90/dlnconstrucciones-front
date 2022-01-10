@@ -28,7 +28,6 @@ export class ManageProyectAssetsComponent implements OnInit {
   public assets: ProyectAssets[] = [];
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = [];
-  public loading: boolean = true;
   public isCreating: boolean = false;
   public isEditing: boolean = false;
   public crudAction: string = '';
@@ -125,10 +124,7 @@ export class ManageProyectAssetsComponent implements OnInit {
   private getAssets(): void {
     this.projectsService
       .getOneProject(this.projectID)
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => (this.loading = false))
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res: OneProjectRes) => {
           if (res?.meta?.status.toString().includes('20')) {

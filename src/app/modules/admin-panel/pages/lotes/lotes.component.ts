@@ -34,7 +34,6 @@ export class LotesComponent implements OnInit {
     'Vendido',
   ];
   public tableData: CuerpoTabla[] = [];
-  public loading: boolean = true;
   public lotes: Batch[] = [];
   public isCreating: boolean = false;
   public isEditing: boolean = false;
@@ -102,10 +101,7 @@ export class LotesComponent implements OnInit {
 
   public formSubmit(): void {
     this.loteForm.markAllAsTouched();
-    if (
-      this.crudAction === 'Crear' &&
-      !this.loteForm.controls.image.value
-    ) {
+    if (this.crudAction === 'Crear' && !this.loteForm.controls.image.value) {
       this.creationImageError = 'La imágen es obligatoria';
       return;
     }
@@ -138,10 +134,7 @@ export class LotesComponent implements OnInit {
             });
             this.httpSrv
               .getLotes(zona.id.toString())
-              .pipe(
-                takeUntil(this.destroy$),
-                finalize(() => (this.loading = false))
-              )
+              .pipe(takeUntil(this.destroy$))
               .subscribe(
                 (lotes: Lotes) => {
                   if (lotes?.meta?.status.toString().includes('20')) {

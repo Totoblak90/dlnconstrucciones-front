@@ -28,7 +28,6 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   public payments: ProyectPayments[] = [];
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = ['Comprobante', 'Total', 'Fecha'];
-  public loading: boolean = true;
   public isCreating: boolean = false;
   public isEditing: boolean = false;
   public crudAction: string = '';
@@ -102,7 +101,6 @@ export class PaymentsComponent implements OnInit, OnDestroy {
       .getOneProject(this.projectID)
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => (this.loading = false))
       )
       .subscribe(
         (res: OneProjectRes) => {

@@ -30,7 +30,6 @@ export class UsersComponent implements OnInit {
   public users: User[] = [];
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = ['Nombre', 'Email', 'Teléfono', 'Rol'];
-  public loading: boolean = true;
   public editRoleForm!: FormGroup;
   public isEditingRole: boolean = false;
   private userID!: number;
@@ -67,10 +66,9 @@ export class UsersComponent implements OnInit {
   }
 
   public loadUsers(): void {
-    this.loading = true;
     this.usersService
       .getAllUsers()
-      .pipe(finalize(() => (this.loading = false)))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res: AllUsersRes) => {
           if (res.meta.status.toString().includes('20')) {

@@ -25,7 +25,6 @@ export class TipoDeTrabajoComponent implements OnInit {
 
   public encabezadosTabla: string[] = ['Título'];
   public tableData: CuerpoTabla[] = [];
-  public loading: boolean = true;
   public tiposDeTrabajo: TypesOfJobsData[] = [];
   public tipoDeTrabajoForm!: FormGroup;
   public isEditing: boolean = false;
@@ -61,10 +60,7 @@ export class TipoDeTrabajoComponent implements OnInit {
   private getTiposDeTrabajo(): void {
     this.httpSrv
       .getTypesOfJob()
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => (this.loading = false))
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (typesOfJob: TypesOfJobs) => {
           typesOfJob.meta?.status?.toString().includes('20')

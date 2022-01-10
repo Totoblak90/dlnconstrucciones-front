@@ -1,10 +1,7 @@
 import {
   Component,
   EventEmitter,
-  Host,
-  HostBinding,
   Input,
-  OnInit,
   Output,
 } from '@angular/core';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
@@ -27,7 +24,6 @@ export class TableComponent {
   @Input() public totalSection: number = 0;
   @Input() public encabezadosTabla: string[] = [];
   @Input() public filasTabla: CuerpoTabla[] = [];
-  @Input() public loading: boolean = true;
   @Input() public noImage?: boolean = false;
   @Input() public addAssets?: boolean = false;
   @Input() public addPayments?: boolean = false;

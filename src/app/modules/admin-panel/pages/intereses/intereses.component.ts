@@ -28,7 +28,6 @@ export class InteresesComponent implements OnInit {
   public encabezadosTabla: string[] = ['Título', 'Descripción'];
   public tableData: CuerpoTabla[] = [];
   public interestData: InterestsData[] = [];
-  public loading: boolean = true;
   public isCreating: boolean = false;
   public isEditing: boolean = false;
   public crudAction: string = '';
@@ -89,10 +88,7 @@ export class InteresesComponent implements OnInit {
   private getIntereses(): void {
     this.httpService
       .getInterests()
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => (this.loading = false))
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (interests: Interests) => {
           if (interests.meta?.status.toString().includes('20')) {

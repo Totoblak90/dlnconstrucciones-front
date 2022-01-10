@@ -27,7 +27,6 @@ export class ZonasComponent implements OnInit {
 
   public encabezadosTabla: string[] = ['Título'];
   public tableData: CuerpoTabla[] = [];
-  public loading: boolean = true;
   public zonas: PostalZonesData[] = [];
   public zonasForm!: FormGroup;
   public isEditing: boolean = false;
@@ -63,10 +62,7 @@ export class ZonasComponent implements OnInit {
   private getZonas(): void {
     this.httpSrv
       .getAllZones()
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => (this.loading = false))
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (zonas: PostalZones) =>
           zonas.meta.status.toString().includes('20')

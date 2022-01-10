@@ -32,7 +32,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     'Debe',
     'Usuario',
   ];
-  public loading: boolean = true;
   public isCreating: boolean = false;
   public isEditing: boolean = false;
   public crudAction: string = '';
@@ -101,10 +100,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   private getProyects(): void {
     this.projectService
       .getAllProjects()
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => (this.loading = false))
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
           if (res?.meta?.status.toString().includes('20')) {

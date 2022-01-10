@@ -28,7 +28,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   public encabezadosTabla: string[] = ['Título'];
   public tableData: CuerpoTabla[] = [];
   private servicios: ServicesData[] = [];
-  public loading: boolean = true;
   public servicesForm!: FormGroup;
   public isEditing: boolean = false;
   public isCreating: boolean = false;
@@ -65,7 +64,6 @@ export class ServiciosComponent implements OnInit, OnDestroy {
       .getAllServices()
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => (this.loading = false))
       )
       .subscribe(
         (servicios: Services) => {

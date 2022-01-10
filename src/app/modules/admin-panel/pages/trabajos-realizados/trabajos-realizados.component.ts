@@ -29,7 +29,6 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
 
   public encabezadosTabla: string[] = ['Título', 'Descripción'];
   public tableData: CuerpoTabla[] = [];
-  public loading: boolean = true;
   public jobForm!: FormGroup;
   public isCreating: boolean = false;
   public isEditing: boolean = false;
@@ -120,10 +119,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
           this.categoriaDeTrabajo.push(typeOfJob);
           this.httpSrv
             .getOneTypeOfJob(typeOfJob.id.toString())
-            .pipe(
-              takeUntil(this.destroy$),
-              finalize(() => (this.loading = false))
-            )
+            .pipe(takeUntil(this.destroy$))
             .subscribe(
               (job: Job) => {
                 job.meta.status.toString().includes('20')
