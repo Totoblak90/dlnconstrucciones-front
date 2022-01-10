@@ -34,13 +34,10 @@ export class RegisterComponent implements OnDestroy {
       email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
       password: ['', Validators.required],
       passwordRepeat: ['', [Validators.required]],
-      terminosYCondiciones: [false, [Validators.required]],
+      terminosYCondiciones: [false, [Validators.requiredTrue]],
     },
     {
-      validator: [
-        this.passwordMatchFormValidator('password', 'passwordRepeat'),
-        this.validateStrongPassword,
-      ],
+      validator: [this.passwordMatchFormValidator, this.validateStrongPassword],
     }
   );
 
@@ -48,12 +45,6 @@ export class RegisterComponent implements OnDestroy {
 
   register(): void {
     this.registerForm.markAllAsTouched();
-    if (!this.registerForm.controls.terminosYCondiciones.value) {
-      this.registerForm.controls.terminosYCondiciones.setErrors({
-        required: true,
-      });
-      return;
-    }
     if (this.registerForm.valid) {
       this.authService
         .register(this.registerForm.value)
@@ -66,7 +57,6 @@ export class RegisterComponent implements OnDestroy {
   }
 
   private setRegisterFlow(res: RegisterRes): void {
-    console.log(res);
     if (res.meta.status === 401) {
       customMessageAlert(
         'Error',
@@ -81,20 +71,15 @@ export class RegisterComponent implements OnDestroy {
     }
   }
 
-  private passwordMatchFormValidator(
-    pass1: string,
-    pass2: string
-  ): (formGroup: FormGroup) => void {
-    return (formGroup: FormGroup) => {
-      const pass1Control = formGroup.get(pass1);
-      const pass2Control = formGroup.get(pass2);
+  private passwordMatchFormValidator(form: FormGroup): void {
+    const pass1Control = form.get('password');
+    const pass2Control = form.get('passwordRepeat');
 
-      if (pass1Control!.value === pass2Control!.value) {
-        pass2Control!.setErrors(null);
-      } else {
-        pass2Control!.setErrors({ notMatch: true });
-      }
-    };
+    if (pass1Control!.value === pass2Control!.value) {
+      pass2Control!.setErrors(null);
+    } else {
+      pass2Control!.setErrors({ notMatch: true });
+    }
   }
 
   private validateStrongPassword(form: FormGroup): void {
