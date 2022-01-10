@@ -20,8 +20,8 @@ export class RegisterComponent implements OnDestroy {
   private destroy$: Subject<boolean> = new Subject();
   public showValidationComponent: boolean = false;
   public passwordEye: string = 'fa fa-eye-slash';
-  public repeatPasswordEye: string = 'fa fa-eye-slash';
   public userWantsToSeePassword: boolean = false;
+  public repeatPasswordEye: string = 'fa fa-eye-slash';
   public userWantsToSeeRepeatPassword: boolean = false;
   public registerForm: FormGroup = this.fb.group(
     {

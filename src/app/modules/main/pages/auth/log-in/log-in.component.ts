@@ -20,6 +20,8 @@ import { noConnectionAlert } from '../../../../../helpers/alerts';
 })
 export class LogInComponent implements OnDestroy {
   public loginForm!: FormGroup;
+  public passwordEye: string = 'fa fa-eye-slash';
+  public userWantsToSeePassword: boolean = false;
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   private destroy$: Subject<boolean> = new Subject();
 
@@ -87,6 +89,14 @@ export class LogInComponent implements OnDestroy {
         this.router.navigateByUrl('/main/auth/register');
       }
     });
+  }
+
+  public showPassword(e: HTMLInputElement): void {
+    this.userWantsToSeePassword = !this.userWantsToSeePassword;
+    this.userWantsToSeePassword
+      ? (this.passwordEye = 'fa fa-eye')
+      : (this.passwordEye = 'fa fa-eye-slash');
+    this.userWantsToSeePassword ? (e.type = 'text') : (e.type = 'password');
   }
 
   ngOnDestroy(): void {
