@@ -261,14 +261,21 @@
                 </div>
               </div>
               <div class="form-group">
-                <div class="col-md-12">
+                <div class="input-group">
                   <input
                     type="password"
                     placeholder="Escribí tu contraseña nueva"
-                    class="form-control form-control-line primary-dark"
+                    class="form-control primary-dark"
                     formControlName="password"
                     (change)="toggleRepetirConstrasena()"
+                    #inputPassword
                   />
+                  <div class="input-group-addon">
+                    <i
+                      (click)="showPassword(inputPassword)"
+                      [class]="passwordEye"
+                    ></i>
+                  </div>
                   <span
                     class="text-danger"
                     *ngIf="
@@ -302,19 +309,25 @@
                 </div>
               </div>
               <div
-                class="
-                  form-group
-                  animate__animated animate__slideInLeft animate__fast
-                "
+                class="form-group animate__animated animate__slideInLeft animate__fast"
                 *ngIf="mostrarRepetirContrasena"
               >
                 <div class="col-md-12">
-                  <input
-                    type="password"
-                    placeholder="Repetí tu contraseña nueva"
-                    class="form-control form-control-line primary-dark"
-                    formControlName="passwordRepeat"
-                  />
+                  <div class="input-group">
+                    <input
+                      type="password"
+                      class="form-control"
+                      placeholder="Repetí tu contraseña nueva"
+                      formControlName="passwordRepeat"
+                      #inputRepeatPassword
+                    />
+                    <div class="input-group-addon">
+                      <i
+                        (click)="showRepeatPassword(inputRepeatPassword)"
+                        [class]="repeatPasswordEye"
+                      ></i>
+                    </div>
+                  </div>
                   <div class="p-2">
                     <span
                       class="text-danger"

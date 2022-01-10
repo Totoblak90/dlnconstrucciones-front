@@ -26,6 +26,10 @@ export class UserProfileComponent implements OnDestroy {
   public editProfileForm!: FormGroup;
   public mostrarRepetirContrasena: boolean = false;
   public formatoImagenNoAceptado: boolean = false;
+  public passwordEye: string = 'fa fa-eye-slash';
+  public userWantsToSeePassword: boolean = false;
+  public repeatPasswordEye: string = 'fa fa-eye-slash';
+  public userWantsToSeeRepeatPassword: boolean = false;
 
   constructor(private authService: AuthService, private fb: FormBuilder) {
     this.createForm();
@@ -104,6 +108,24 @@ export class UserProfileComponent implements OnDestroy {
         this.editProfileForm.controls.password.errors?.notSymbols ||
         this.editProfileForm.controls.password.errors?.minlength)
     );
+  }
+
+  public showPassword(e: HTMLInputElement): void {
+    this.userWantsToSeePassword = !this.userWantsToSeePassword;
+    this.userWantsToSeePassword
+      ? (this.passwordEye = 'fa fa-eye')
+      : (this.passwordEye = 'fa fa-eye-slash');
+    this.userWantsToSeePassword ? (e.type = 'text') : (e.type = 'password');
+  }
+
+  public showRepeatPassword(e: HTMLInputElement): void {
+    this.userWantsToSeeRepeatPassword = !this.userWantsToSeeRepeatPassword;
+    this.userWantsToSeeRepeatPassword
+      ? (this.repeatPasswordEye = 'fa fa-eye')
+      : (this.repeatPasswordEye = 'fa fa-eye-slash');
+    this.userWantsToSeeRepeatPassword
+      ? (e.type = 'text')
+      : (e.type = 'password');
   }
 
   public get user(): User {
