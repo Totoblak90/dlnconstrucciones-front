@@ -60,11 +60,22 @@ export class UserProfileComponent implements OnDestroy {
       },
       {
         validator: [
-          this.passwordMatchFormValidator('password', 'passwordRepeat'),
+          this.passwordMatchFormValidator,
           this.validateStrongPassword,
         ],
       }
     );
+  }
+
+  private passwordMatchFormValidator(form: FormGroup): void {
+    const pass1Control = form.get('password');
+    const pass2Control = form.get('passwordRepeat');
+
+    if (pass1Control!.value === pass2Control!.value) {
+      pass2Control!.setErrors(null);
+    } else {
+      pass2Control!.setErrors({ notMatch: true });
+    }
   }
 
   private validateStrongPassword(form: FormGroup): void {
@@ -194,22 +205,6 @@ export class UserProfileComponent implements OnDestroy {
     this.editProfileForm.controls.password.value
       ? (this.mostrarRepetirContrasena = true)
       : (this.mostrarRepetirContrasena = false);
-  }
-
-  private passwordMatchFormValidator(
-    pass1: string,
-    pass2: string
-  ): (formGroup: FormGroup) => void {
-    return (formGroup: FormGroup) => {
-      const pass1Control = formGroup.get(pass1);
-      const pass2Control = formGroup.get(pass2);
-
-      if (pass1Control!.value === pass2Control!.value) {
-        pass2Control!.setErrors(null);
-      } else {
-        pass2Control!.setErrors({ notMatch: true });
-      }
-    };
   }
 
   ngOnDestroy(): void {

@@ -151,7 +151,14 @@
                 id="exampleInputpwd2"
                 placeholder="Escribir contraseña*"
                 formControlName="password"
+                #inputPassword
               />
+              <div class="input-group-addon">
+                <i
+                  (click)="showPassword(inputPassword)"
+                  [class]="passwordEye"
+                ></i>
+              </div>
               <div class="p-2">
                 <span
                   class="text-danger"
@@ -202,7 +209,14 @@
                 id="exampleInputpwd3"
                 placeholder="Confirmar contraseña*"
                 formControlName="passwordRepeat"
+                #inputRepeatPassword
               />
+              <div class="input-group-addon">
+                <i
+                  (click)="showRepeatPassword(inputRepeatPassword)"
+                  [class]="repeatPasswordEye"
+                ></i>
+              </div>
               <div class="p-2">
                 <span
                   class="text-danger"
