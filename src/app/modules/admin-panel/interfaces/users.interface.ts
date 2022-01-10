@@ -12,17 +12,19 @@ export interface FullUserRes {
 }
 
 export interface FullUser {
-  avatar: string;
-  created_at: string;
-  deleted_at: string;
+  avatar?: string;
   dni?: number;
   email: string;
   first_name: string;
+  hash_id: string;
   id: number;
   last_name: string;
   phone?: string;
   Projects: Project[];
   role: userRole;
+  validation?: string;
+  created_at: string;
+  deleted_at: string;
   updated_at: string;
 }
 

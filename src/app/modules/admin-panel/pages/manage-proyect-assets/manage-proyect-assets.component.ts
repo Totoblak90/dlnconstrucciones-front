@@ -114,8 +114,6 @@ export class ManageProyectAssetsComponent implements OnInit {
           ? this.crearAssetEnLaDb(formData)
           : this.editarAssetEnLaDb(formData);
       }
-    } else {
-      console.log('form is invalid')
     }
   }
 

@@ -20,7 +20,12 @@ export interface LoginForm {
 
 export interface RegisterRes {
   meta: Meta;
-  data: LoginResData;
+  data: RegisterResData;
+}
+
+export interface RegisterResData {
+  message: string;
+  user: UserData;
 }
 
 export interface RegisterForm {
@@ -34,19 +39,20 @@ export interface RegisterForm {
 }
 
 export interface UserData {
-  id: number;
-  hash_id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
   avatar?: string;
-  role: userRole;
   dni: number;
+  email: string;
+  first_name: string;
+  hash_id: string;
+  id: number;
+  last_name: string;
   phone?: string;
+  Projects?: Project[];
+  role: userRole;
+  validation?: string;
   created_at: string;
   updeated_at: string;
   deleted_at?: string;
-  Projects?: Project[]
 }
 
 export interface IdentifyTokenOActualizarUsuario {

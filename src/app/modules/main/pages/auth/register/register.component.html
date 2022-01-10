@@ -1,4 +1,7 @@
-<div class="row animate__animated animate__fadeIn animate__slow">
+<div
+  *ngIf="!showValidationComponent; else registerValidationTemplate"
+  class="row animate__animated animate__fadeIn animate__slow"
+>
   <div class="col-lg-6">
     <div class="card">
       <div class="card-header">
@@ -253,3 +256,21 @@
     </div>
   </div>
 </div>
+
+<ng-template #registerValidationTemplate>
+  <h2 class="primary-dark">Validar cuenta</h2>
+  <hr />
+  <h4 class="primary-dark">¡Solo queda un paso más!</h4>
+  <p class="primary">
+    Revisá tu casilla de correo electrónico y hace click en el enlace que te
+    enviamos para validar tu cuenta
+  </p>
+  <p class="primary">
+    El correo puede tardar unos minutos. Si ves que no llega por favor revisa el
+    Spam.
+  </p>
+  <p class="primary">
+    Ante cualquier inconveniente podes escribirnos dejandonos un mensaje en el
+    pié de página de nuestra web
+  </p>
+</ng-template>

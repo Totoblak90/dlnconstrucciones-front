@@ -3,11 +3,7 @@ import { Router } from '@angular/router';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
-import {
-  FormGroup,
-  Validators,
-  FormBuilder,
-} from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import {
   OneProjectRes,
   Project,
@@ -69,9 +65,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   public checkAmountInputValue(): void {
     this.paymentsForm.controls.amount?.valueChanges
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        this.validatePaymentAmount(res);
-      });
+      .subscribe((res) => this.validatePaymentAmount(res));
   }
 
   private validatePaymentAmount(amount: number): void {

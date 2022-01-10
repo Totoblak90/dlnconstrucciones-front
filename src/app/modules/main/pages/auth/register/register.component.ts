@@ -2,10 +2,13 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
-import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import Swal from 'sweetalert2';
-import { noConnectionAlert } from '../../../../../helpers/alerts';
+import {
+  noConnectionAlert,
+  customMessageAlert,
+} from '../../../../../helpers/alerts';
+import { RegisterRes } from '../../../interfaces/http/auth.interface';
+import { unknownErrorAlert } from '../../../../../helpers/alerts';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +18,7 @@ import { noConnectionAlert } from '../../../../../helpers/alerts';
 export class RegisterComponent implements OnDestroy {
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   private destroy$: Subject<boolean> = new Subject();
-
+  public showValidationComponent: boolean = false;
   public registerForm: FormGroup = this.fb.group(
     {
       first_name: ['', [Validators.required, Validators.minLength(3)]],
@@ -41,22 +44,40 @@ export class RegisterComponent implements OnDestroy {
     }
   );
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   register(): void {
     this.registerForm.markAllAsTouched();
+    if (!this.registerForm.controls.terminosYCondiciones.value) {
+      this.registerForm.controls.terminosYCondiciones.setErrors({
+        required: true,
+      });
+      return;
+    }
     if (this.registerForm.valid) {
       this.authService
         .register(this.registerForm.value)
         .pipe(takeUntil(this.destroy$))
         .subscribe(
-          () => this.router.navigateByUrl('/main/auth/login'),
-          (err) => noConnectionAlert(err)
+          (res: RegisterRes) => this.setRegisterFlow(res),
+          (err) => unknownErrorAlert(err)
         );
+    }
+  }
+
+  private setRegisterFlow(res: RegisterRes): void {
+    console.log(res);
+    if (res.meta.status === 401) {
+      customMessageAlert(
+        'Error',
+        'El email introducido ya se encuentra registrado',
+        'OK',
+        'error'
+      );
+    } else if (res.meta.status.toString().includes('20')) {
+      this.showValidationComponent = true;
+    } else {
+      unknownErrorAlert(res);
     }
   }
 
