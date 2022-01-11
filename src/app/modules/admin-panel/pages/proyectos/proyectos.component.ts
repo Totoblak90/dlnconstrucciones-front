@@ -73,6 +73,11 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       formData.append('title', this.proyectForm.controls.title?.value);
       formData.append('total', this.proyectForm.controls.total?.value);
       formData.append('user', this.proyectForm.controls.user?.value!);
+      // formData.append(
+      //   'description',
+      //   this.proyectForm.controls.description?.value
+      // );
+      // formData.append('cashflow', this.fileToUpload!);
 
       this.fileToUpload
         ? formData.append('cashflow', this.fileToUpload!)
