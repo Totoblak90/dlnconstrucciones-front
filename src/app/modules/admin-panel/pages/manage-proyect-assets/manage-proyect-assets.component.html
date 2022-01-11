@@ -28,27 +28,29 @@
           (ngSubmit)="formSubmit()"
         >
           <div class="card-body">
-            <div class="col" (click)="imageInput.click()">
-              <img class="img-responsive" [src]="imageToShow" alt="Lote" />
-              <input
-                [hidden]="true"
-                #imageInput
-                type="file"
-                formControlName="asset"
-                (change)="showSelectedImage($event)"
-              />
-              <div class="p-2">
-                <span class="text-danger" *ngIf="creationImageError">{{
-                  creationImageError
-                }}</span>
-                <span class="text-danger" *ngIf="!acceptedFileTypes">
-                  <p>Formatos aceptados para imágen: JPG, JPEG y PNG</p>
-                  <P>Formatos aceptados para video: MOV, AVI, MP4, WMV, MKV</P>
-                </span>
+            <div class="row justify-content-center">
+              <div class="col-8 text-center" (click)="imageInput.click()">
+                <img class="img-responsive w-100" [src]="imageToShow" alt="Lote" />
+                <input
+                  [hidden]="true"
+                  #imageInput
+                  type="file"
+                  formControlName="asset"
+                  (change)="showSelectedImage($event)"
+                />
+                <div class="p-2">
+                  <span class="text-danger" *ngIf="creationImageError">{{
+                    creationImageError
+                  }}</span>
+                  <span class="text-danger" *ngIf="!acceptedFileTypes">
+                    <p>Formatos aceptados para imágen: JPG, JPEG y PNG</p>
+                    <P>Formatos aceptados para video: MOV, AVI, MP4, WMV, MKV</P>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="card-footer">
+          <div class="card-footer text-center">
             <button
               type="submit"
               class="btn btn-success waves-effect waves-light m-r-10 bgc-primary-dark"

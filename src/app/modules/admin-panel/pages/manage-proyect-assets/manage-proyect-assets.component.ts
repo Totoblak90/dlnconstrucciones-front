@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import {
   alertFailureOrSuccessOnCRUDAction,
   noConnectionAlert,
@@ -37,7 +37,6 @@ export class ManageProyectAssetsComponent implements OnInit {
   public fileToUpload?: File | null;
   public acceptedFileTypes: boolean = true;
   public creationImageError: string = '';
-  private project!: Project;
   private projectID!: number;
   private destroy$: Subject<boolean> = new Subject();
 
@@ -63,7 +62,7 @@ export class ManageProyectAssetsComponent implements OnInit {
   }
 
   public showSelectedImage(e: any) {
-    if (this.crudAction === 'Crear' && !this.assetsForm.controls.asset?.value) {
+    if (!this.assetsForm.controls.asset?.value) {
       this.creationImageError = 'El archivo es obligatorio';
       return;
     } else {
@@ -103,6 +102,8 @@ export class ManageProyectAssetsComponent implements OnInit {
     if (!this.assetsForm.controls.asset?.value) {
       this.creationImageError = 'El archivo es obligatorio';
       return;
+    } else {
+      this.creationImageError = '';
     }
 
     if (this.assetsForm.valid) {
@@ -128,7 +129,6 @@ export class ManageProyectAssetsComponent implements OnInit {
       .subscribe(
         (res: OneProjectRes) => {
           if (res?.meta?.status.toString().includes('20')) {
-            this.project = res.data;
             this.assets = res?.data?.Assets!;
             this.setTableData();
           } else {
@@ -140,11 +140,11 @@ export class ManageProyectAssetsComponent implements OnInit {
   }
 
   private setTableData(): void {
-    this.assets.forEach((asset: ProyectAssets) =>
+    this.assets.forEach((data: ProyectAssets) =>
       this.tableData.push({
-        id: asset.id,
+        id: data.id,
         imagen:
-          `${environment.API_IMAGE_URL}/${asset.asset}` ||
+          `${environment.API_IMAGE_URL}/${data.asset}` ||
           '../../../../../assets/no-image.png',
       })
     );

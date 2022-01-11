@@ -1,6 +1,6 @@
 import { Component, Host, HostBinding, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { Project } from '../../interfaces/users.interface';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
@@ -55,7 +55,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.proyectForm = this.fb.group({
       title: [undefined, [Validators.required, Validators.minLength(6)]],
-      description: ['', [Validators.minLength(6)]],
+      description: ['', [Validators.minLength(10)]],
       total: [null, [Validators.required, Validators.min(0)]],
       cashflow: [undefined],
       user: [null, Validators.required],
@@ -73,11 +73,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       formData.append('title', this.proyectForm.controls.title?.value);
       formData.append('total', this.proyectForm.controls.total?.value);
       formData.append('user', this.proyectForm.controls.user?.value!);
-      // formData.append(
-      //   'description',
-      //   this.proyectForm.controls.description?.value
-      // );
-      // formData.append('cashflow', this.fileToUpload!);
 
       this.fileToUpload
         ? formData.append('cashflow', this.fileToUpload!)
