@@ -267,6 +267,10 @@ export class UserProfileComponent implements OnDestroy {
       );
   }
 
+  public logout(): void {
+    this.authService.logout();
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
