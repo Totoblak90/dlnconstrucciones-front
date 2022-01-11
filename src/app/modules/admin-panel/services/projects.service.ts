@@ -85,4 +85,18 @@ export class ProjectsService {
       { headers: this.headers }
     );
   }
+
+  /**
+   * Trae un cashflow de un usuario
+   *
+   * @param cashflowName: string
+   * @return {*}  {Observable<any>}
+   * @memberof AdminPanelCrudService
+   */
+  public getCashflow(cashflowName: string): Observable<any> {
+    return this.http.get(
+      `${environment.API_BASE_URL}/projects/cashflow/${cashflowName}`,
+      { headers: this.headers, responseType: 'arraybuffer' }
+    );
+  }
 }

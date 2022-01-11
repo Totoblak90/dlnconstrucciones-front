@@ -103,7 +103,10 @@
             </div>
             <hr />
             <ng-container *ngIf="user?.projects; else noProjects">
-              <app-proyects [user]="user"></app-proyects>
+              <app-proyects
+                [user]="user"
+                (onDownloadCashflow)="descargarCashflow($event)"
+              ></app-proyects>
             </ng-container>
             <ng-template #noProjects>
               <h4 class="font-medium m-t-30">Proyectos:</h4>

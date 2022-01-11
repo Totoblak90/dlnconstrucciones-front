@@ -54,10 +54,10 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.proyectForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(6)]],
+      title: [undefined, [Validators.required, Validators.minLength(6)]],
       description: ['', [Validators.minLength(6)]],
       total: [null, [Validators.required, Validators.min(0)]],
-      cashflow: [null],
+      cashflow: [undefined],
       user: [null, Validators.required],
     });
   }
@@ -71,13 +71,19 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     if (this.proyectForm.valid) {
       const formData: FormData = new FormData();
       formData.append('title', this.proyectForm.controls.title?.value);
-      formData.append(
-        'description',
-        this.proyectForm.controls.description?.value
-      );
       formData.append('total', this.proyectForm.controls.total?.value);
-      formData.append('cashflow', this.fileToUpload!);
       formData.append('user', this.proyectForm.controls.user?.value!);
+
+      this.fileToUpload
+        ? formData.append('cashflow', this.fileToUpload!)
+        : null;
+
+      this.proyectForm.controls.description?.value
+        ? formData.append(
+            'description',
+            this.proyectForm.controls.description?.value
+          )
+        : null;
 
       this.crudAction === 'Crear'
         ? this.crearProyectoEnLaDb(formData)

@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { ProjectsService } from '../../../../admin-panel/services/projects.service';
+import { noConnectionAlert } from '../../../../../helpers/alerts';
 import {
   unknownErrorAlert,
   noConnectionAlert,
@@ -31,7 +33,11 @@ export class UserProfileComponent implements OnDestroy {
   public repeatPasswordEye: string = 'fa fa-eye-slash';
   public userWantsToSeeRepeatPassword: boolean = false;
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private projectsService: ProjectsService
+  ) {
     this.createForm();
   }
 
@@ -227,6 +233,31 @@ export class UserProfileComponent implements OnDestroy {
     this.editProfileForm.controls.password.value
       ? (this.mostrarRepetirContrasena = true)
       : (this.mostrarRepetirContrasena = false);
+  }
+
+  public descargarCashflow(cashflow: string): void {
+    this.projectsService
+      .getCashflow(cashflow)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res: any) => {
+          let binaryData = [];
+          binaryData.push(res);
+          let downloadLink = document.createElement('a');
+          downloadLink.href = window.URL.createObjectURL(
+            new Blob(binaryData, {
+              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            })
+          );
+          const filename = 'Cashflow';
+          if (filename) downloadLink.setAttribute('download', filename);
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          downloadLink.remove();
+          console.log(downloadLink);
+        },
+        (err) => noConnectionAlert(err)
+      );
   }
 
   ngOnDestroy(): void {

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import { User } from '../../../../../../models/user.model';
@@ -11,6 +11,8 @@ import { Project } from '../../../../../admin-panel/interfaces/users.interface';
 })
 export class ProyectsComponent {
   @Input() public user!: User;
+  @Output() public onDownloadCashflow: EventEmitter<string> =
+    new EventEmitter();
 
   public get encabezados(): string[] {
     let propiedadesDePayments: string[] = [];
@@ -71,7 +73,7 @@ export class ProyectsComponent {
   }
 
   public descargarCashFlow(cashflow: string): void {
-    console.log(cashflow);
+    this.onDownloadCashflow.emit(cashflow);
   }
 
   public checkProyect(data: Project) {
