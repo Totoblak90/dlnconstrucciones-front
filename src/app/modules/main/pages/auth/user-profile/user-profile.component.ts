@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from '../../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,7 +6,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { ProjectsService } from '../../../../admin-panel/services/projects.service';
-import { noConnectionAlert } from '../../../../../helpers/alerts';
 import {
   unknownErrorAlert,
   noConnectionAlert,
@@ -36,7 +35,8 @@ export class UserProfileComponent implements OnDestroy {
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private projectsService: ProjectsService
+    private projectsService: ProjectsService,
+    private renderer: Renderer2
   ) {
     this.createForm();
   }
@@ -240,21 +240,28 @@ export class UserProfileComponent implements OnDestroy {
       .getCashflow(cashflow)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
-        (res: any) => {
-          let binaryData = [];
-          binaryData.push(res);
-          let downloadLink = document.createElement('a');
-          downloadLink.href = window.URL.createObjectURL(
-            new Blob(binaryData, {
-              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        (res: Blob) => {
+          const newBlob = new Blob([res], { type: res.type });
+
+          const data = window.URL.createObjectURL(newBlob);
+          const fileName = 'Cashflow';
+          let link = this.renderer.createElement('a');
+          link.href = data;
+          link.download = fileName;
+
+          link.dispatchEvent(
+            new MouseEvent('click', {
+              bubbles: true,
+              cancelable: true,
+              view: window,
             })
           );
-          const filename = 'Cashflow';
-          if (filename) downloadLink.setAttribute('download', filename);
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-          downloadLink.remove();
-          console.log(downloadLink);
+
+          setTimeout(() => {
+            window.URL.revokeObjectURL(data);
+            link.remove();
+            this.renderer.destroy();
+          }, 100);
         },
         (err) => noConnectionAlert(err)
       );

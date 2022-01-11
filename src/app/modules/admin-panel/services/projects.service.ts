@@ -96,7 +96,7 @@ export class ProjectsService {
   public getCashflow(cashflowName: string): Observable<any> {
     return this.http.get(
       `${environment.API_BASE_URL}/projects/cashflow/${cashflowName}`,
-      { headers: this.headers, responseType: 'arraybuffer' }
+      { headers: this.headers, responseType: 'blob' }
     );
   }
 }
