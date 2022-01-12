@@ -112,32 +112,17 @@ export class ProyectsComponent {
   }
 
   private setImageOrVideoSrcAttribute(blob: Blob, asset: ProyectAssets): void {
-    if (blob.type.includes('image')) {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onload = () => {
-        this.user.projects?.forEach((proj) => {
-          proj.Assets.forEach((ar) => {
-            if (ar.id === asset.id) {
-              ar.asset = reader.result as string;
-            }
-          });
-        });
-      };
-    } else {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onload = () => {
       this.user.projects?.forEach((proj) => {
         proj.Assets.forEach((ar) => {
           if (ar.id === asset.id) {
-            const sanitizedUrl = this.domSanitizer.bypassSecurityTrustUrl(
-              window.URL.createObjectURL(blob)
-            ) as any;
-            sanitizedUrl
-              ? (ar.asset = sanitizedUrl.changingThisBreaksApplicationSecurity)
-              : null;
+            ar.asset = reader.result as string;
           }
         });
       });
-    }
+    };
   }
   public descargarCashFlow(cashflow: string): void {
     this.onDownloadCashflow.emit(cashflow);
