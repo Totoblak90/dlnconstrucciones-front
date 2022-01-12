@@ -72,9 +72,11 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   }
 
   private getFilteredProyectArray(): Project[] {
+    // Creo una referencia a la propiedad de la clase que tiene los proyectos
+    // Para no modificar directamente esa propuedad
     const projects: Project[] = this.projects;
-    // Este es el array filtrado que voy a devolver
-    // para no modificar la propiedad de la clase
+    // Creo una constante a la cual le voy a ir agregando los proyectos que pasen cierta condición
+    // Y es lo que voy a devolver
     const filteredProjects: Project[] = [];
     // Creo un objeto que me permite ir contando la
     // Cantidad de veces que se repite un user id en el array de proyectos
