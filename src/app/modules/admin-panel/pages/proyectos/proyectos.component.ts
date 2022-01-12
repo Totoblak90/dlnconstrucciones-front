@@ -42,28 +42,9 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   public projectID!: number;
 
   public get filteredProjects(): Project[] {
-    let projects: Project[] = this.projects;
-    const filteredProjects: Project[] = [];
-    let obj: any = {};
-
-    projects?.forEach((proj: Project) => {
-      if (!obj[`user_id_${proj.users_id}`]) {
-        obj[`user_id_${proj.users_id}`] = 1;
-        filteredProjects.push(proj);
-      } else if (obj[`user_id_${proj.users_id}`] >= 1) {
-      }
-    });
-
-    return filteredProjects;
+    return this.getFilteredProyectArray();
   }
 
-  public deleteUsuariosDeProyectosRepetidos(projects: Project[]): Project[] {
-    projects = projects.filter((proj, index) => {
-      projects.indexOf(proj) === index;
-    });
-
-    return projects;
-  }
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(
@@ -88,6 +69,42 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getProyects();
+  }
+
+  private getFilteredProyectArray(): Project[] {
+    const projects: Project[] = this.projects;
+    // Este es el array filtrado que voy a devolver
+    // para no modificar la propiedad de la clase
+    const filteredProjects: Project[] = [];
+    // Creo un objeto que me permite ir contando la
+    // Cantidad de veces que se repite un user id en el array de proyectos
+    let obj: any = {};
+
+    // Recorro el array de proyectos
+    projects?.forEach((proj: Project) => {
+      // Verifico que en el objeto no haya una propiedad con el id del usuario
+      if (!obj[`user_id_${proj.users_id}`]) {
+        // Si la propiedad no existe la creo y le asigno el valor 1
+        obj[`user_id_${proj.users_id}`] = 1;
+        // Y agrego al array de proyectos filtrados ese proyecto
+        filteredProjects.push(proj);
+      }
+      // Si la propiedad existe no hago nada por que no necesito el proyecto
+    });
+
+    // Ordeno el array nuevo alfabéticamente según el nombre de la persona
+    filteredProjects.sort((project1, project2) => {
+      if (project1?.Users?.first_name! > project2?.Users?.first_name!) {
+        return 1;
+      } else if (project1?.Users?.first_name! < project2?.Users?.first_name!) {
+        return -1;
+      }
+      return 0;
+    });
+
+    // Retorno el array. La idea es que usar simplemente el id del usuario, el nombre y el apellido
+    // Por ende el resto de la data no me importa y puedo sacar un proyecto entero del array
+    return filteredProjects;
   }
 
   public formSubmit(): void {
