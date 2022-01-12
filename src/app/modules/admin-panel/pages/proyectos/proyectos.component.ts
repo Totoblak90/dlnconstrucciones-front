@@ -41,6 +41,29 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   public acceptedFileTypes: boolean = true;
   public projectID!: number;
 
+  public get filteredProjects(): Project[] {
+    let projects: Project[] = this.projects;
+    const filteredProjects: Project[] = [];
+    let obj: any = {};
+
+    projects?.forEach((proj: Project) => {
+      if (!obj[`user_id_${proj.users_id}`]) {
+        obj[`user_id_${proj.users_id}`] = 1;
+        filteredProjects.push(proj);
+      } else if (obj[`user_id_${proj.users_id}`] >= 1) {
+      }
+    });
+
+    return filteredProjects;
+  }
+
+  public deleteUsuariosDeProyectosRepetidos(projects: Project[]): Project[] {
+    projects = projects.filter((proj, index) => {
+      projects.indexOf(proj) === index;
+    });
+
+    return projects;
+  }
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(

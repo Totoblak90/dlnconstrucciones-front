@@ -44,10 +44,11 @@
                   >
                     <option [value]="null">--Seleccionar un usuario--</option>
                     <option
-                      *ngFor="let project of projects"
+                      *ngFor="let project of filteredProjects"
                       [value]="project.Users?.id!"
                     >
                       {{
+
                         project.Users?.first_name! +
                           " " +
                           project.Users?.last_name! +
