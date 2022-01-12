@@ -4,8 +4,10 @@ import {
   EventEmitter,
   Input,
   Output,
+  SecurityContext,
   ViewChild,
 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { customMessageAlert } from 'src/app/helpers/alerts';
 import Swal from 'sweetalert2';
 import { User } from '../../../../../../models/user.model';
@@ -28,7 +30,10 @@ export class ProyectsComponent {
 
   private assetCallCounter: number = 0;
 
-  constructor(private projectsService: ProjectsService) {}
+  constructor(
+    private projectsService: ProjectsService,
+    private domSanitizer: DomSanitizer
+  ) {}
 
   public get encabezados(): string[] {
     let propiedadesDePayments: string[] = [];
@@ -120,7 +125,18 @@ export class ProyectsComponent {
         });
       };
     } else {
-      this.videoTag.nativeElement.src = window.URL.createObjectURL(blob);
+      this.user.projects?.forEach((proj) => {
+        proj.Assets.forEach((ar) => {
+          if (ar.id === asset.id) {
+            const sanitizedUrl = this.domSanitizer.bypassSecurityTrustUrl(
+              window.URL.createObjectURL(blob)
+            ) as any;
+            sanitizedUrl
+              ? (ar.asset = sanitizedUrl.changingThisBreaksApplicationSecurity)
+              : null;
+          }
+        });
+      });
     }
   }
   public descargarCashFlow(cashflow: string): void {

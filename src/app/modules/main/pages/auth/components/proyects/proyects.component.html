@@ -82,7 +82,7 @@
     <div *ngFor="let a of proyecto.Assets" class="col-lg-4 col-md-6">
       <div class="card">
         <ng-container *ngIf="a.type === 'image'; else videoTemplate">
-          <p [hidden]="true" >
+          <p [hidden]="true">
             {{ setAssetUrl(proyecto, a) }}
           </p>
           <img class="img-responsive" [src]="a.asset" alt="Construcción" />
@@ -96,11 +96,11 @@
           </p>
           <video
             class="embed-responsive-item"
+            [src]="a.asset"
             [autoplay]="false"
             [muted]="true"
             [loop]="true"
             [controls]="true"
-            #videoTag
           ></video>
         </ng-template>
       </div>
