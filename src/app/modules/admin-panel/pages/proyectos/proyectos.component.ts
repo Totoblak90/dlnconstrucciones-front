@@ -30,6 +30,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     'Anotaciones',
     'Total',
     'Debe',
+    'Cashflow',
     'Usuario',
   ];
   public isCreating: boolean = false;
@@ -134,7 +135,8 @@ export class ProyectosComponent implements OnInit, OnDestroy {
           proyecto.balance !== null || proyecto.balance !== undefined
             ? this.setCurrencyFormat(proyecto.balance)
             : 'NULL',
-        item7: `${proyecto.Users?.first_name} ${proyecto.Users?.last_name}`,
+        item7: proyecto.cashflow ? 'Si' : 'No',
+        item8: `${proyecto.Users?.first_name} ${proyecto.Users?.last_name}`,
       })
     );
   }
