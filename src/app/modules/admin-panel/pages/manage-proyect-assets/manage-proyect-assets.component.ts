@@ -130,7 +130,7 @@ export class ManageProyectAssetsComponent implements OnInit {
         (res: OneProjectRes) => {
           if (res?.meta?.status.toString().includes('20')) {
             this.assets = res?.data?.Assets!;
-            this.setTableData();
+            this.getProjectAssetsFiles();
           } else {
             unknownErrorAlert(res);
           }
@@ -139,15 +139,31 @@ export class ManageProyectAssetsComponent implements OnInit {
       );
   }
 
-  private setTableData(): void {
-    this.assets.forEach((data: ProyectAssets) =>
+  private getProjectAssetsFiles(): void {
+    for (const asset of this.assets) {
+      this.projectsService
+        .getAssetsDeUnProyecto(asset.asset)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (blob) => {
+            this.setTableData(blob, asset);
+          },
+          error: (err) => noConnectionAlert(err),
+        });
+    }
+  }
+
+  private setTableData(blob: Blob, asset: ProyectAssets): void {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onload = () => {
       this.tableData.push({
-        id: data.id,
-        imagen:
-          `${environment.API_IMAGE_URL}/${data.asset}` ||
-          '../../../../../assets/no-image.png',
-      })
-    );
+        id: asset.id,
+        imagen: reader.result as string,
+        imagenEsArchivo: true,
+        tipoDeArchivo: blob.type,
+      });
+    };
   }
 
   public recargarAssets(recargar: boolean): void {

@@ -63,12 +63,30 @@
               <tbody>
                 <tr *ngFor="let cuerpo of filasTabla">
                   <td *ngIf="!noImage" class="text-center">
-                    <img
-                      [src]="cuerpo.imagen"
-                      alt="Avatar"
-                      class="avatar pointer"
-                      (click)="expandirImagen(cuerpo.imagen!)"
-                    />
+                    <ng-container
+                      *ngIf="
+                        !cuerpo.tipoDeArchivo ||
+                          cuerpo.tipoDeArchivo?.includes('image');
+                        else videoTemplate
+                      "
+                    >
+                      <img
+                        [src]="cuerpo.imagen"
+                        alt="Avatar"
+                        class="avatar pointer"
+                        (click)="expandirImagen(cuerpo.imagen!)"
+                      />
+                    </ng-container>
+                    <ng-template class="" #videoTemplate>
+                      <video
+                        class="embed-responsive-item w-100"
+                        [src]="cuerpo.imagen"
+                        [autoplay]="false"
+                        [muted]="true"
+                        [loop]="true"
+                        [controls]="true"
+                      ></video>
+                    </ng-template>
                   </td>
                   <td
                     class="primary-dark"

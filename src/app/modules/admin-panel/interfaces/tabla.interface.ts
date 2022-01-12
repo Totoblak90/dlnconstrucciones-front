@@ -10,6 +10,8 @@ export interface CuerpoTabla {
   item8?: string;
   item9?: string;
   item10?: string;
+  imagenEsArchivo?: boolean;
+  tipoDeArchivo?: string;
 }
 
 export interface LinkVerMas {

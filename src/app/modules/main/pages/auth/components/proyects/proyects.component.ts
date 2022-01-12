@@ -124,6 +124,7 @@ export class ProyectsComponent {
       });
     };
   }
+
   public descargarCashFlow(cashflow: string): void {
     this.onDownloadCashflow.emit(cashflow);
   }
