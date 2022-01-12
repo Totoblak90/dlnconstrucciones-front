@@ -90,13 +90,27 @@ export class ProjectsService {
    * Trae un cashflow de un usuario
    *
    * @param cashflowName: string
-   * @return {*}  {Observable<any>}
+   * @return {*}  {Observable<Blob>}
    * @memberof AdminPanelCrudService
    */
-  public getCashflow(cashflowName: string): Observable<any> {
+  public getCashflow(cashflowName: string): Observable<Blob> {
     return this.http.get(
       `${environment.API_BASE_URL}/projects/cashflow/${cashflowName}`,
       { headers: this.headers, responseType: 'blob' }
     );
+  }
+
+  /**
+   * Trae un asset de un proyecto
+   *
+   * @param fileName: string
+   * @return {*}  {Observable<Blob>}
+   * @memberof AdminPanelCrudService
+   */
+  public getAssetsDeUnProyecto(fileName: string): Observable<Blob> {
+    return this.http.get(
+      `${environment.API_BASE_URL}/projects/assets/${fileName}`,
+      { headers: this.headers, responseType: 'blob' }
+    )
   }
 }

@@ -1,8 +1,19 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { customMessageAlert } from 'src/app/helpers/alerts';
 import Swal from 'sweetalert2';
 import { User } from '../../../../../../models/user.model';
-import { Project } from '../../../../../admin-panel/interfaces/users.interface';
+import {
+  Project,
+  ProyectAssets,
+} from '../../../../../admin-panel/interfaces/users.interface';
+import { ProjectsService } from '../../../../../admin-panel/services/projects.service';
 
 @Component({
   selector: 'app-proyects',
@@ -13,6 +24,11 @@ export class ProyectsComponent {
   @Input() public user!: User;
   @Output() public onDownloadCashflow: EventEmitter<string> =
     new EventEmitter();
+  @ViewChild('videoTag') videoTag!: ElementRef<HTMLVideoElement>;
+
+  private assetCallCounter: number = 0;
+
+  constructor(private projectsService: ProjectsService) {}
 
   public get encabezados(): string[] {
     let propiedadesDePayments: string[] = [];
@@ -68,10 +84,45 @@ export class ProyectsComponent {
     return Math.round(result);
   }
 
-  public setAssetUrl(assetName: string): string {
-    return `${environment.API_IMAGE_URL}/${assetName}`;
+  public setAssetUrl(proyecto: Project, asset: ProyectAssets): void {
+    let proj: Project | undefined;
+    let archivo: ProyectAssets | undefined;
+    if (this.assetCallCounter !== proyecto.Assets.length) {
+      proj = this.user.projects?.find((p) => p.id === proyecto.id);
+      archivo = proj?.Assets.find((a) => a.id === asset.id);
+      this.assetCallCounter++;
+      if (archivo?.asset) {
+        this.projectsService.getAssetsDeUnProyecto(archivo?.asset).subscribe({
+          next: (blob) => this.setImageOrVideoSrcAttribute(blob, asset),
+          error: () =>
+            customMessageAlert(
+              'Error',
+              'Tuvimos un error desconocido y no pudimos cargar uno o ningún archivo de tu galería de proyecto. Te pedimos recargues la página o esperes un tiempo',
+              'OK',
+              'error'
+            ),
+        });
+      }
+    }
   }
 
+  private setImageOrVideoSrcAttribute(blob: Blob, asset: ProyectAssets): void {
+    if (blob.type.includes('image')) {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onload = () => {
+        this.user.projects?.forEach((proj) => {
+          proj.Assets.forEach((ar) => {
+            if (ar.id === asset.id) {
+              ar.asset = reader.result as string;
+            }
+          });
+        });
+      };
+    } else {
+      this.videoTag.nativeElement.src = window.URL.createObjectURL(blob);
+    }
+  }
   public descargarCashFlow(cashflow: string): void {
     this.onDownloadCashflow.emit(cashflow);
   }
