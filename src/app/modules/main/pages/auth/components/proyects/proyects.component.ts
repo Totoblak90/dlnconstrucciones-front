@@ -4,10 +4,8 @@ import {
   EventEmitter,
   Input,
   Output,
-  SecurityContext,
   ViewChild,
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { customMessageAlert } from 'src/app/helpers/alerts';
 import Swal from 'sweetalert2';
 import { User } from '../../../../../../models/user.model';
@@ -32,7 +30,6 @@ export class ProyectsComponent {
 
   constructor(
     private projectsService: ProjectsService,
-    private domSanitizer: DomSanitizer
   ) {}
 
   public get encabezados(): string[] {
@@ -92,21 +89,31 @@ export class ProyectsComponent {
   public setAssetUrl(proyecto: Project, asset: ProyectAssets): void {
     let proj: Project | undefined;
     let archivo: ProyectAssets | undefined;
+    let countErrors: number = 0;
     if (this.assetCallCounter !== proyecto.Assets.length) {
       proj = this.user.projects?.find((p) => p.id === proyecto.id);
       archivo = proj?.Assets.find((a) => a.id === asset.id);
       this.assetCallCounter++;
       if (archivo?.asset) {
-        this.projectsService.getAssetsDeUnProyecto(archivo?.asset).subscribe({
-          next: (blob) => this.setImageOrVideoSrcAttribute(blob, asset),
-          error: () =>
-            customMessageAlert(
-              'Error',
-              'Tuvimos un error desconocido y no pudimos cargar uno o ningún archivo de tu galería de proyecto. Te pedimos recargues la página o esperes un tiempo',
-              'OK',
-              'error'
-            ),
-        });
+        this.projectsService
+          .getAssetsDeUnProyecto(archivo?.asset)
+          .subscribe({
+            next: (blob) => this.setImageOrVideoSrcAttribute(blob, asset),
+            error: () => {
+              countErrors++
+              if (
+                this.assetCallCounter === proyecto.Assets.length &&
+                countErrors > 0
+              ) {
+                customMessageAlert(
+                  'Error',
+                  'Tuvimos un error desconocido y no pudimos cargar uno o ningún archivo de tu galería de proyecto. Te pedimos recargues la página o esperes un tiempo',
+                  'OK',
+                  'error'
+                );
+              }
+            },
+          })
       }
     }
   }
