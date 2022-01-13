@@ -1,5 +1,12 @@
-import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { takeUntil } from 'rxjs/operators';
@@ -9,13 +16,14 @@ import {
 } from '../../../../../helpers/alerts';
 import { RegisterRes } from '../../../interfaces/http/auth.interface';
 import { unknownErrorAlert } from '../../../../../helpers/alerts';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent implements OnDestroy {
+export class RegisterComponent implements OnInit, OnDestroy {
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   private destroy$: Subject<boolean> = new Subject();
   public showValidationComponent: boolean = false;
@@ -23,31 +31,50 @@ export class RegisterComponent implements OnDestroy {
   public userWantsToSeePassword: boolean = false;
   public repeatPasswordEye: string = 'fa fa-eye-slash';
   public userWantsToSeeRepeatPassword: boolean = false;
-  public registerForm: FormGroup = this.fb.group(
-    {
-      first_name: ['', [Validators.required, Validators.minLength(3)]],
-      last_name: ['', [Validators.required, Validators.minLength(3)]],
-      dni: [
-        '',
-        [
-          Validators.required,
-          Validators.max(999999999),
-          Validators.min(1000000),
+  public get user(): User | undefined {
+    return this.authService.getUser();
+  }
+  public registerForm!: FormGroup;
+
+  constructor(private fb: FormBuilder, private authService: AuthService) {
+    this.createForm();
+  }
+
+  ngOnInit(): void {
+    this.validateTermsAndConditionsAreRequired();
+  }
+
+  private createForm(): void {
+    this.registerForm = this.fb.group(
+      {
+        first_name: ['', [Validators.required, Validators.minLength(3)]],
+        last_name: ['', [Validators.required, Validators.minLength(3)]],
+        dni: [
+          '',
+          [
+            Validators.required,
+            Validators.max(999999999),
+            Validators.min(1000000),
+          ],
         ],
-      ],
-      email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
-      password: ['', Validators.required],
-      passwordRepeat: ['', [Validators.required]],
-      terminosYCondiciones: [false, [Validators.requiredTrue]],
-    },
-    {
-      validator: [this.passwordMatchFormValidator, this.validateStrongPassword],
-    }
-  );
+        email: [
+          '',
+          [Validators.required, Validators.pattern(this.emailPattern)],
+        ],
+        password: ['', Validators.required],
+        passwordRepeat: ['', [Validators.required]],
+        terminosYCondiciones: [false],
+      },
+      {
+        validator: [
+          this.passwordMatchFormValidator,
+          this.validateStrongPassword,
+        ],
+      }
+    );
+  }
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
-
-  register(): void {
+  public register(): void {
     this.registerForm.markAllAsTouched();
     if (this.registerForm.valid) {
       this.authService
@@ -110,6 +137,19 @@ export class RegisterComponent implements OnDestroy {
         this.registerForm.controls.password.errors?.notSymbols ||
         this.registerForm.controls.password.errors?.minlength)
     );
+  }
+
+  private validateTermsAndConditionsAreRequired(): void {
+    const termsAndConditions: AbstractControl | undefined | null =
+      this.registerForm.controls.terminosYCondiciones;
+
+    if (this.user && this.user?.role !== 'master' && termsAndConditions) {
+      !this.registerForm.controls.terminosYCondiciones?.value
+        ? this.registerForm.controls.terminosYCondiciones?.setErrors({
+            required: true,
+          })
+        : null;
+    }
   }
 
   public showPassword(e: HTMLInputElement): void {
