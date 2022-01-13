@@ -10,9 +10,12 @@ import {
   LoginRes,
   RegisterForm,
   RegisterRes,
+  RestablecerConstraseniaFirstStep,
+  RestablecerContraseniaExitoso,
 } from '../interfaces/http/auth.interface';
 import { getToken } from '../helpers/functions.helper';
 import { Router } from '@angular/router';
+import { RestablecerContraseniaLastStep } from '../interfaces/http/auth.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -102,6 +105,38 @@ export class AuthService {
       `${environment.API_BASE_URL}/users/avatar`,
       formData,
       { headers: this.headers }
+    );
+  }
+
+  /**
+   * Restablecer constraseña
+   *
+   * @param email:
+   * @return {*}  {Observable<any>}
+   * @memberof AuthService
+   */
+  public restablecerContrasenia(
+    email: RestablecerConstraseniaFirstStep
+  ): Observable<any> {
+    return this.httpClient.post<any>(
+      `${environment.API_BASE_URL}/users/forgotpass`,
+      email
+    );
+  }
+
+  /**
+   * Genera una nueva contraseña
+   *
+   * @param payload: RestablecerContraseniaLastStep
+   * @return {*}  {Observable<RestablecerContraseniaExitoso>}
+   * @memberof AuthService
+   */
+  public guardarNuevaContrasenia(
+    payload: RestablecerContraseniaLastStep
+  ): Observable<RestablecerContraseniaExitoso> {
+    return this.httpClient.post<RestablecerContraseniaExitoso>(
+      `${environment.API_BASE_URL}/users/newpass`,
+      payload
     );
   }
 

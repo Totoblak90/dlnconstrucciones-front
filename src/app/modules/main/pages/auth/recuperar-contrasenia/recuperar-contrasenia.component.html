@@ -1,0 +1,63 @@
+<div class="row animate__animated animate__fadeIn animate__slow">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h2 class="primary-dark">Recuperar contraseña</h2>
+      </div>
+      <form
+        class="form-horizontal form-material p-t-20"
+        [formGroup]="forgotPasswordForm"
+        (ngSubmit)="recuperarContrasenia()"
+      >
+        <div class="card-body">
+          <div class="form-group row">
+            <label for="exampleInputEmail3" class="col-sm-3 control-label"
+              >Email*</label
+            >
+            <div class="col-sm-9">
+              <div class="input-group">
+                <input
+                  type="email"
+                  class="form-control form-control-line"
+                  id="exampleInputEmail3"
+                  placeholder="tuemail@dlnconstrucciones..."
+                  formControlName="email"
+                />
+                <div class="p-2">
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      forgotPasswordForm.controls.email.errors?.required &&
+                      forgotPasswordForm.controls.email.touched
+                    "
+                    >Este dato es requerido</span
+                  >
+                  <span
+                    class="text-danger"
+                    *ngIf="
+                      forgotPasswordForm.controls.email.errors?.pattern &&
+                      forgotPasswordForm.controls.email.touched
+                    "
+                    >Por favor ingresá un email válido</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-center">
+          <div>
+            <div>
+              <button
+                type="submit"
+                class="btn btn-success waves-effect waves-light bgc-primary-dark"
+              >
+                Recuperar
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

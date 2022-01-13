@@ -1,5 +1,8 @@
 import { Meta } from './batches.interface';
-import { Project } from '../../../admin-panel/interfaces/users.interface';
+import {
+  Project,
+  FullUser,
+} from '../../../admin-panel/interfaces/users.interface';
 
 export interface LoginRes {
   meta: Meta;
@@ -68,6 +71,27 @@ export interface ActualizarUsuarioReq {
   phone?: number;
   password?: string;
   passwordRepeat?: string;
+}
+
+export interface RestablecerConstraseniaFirstStep {
+  email: string;
+}
+
+export interface RestablecerContraseniaLastStep {
+  email: string;
+  password: string;
+  passwordRepeat: string;
+}
+
+export interface RestablecerContraseniaExitoso {
+  meta: Meta;
+  data: RestablecerContraseniaExitosoData;
+}
+
+export interface RestablecerContraseniaExitosoData {
+  message: string;
+  token: string;
+  user: FullUser;
 }
 
 export type setUserProp =

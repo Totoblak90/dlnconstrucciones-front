@@ -1,0 +1,153 @@
+<div class="row animate__animated animate__fadeIn animate__slow">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h2 class="primary-dark">Generar nueva contraseña</h2>
+      </div>
+      <form
+        class="form-horizontal form-material p-t-20"
+        [formGroup]="nuevaContraseniaForm"
+        (ngSubmit)="guardarNuevaContrasenia()"
+      >
+        <div class="card-body">
+          <div class="form-group">
+            <div class="input-group">
+              <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail2"
+                placeholder="juan@tuemail.com*"
+                formControlName="email"
+              />
+              <div class="p-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    nuevaContraseniaForm.controls.email.errors?.required &&
+                    nuevaContraseniaForm.controls.email.touched
+                  "
+                  >Este dato es requerido</span
+                >
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    nuevaContraseniaForm.controls.email.errors?.pattern &&
+                    nuevaContraseniaForm.controls.email.touched
+                  "
+                  >Por favor ingresá un email válido</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control"
+                id="exampleInputpwd2"
+                placeholder="Escribir contraseña*"
+                formControlName="password"
+                #inputPassword
+              />
+              <div class="input-group-addon">
+                <i
+                  (click)="showPassword(inputPassword)"
+                  [class]="passwordEye"
+                ></i>
+              </div>
+              <div class="p-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    nuevaContraseniaForm.controls.password.errors?.required &&
+                    nuevaContraseniaForm.controls.password.touched
+                  "
+                  >Este dato es requerido</span
+                >
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    nuevaContraseniaForm.controls.password.errors?.pattern &&
+                    nuevaContraseniaForm.controls.password.touched
+                  "
+                  >La contraseña debe tener un mínimo de 8 caracteres,
+                  incluyendo una minúscula, una mayúscula, un número y un
+                  símbolo</span
+                >
+              </div>
+            </div>
+            <div *ngIf="showStrongPasswordErrorMsgs()" class="p-2">
+              <ul class="form-text text-danger list-unstyled">
+                <li *ngIf="showStrongPasswordErrorMsgs()">
+                  La contraseña debe tener al menos 8 caracteres
+                </li>
+                <li *ngIf="showStrongPasswordErrorMsgs()">
+                  La contraseña debe contener al menos un número
+                </li>
+                <li *ngIf="showStrongPasswordErrorMsgs()">
+                  La contraseña debe contener al menos una letra minúscula
+                </li>
+                <li *ngIf="showStrongPasswordErrorMsgs()">
+                  La contraseña debe tener al menos una letra mayúscula
+                </li>
+                <li *ngIf="showStrongPasswordErrorMsgs()">
+                  La contraseña debe tener al menos alguno de los siguientes
+                  símbolos *._%+-
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control"
+                id="exampleInputpwd3"
+                placeholder="Confirmar contraseña*"
+                formControlName="passwordRepeat"
+                #inputRepeatPassword
+              />
+              <div class="input-group-addon">
+                <i
+                  (click)="showRepeatPassword(inputRepeatPassword)"
+                  [class]="repeatPasswordEye"
+                ></i>
+              </div>
+              <div class="p-2">
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    nuevaContraseniaForm.controls.passwordRepeat.errors?.required &&
+                    nuevaContraseniaForm.controls.passwordRepeat.touched
+                  "
+                  >Este dato es requerido</span
+                >
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    nuevaContraseniaForm.controls.passwordRepeat.errors?.notMatch &&
+                    nuevaContraseniaForm.controls.passwordRepeat.touched
+                  "
+                  >Las contraseñas no coinciden</span
+                >
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="card-footer text-center">
+          <div>
+            <div>
+              <button
+                type="submit"
+                class="btn btn-success waves-effect waves-light bgc-primary-dark"
+              >
+                Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

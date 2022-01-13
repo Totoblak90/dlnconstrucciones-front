@@ -160,7 +160,6 @@ export class ManageProyectAssetsComponent implements OnInit {
       this.tableData.push({
         id: asset.id,
         imagen: reader.result as string,
-        imagenEsArchivo: true,
         tipoDeArchivo: blob.type,
       });
     };

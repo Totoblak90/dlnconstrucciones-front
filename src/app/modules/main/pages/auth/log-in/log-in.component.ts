@@ -99,6 +99,10 @@ export class LogInComponent implements OnDestroy {
     this.userWantsToSeePassword ? (e.type = 'text') : (e.type = 'password');
   }
 
+  public recuperarContrasenia(): void {
+    this.router.navigateByUrl('/main/auth/recuperar-contrasenia')
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();

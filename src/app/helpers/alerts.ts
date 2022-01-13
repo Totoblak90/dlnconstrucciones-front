@@ -83,3 +83,30 @@ export function alertFailureOrSuccessOnCRUDAction(
     unknownErrorAlert(data);
   }
 }
+
+export function customMessageAlertWithActions(
+  title: string,
+  text: string,
+  buttonText: string,
+  icon?: SweetAlertIcon
+): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn bgc-primary-dark text-white',
+        cancelButton: 'btn btn-danger',
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons
+      .fire({
+        title,
+        text,
+        icon,
+        confirmButtonText: buttonText,
+      })
+      .then((result) => {
+        result.isConfirmed ? resolve(true) : reject(false);
+      });
+  });
+}
