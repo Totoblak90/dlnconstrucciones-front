@@ -1,14 +1,14 @@
 import Swal, { SweetAlertIcon } from 'sweetalert2';
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: 'btn bgc-primary-dark text-white',
+    cancelButton: 'btn btn-danger',
+  },
+  buttonsStyling: false,
+});
 
 export function noConnectionAlert(err: any): void {
   console.log(err);
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: 'btn bgc-primary-dark',
-      cancelButton: 'btn btn-danger',
-    },
-    buttonsStyling: false,
-  });
 
   swalWithBootstrapButtons.fire({
     title: 'Error',
@@ -19,15 +19,8 @@ export function noConnectionAlert(err: any): void {
 }
 
 export function unknownErrorAlert(data?: any): void {
-  data ? console.log(data) : null;
+  console.log(data);
 
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: 'btn bgc-primary-dark',
-      cancelButton: 'btn btn-danger',
-    },
-    buttonsStyling: false,
-  });
   swalWithBootstrapButtons.fire({
     title: 'Error',
     text: '¡Lo sentimos!, hay un error desconocido. Probá cargando la info nuevamente y chequeando las validaciones. Si el problema persiste ponete en contacto con el administrador de la página',
@@ -42,13 +35,6 @@ export function customMessageAlert(
   buttonText: string,
   icon?: SweetAlertIcon
 ): void {
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: 'btn bgc-primary-dark text-white',
-      cancelButton: 'btn btn-danger',
-    },
-    buttonsStyling: false,
-  });
   swalWithBootstrapButtons.fire({
     title,
     text,
@@ -91,13 +77,6 @@ export function customMessageAlertWithActions(
   icon?: SweetAlertIcon
 ): Promise<boolean> {
   return new Promise((resolve, reject) => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: 'btn bgc-primary-dark text-white',
-        cancelButton: 'btn btn-danger',
-      },
-      buttonsStyling: false,
-    });
     swalWithBootstrapButtons
       .fire({
         title,

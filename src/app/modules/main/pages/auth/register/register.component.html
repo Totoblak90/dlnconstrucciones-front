@@ -237,6 +237,30 @@
               </div>
             </div>
           </div>
+          <div class="form-group">
+            <label for="roleSelectInput">Rol del usuario*</label>
+            <select
+              formControlName="role"
+              class="form-control custom-select"
+              id="roleSelectInput"s
+            >
+              <option [value]="'no'">
+                --Seleccionar el rol del usuario--
+              </option>
+              <option [value]="'admin'">Admin</option>
+              <option [value]="'user'">Usuario final</option>
+            </select>
+
+            <div class="p-2">
+              <span
+                class="text-danger"
+                *ngIf="
+                  registerForm.controls.role.errors?.notValue
+                "
+                >Este dato es requerido</span
+              >
+            </div>
+          </div>
           <div *ngIf="!user || user?.role !== 'master'" class="form-group">
             <div class="checkbox checkbox-success">
               <input

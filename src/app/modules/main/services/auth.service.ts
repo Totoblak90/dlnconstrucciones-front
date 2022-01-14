@@ -75,6 +75,21 @@ export class AuthService {
   }
 
   /**
+   * Crea un usuario en la base de datos con la data que se le envía
+   *
+   * @param payload: RegisterForm
+   * @return {*}  {Observable<RegisterRes>}
+   * @memberof AuthService
+   */
+  public registerSiendoMaster(payload: RegisterForm): Observable<RegisterRes> {
+    return this.httpClient.post<RegisterRes>(
+      `${environment.API_BASE_URL}/users/enroll`,
+      payload,
+      { headers: this.headers }
+    );
+  }
+
+  /**
    * Actualiza la información del usuario en la base de datos según la información que se le envía
    *
    * @param payload: any

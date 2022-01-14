@@ -3,8 +3,6 @@ import {
   AbstractControl,
   FormBuilder,
   FormGroup,
-  ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -12,11 +10,12 @@ import { AuthService } from '../../../services/auth.service';
 import { takeUntil } from 'rxjs/operators';
 import {
   noConnectionAlert,
-  customMessageAlert,
+  unknownErrorAlert,
+  customMessageAlertWithActions,
 } from '../../../../../helpers/alerts';
 import { RegisterRes } from '../../../interfaces/http/auth.interface';
-import { unknownErrorAlert } from '../../../../../helpers/alerts';
 import { User } from 'src/app/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -36,12 +35,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
   public registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.createForm();
   }
 
   ngOnInit(): void {
     this.validateTermsAndConditionsAreRequired();
+    this.validateRoleIsRequired();
   }
 
   private createForm(): void {
@@ -64,6 +68,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         password: ['', Validators.required],
         passwordRepeat: ['', [Validators.required]],
         terminosYCondiciones: [false],
+        role: ['user'],
       },
       {
         validator: [
@@ -72,34 +77,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         ],
       }
     );
-  }
-
-  public register(): void {
-    this.registerForm.markAllAsTouched();
-    if (this.registerForm.valid) {
-      this.authService
-        .register(this.registerForm.value)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(
-          (res: RegisterRes) => this.setRegisterFlow(res),
-          (err) => unknownErrorAlert(err)
-        );
-    }
-  }
-
-  private setRegisterFlow(res: RegisterRes): void {
-    if (res.meta.status === 401) {
-      customMessageAlert(
-        'Error',
-        'El email introducido ya se encuentra registrado',
-        'OK',
-        'error'
-      );
-    } else if (res.meta.status.toString().includes('20')) {
-      this.showValidationComponent = true;
-    } else {
-      unknownErrorAlert(res);
-    }
   }
 
   private passwordMatchFormValidator(form: FormGroup): void {
@@ -143,12 +120,66 @@ export class RegisterComponent implements OnInit, OnDestroy {
     const termsAndConditions: AbstractControl | undefined | null =
       this.registerForm.controls.terminosYCondiciones;
 
-    if (this.user && this.user?.role !== 'master' && termsAndConditions) {
+    if (
+      (this.user && this.user?.role !== 'master' && termsAndConditions) ||
+      !this.user
+    ) {
       !this.registerForm.controls.terminosYCondiciones?.value
         ? this.registerForm.controls.terminosYCondiciones?.setErrors({
             required: true,
           })
         : null;
+    }
+  }
+
+  private validateRoleIsRequired(): void {
+    const role: AbstractControl = this.registerForm.controls.role;
+    role?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      if (this.user?.role === 'master' && value === 'no') {
+        role.setErrors({ notValue: true });
+      }
+    });
+  }
+
+  public register(): void {
+    this.registerForm.markAllAsTouched();
+    if (this.registerForm.valid) {
+      if (this.user?.role === 'master') {
+        this.authService
+          .registerSiendoMaster(this.registerForm.value)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (res) => this.setRegisterFlow(res),
+            error: (err) => noConnectionAlert(err),
+          });
+      } else {
+        this.authService
+          .register(this.registerForm.value)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(
+            (res: RegisterRes) => this.setRegisterFlow(res),
+            (err) => noConnectionAlert(err)
+          );
+      }
+    }
+  }
+
+  private setRegisterFlow(res: RegisterRes): void {
+    if (res.meta.status.toString().includes('20')) {
+      if (this.user?.role === 'master') {
+        customMessageAlertWithActions(
+          '¡Perfecto, CABALLO!',
+          'Usuario creado',
+          'OK',
+          'success'
+        ).then((result) =>
+          result ? this.router.navigateByUrl('/admin/dashboard') : null
+        );
+      } else {
+        this.showValidationComponent = true;
+      }
+    } else {
+      unknownErrorAlert(res);
     }
   }
 
