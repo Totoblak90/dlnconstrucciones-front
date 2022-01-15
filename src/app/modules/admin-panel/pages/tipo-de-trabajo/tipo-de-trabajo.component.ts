@@ -95,7 +95,7 @@ export class TipoDeTrabajoComponent implements OnInit {
     if (this.tipoDeTrabajoForm.valid) {
       const formData: FormData = new FormData();
       formData.append('title', this.tipoDeTrabajoForm.controls.title?.value);
-      formData.append('image', this.fileToUpload!);
+      this.fileToUpload && formData.append('image', this.fileToUpload!);
 
       this.crudAction === 'Crear'
         ? this.crearTipoDeTrabajoEnLaDb(formData)

@@ -1,6 +1,6 @@
 <h4 class="font-medium m-t-30">Proyectos:</h4>
 <hr />
-<div *ngFor="let proyecto of user.projects; let i = index">
+<div *ngFor="let proyecto of user?.projects; let i = index">
   <h5 class="m-t-30 primary-dark">
     {{
       proyecto.title
@@ -30,7 +30,6 @@
     Balance:
     <br />
     <span>
-      <!-- {{ checkProyect(proyecto) }} -->
       {{ !proyecto.balance ? "¡Estas al día!" : "Falta pagar" }}
       <i [class]="!proyecto.balance ? 'ti ti-face-smile' : ''"></i>
     </span>
@@ -81,8 +80,11 @@
     <hr />
     <div class="card-group">
       <div *ngFor="let a of proyecto.Assets" class="col-lg-4 col-md-6">
-        <div class="card m-0 p-0 ">
-          <ng-container *ngIf="a.type === 'image'; else videoTemplate">
+        <div class="card m-0 p-0">
+          <ng-container
+            *ngIf="a.type === 'image'; else videoTemplate"
+            #imageTemplate
+          >
             <p [hidden]="true">
               {{ setAssetUrl(proyecto, a) }}
             </p>

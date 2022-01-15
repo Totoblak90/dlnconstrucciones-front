@@ -98,7 +98,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
     if (this.servicesForm.valid) {
       const formData: FormData = new FormData();
       formData.append('title', this.servicesForm.controls.title?.value);
-      formData.append('image', this.fileToUpload!);
+      this.fileToUpload && formData.append('image', this.fileToUpload!);
 
       this.crudAction === 'Crear'
         ? this.crearServicioEnLaDb(formData)

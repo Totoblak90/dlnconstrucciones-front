@@ -93,7 +93,7 @@ export class ZonasComponent implements OnInit {
     if (this.zonasForm.valid) {
       const formData: FormData = new FormData();
       formData.append('title', this.zonasForm.controls.title?.value);
-      formData.append('image', this.fileToUpload!);
+      this.fileToUpload && formData.append('image', this.fileToUpload!);
 
       this.crudAction === 'Crear'
         ? this.crearZonaEnLaDb(formData)

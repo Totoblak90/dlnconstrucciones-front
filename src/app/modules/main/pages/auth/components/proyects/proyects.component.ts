@@ -24,13 +24,9 @@ export class ProyectsComponent {
   @Input() public user!: User;
   @Output() public onDownloadCashflow: EventEmitter<string> =
     new EventEmitter();
-  @ViewChild('videoTag') videoTag!: ElementRef<HTMLVideoElement>;
-
   private assetCallCounter: number = 0;
 
-  constructor(
-    private projectsService: ProjectsService,
-  ) {}
+  constructor(private projectsService: ProjectsService) {}
 
   public get encabezados(): string[] {
     let propiedadesDePayments: string[] = [];
@@ -95,25 +91,23 @@ export class ProyectsComponent {
       archivo = proj?.Assets.find((a) => a.id === asset.id);
       this.assetCallCounter++;
       if (archivo?.asset) {
-        this.projectsService
-          .getAssetsDeUnProyecto(archivo?.asset)
-          .subscribe({
-            next: (blob) => this.setImageOrVideoSrcAttribute(blob, asset),
-            error: () => {
-              countErrors++
-              if (
-                this.assetCallCounter === proyecto.Assets.length &&
-                countErrors > 0
-              ) {
-                customMessageAlert(
-                  'Error',
-                  'Tuvimos un error desconocido y no pudimos cargar uno o ningún archivo de tu galería de proyecto. Te pedimos recargues la página o esperes un tiempo',
-                  'OK',
-                  'error'
-                );
-              }
-            },
-          })
+        this.projectsService.getAssetsDeUnProyecto(archivo?.asset).subscribe({
+          next: (blob) => this.setImageOrVideoSrcAttribute(blob, asset),
+          error: () => {
+            countErrors++;
+            if (
+              this.assetCallCounter === proyecto.Assets.length &&
+              countErrors > 0
+            ) {
+              customMessageAlert(
+                'Error',
+                'Tuvimos un error desconocido y no pudimos cargar uno o ningún archivo de tu galería de proyecto. Te pedimos recargues la página o esperes un tiempo',
+                'OK',
+                'error'
+              );
+            }
+          },
+        });
       }
     }
   }
@@ -134,10 +128,6 @@ export class ProyectsComponent {
 
   public descargarCashFlow(cashflow: string): void {
     this.onDownloadCashflow.emit(cashflow);
-  }
-
-  public checkProyect(data: Project) {
-    console.log(data);
   }
 
   public expandImage(img: string) {

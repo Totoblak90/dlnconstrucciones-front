@@ -76,9 +76,8 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       const formData: FormData = new FormData();
       formData.append('title', this.jobForm.controls.title?.value);
       formData.append('description', this.jobForm.controls.description?.value);
-      formData.append('image', this.fileToUpload!);
       formData.append('type', this.jobForm.controls.type?.value);
-
+      this.fileToUpload && formData.append('image', this.fileToUpload!);
       this.crudAction === 'Crear'
         ? this.crearTrabajoEnLaDb(formData)
         : this.editarTrabajoEnLaDb(formData);

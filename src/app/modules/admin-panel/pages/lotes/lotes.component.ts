@@ -112,7 +112,7 @@ export class LotesComponent implements OnInit {
       formData.append('description', this.loteForm.controls.description?.value);
       formData.append('price', this.loteForm.controls.price?.value);
       formData.append('sold', this.loteForm.controls.sold?.value);
-      formData.append('image', this.fileToUpload!);
+      this.fileToUpload && formData.append('image', this.fileToUpload!);
       formData.append('category', this.loteForm.controls.category?.value);
 
       this.crudAction === 'Crear'

@@ -77,7 +77,7 @@ export class InteresesComponent implements OnInit {
         'description',
         this.interestForm.controls.description?.value
       );
-      formData.append('image', this.fileToUpload!);
+      this.fileToUpload && formData.append('image', this.fileToUpload!);
 
       this.crudAction === 'Crear'
         ? this.crearInteresEnLaDb(formData)
