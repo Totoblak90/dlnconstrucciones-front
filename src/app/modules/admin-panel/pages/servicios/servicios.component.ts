@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
+import { Router } from '@angular/router';
 import {
   noConnectionAlert,
   unknownErrorAlert,
@@ -43,7 +44,8 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   constructor(
     private httpSrv: HttpService,
     private fb: FormBuilder,
-    private adminPanelCrudService: AdminPanelCrudService
+    private adminPanelCrudService: AdminPanelCrudService,
+    private router: Router
   ) {
     this.createForm();
   }
@@ -224,11 +226,11 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   }
 
   public addAssets(id: number): void {
-    console.log(id, 'assetts');
+    this.router.navigateByUrl('/admin/servicios/pictures')
   }
 
   public addContents(id: number): void {
-    console.log(id, 'contents');
+    this.router.navigateByUrl('/admin/servicios/contenidos')
   }
 
   ngOnDestroy(): void {

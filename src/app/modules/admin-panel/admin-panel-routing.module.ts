@@ -65,6 +65,20 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'servicios/contenidos',
+        loadChildren: () =>
+          import(
+            './pages/servicios-contenidos/servicios-contenidos.module'
+          ).then((m) => m.ServiciosContenidosModule),
+      },
+      {
+        path: 'servicios/pictures',
+        loadChildren: () =>
+          import('./pages/servicios-pictures/servicios-pictures.module').then(
+            (m) => m.ServiciosPicturesModule
+          ),
+      },
+      {
         path: 'tipo-de-trabajo',
         loadChildren: () =>
           import('./pages/tipo-de-trabajo/tipo-de-trabajo.module').then(
