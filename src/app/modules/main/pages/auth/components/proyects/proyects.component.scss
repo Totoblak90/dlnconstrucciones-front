@@ -12,8 +12,21 @@
     width: 100%;
     height: 250px;
   }
-  video {
-    width: 100%;
+  .embed-responsive,
+  .embed-responsive-21by9 {
     height: 100%;
+    background-color: black;
+    video {
+      width: 100%;
+      height: 100%;
+    }
   }
+}
+
+.display-none {
+  display: none;
+}
+
+.display-block {
+  display: block;
 }

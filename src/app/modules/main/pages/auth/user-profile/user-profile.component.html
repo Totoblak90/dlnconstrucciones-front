@@ -112,7 +112,7 @@
             <hr />
             <ng-container *ngIf="user?.projects; else noProjects">
               <app-proyects
-                [user]="user"
+                [setProyectos]="user"
                 (onDownloadCashflow)="descargarCashflow($event)"
               ></app-proyects>
             </ng-container>

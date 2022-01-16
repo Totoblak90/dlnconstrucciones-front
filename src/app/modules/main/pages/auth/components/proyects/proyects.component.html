@@ -1,12 +1,8 @@
 <h4 class="font-medium m-t-30">Proyectos:</h4>
 <hr />
-<div *ngFor="let proyecto of user?.projects; let i = index">
+<div *ngFor="let proyecto of proyectos; let i = index">
   <h5 class="m-t-30 primary-dark">
-    {{
-      proyecto.title
-        ? proyecto.title
-        : user.nombre + "_" + user.apellido + "_" + proyecto.id
-    }}
+    {{ proyecto.title ? proyecto.title : "Proyecto sin título" }}
     <span class="pull-right">{{ porcentaje[i] }}%</span>
   </h5>
   <div class="progress">
@@ -75,37 +71,34 @@
       <i class="ti ti-file"></i> Descargar cashflow
     </button>
   </div>
-  <div *ngIf="proyecto.Assets.length" class="row proyect-carrousel m-t-5 b-b-5">
+  <div *ngIf="assets.length" class="row proyect-carrousel m-t-5 b-b-5">
     <h6>Galería:</h6>
     <hr />
     <div class="card-group">
-      <div *ngFor="let a of proyecto.Assets" class="col-lg-4 col-md-6">
+      <div
+        *ngFor="let a of assets"
+        class="col-lg-4 col-md-6"
+        [class]="
+          showGalleryCard(a, proyecto) ? 'display-block' : 'display-none'
+        "
+      >
         <div class="card m-0 p-0">
-          <ng-container
-            *ngIf="a.type === 'image'; else videoTemplate"
-            #imageTemplate
-          >
-            <p [hidden]="true">
-              {{ setAssetUrl(proyecto, a) }}
-            </p>
-            <img class="img-responsive" [src]="a.asset" alt="Construcción" />
-          </ng-container>
-          <ng-template
+          <div *ngIf="showGalleryImage(a, proyecto)">
+            <img class="img-responsive" [src]="a.base64" alt="Construcción" />
+          </div>
+          <div
             class="embed-responsive embed-responsive-21by9"
-            #videoTemplate
+            *ngIf="showGalleryVideo(a, proyecto)"
           >
-            <p [hidden]="true">
-              {{ setAssetUrl(proyecto, a) }}
-            </p>
             <video
               class="embed-responsive-item"
-              [src]="a.asset"
+              [src]="a.base64"
               [autoplay]="false"
               [muted]="true"
               [loop]="true"
               [controls]="true"
             ></video>
-          </ng-template>
+          </div>
         </div>
       </div>
     </div>
