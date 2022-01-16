@@ -62,9 +62,7 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   public getServicios(): void {
     this.httpSrv
       .getAllServices()
-      .pipe(
-        takeUntil(this.destroy$),
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (servicios: Services) => {
           servicios.meta?.status.toString().includes('20')
@@ -223,6 +221,14 @@ export class ServiciosComponent implements OnInit, OnDestroy {
           unknownErrorAlert(err);
         }
       );
+  }
+
+  public addAssets(id: number): void {
+    console.log(id, 'assetts');
+  }
+
+  public addContents(id: number): void {
+    console.log(id, 'contents');
   }
 
   ngOnDestroy(): void {

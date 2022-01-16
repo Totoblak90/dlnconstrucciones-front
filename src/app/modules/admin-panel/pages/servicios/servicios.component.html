@@ -8,10 +8,14 @@
           [encabezadosTabla]="encabezadosTabla"
           [title]="'Servicios'"
           [totalSection]="tableData?.length!"
+          [addAssets]="true"
+          [addContents]="true"
           (onRecargar)="recargarServicios($event)"
           (onCreate)="crearServicio()"
           (onEdit)="editarServicio($event)"
           (onDelete)="borrarServicio($event)"
+          (onAddAssets)="addAssets($event)"
+          (onAddContents)="addContents($event)"
         ></app-table>
       </div>
     </div>

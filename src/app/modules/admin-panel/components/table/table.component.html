@@ -189,6 +189,13 @@
                     >
                       <i class="ti ti-image text-danger primary-dark"></i>
                     </a>
+                    <a
+                      *ngIf="addContents"
+                      class="pointer"
+                      (click)="addContent(cuerpo.id)"
+                    >
+                      <i class="ti ti-book text-danger primary-dark"></i>
+                    </a>
                   </td>
                 </tr>
               </tbody>

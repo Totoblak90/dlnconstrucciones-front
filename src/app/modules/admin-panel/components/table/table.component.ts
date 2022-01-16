@@ -14,6 +14,7 @@ export class TableComponent {
   @Output() private onRecargar: EventEmitter<boolean> = new EventEmitter();
   @Output() private onAddPayments: EventEmitter<number> = new EventEmitter();
   @Output() private onAddAssets: EventEmitter<number> = new EventEmitter();
+  @Output() private onAddContents: EventEmitter<number> = new EventEmitter();
 
   @Input() public title: string = '';
   @Input() public totalSection: number = 0;
@@ -22,6 +23,7 @@ export class TableComponent {
   @Input() public noImage?: boolean = false;
   @Input() public addAssets?: boolean = false;
   @Input() public addPayments?: boolean = false;
+  @Input() public addContents?: boolean = false;
 
   public searching: boolean = false;
   public searchingResults: number = 0;
@@ -72,6 +74,10 @@ export class TableComponent {
 
   public addAsset(value: number): void {
     this.onAddAssets.emit(value);
+  }
+
+  public addContent(id: number): void {
+    this.onAddContents.emit(id);
   }
 
   public search(term: string): void {
