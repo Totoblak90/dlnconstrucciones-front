@@ -32,44 +32,7 @@ export class ProyectsComponent implements OnInit {
   constructor(private projectsService: ProjectsService) {}
 
   ngOnInit(): void {
-      this.setAssets()
-  }
-
-  private setAssets(): void {
-    this.proyectos?.forEach((proj) => {
-      proj.Assets.forEach((asset) => {
-        this.projectsService
-          .getAssetsDeUnProyecto(asset.asset)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (blob) => {
-              const reader = new FileReader();
-              reader.readAsDataURL(blob);
-              reader.onload = () => {
-                this.assets.push({
-                  base64: reader.result as string,
-                  project_id: proj.id,
-                  type: blob.type,
-                  asset_id: asset.id,
-                });
-              };
-            },
-            error: (err) => unknownErrorAlert(err),
-          });
-      });
-    });
-  }
-
-  public showGalleryCard(asset: Galeria, proyecto: Project): boolean {
-    return asset.project_id === proyecto.id;
-  }
-
-  public showGalleryImage(asset: Galeria, proyecto: Project): boolean {
-    return asset.type.includes('image') && asset.project_id === proyecto.id;
-  }
-
-  public showGalleryVideo(asset: Galeria, proyecto: Project): boolean {
-    return asset.type.includes('video') && asset.project_id === proyecto.id;
+    this.setAssets();
   }
 
   public get encabezados(): string[] {
@@ -126,22 +89,45 @@ export class ProyectsComponent implements OnInit {
     return Math.round(result);
   }
 
-  private setImageOrVideoSrcAttribute(blob: Blob, asset: ProyectAssets): void {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onload = () => {
-      this.proyectos?.forEach((proj) => {
-        proj.Assets.forEach((ar) => {
-          if (ar.id === asset.id) {
-            ar.asset = reader.result as string;
-          }
-        });
-      });
-    };
-  }
-
   public descargarCashFlow(cashflow: string): void {
     this.onDownloadCashflow.emit(cashflow);
+  }
+
+  private setAssets(): void {
+    this.proyectos?.forEach((proj) => {
+      proj.Assets.forEach((asset) => {
+        this.projectsService
+          .getAssetsDeUnProyecto(asset.asset)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (blob) => {
+              const reader = new FileReader();
+              reader.readAsDataURL(blob);
+              reader.onload = () => {
+                this.assets.push({
+                  base64: reader.result as string,
+                  project_id: proj.id,
+                  type: blob.type,
+                  asset_id: asset.id,
+                });
+              };
+            },
+            error: (err) => unknownErrorAlert(err),
+          });
+      });
+    });
+  }
+
+  public showGalleryCard(asset: Galeria, proyecto: Project): boolean {
+    return asset.project_id === proyecto.id;
+  }
+
+  public showGalleryImage(asset: Galeria, proyecto: Project): boolean {
+    return asset.type.includes('image') && asset.project_id === proyecto.id;
+  }
+
+  public showGalleryVideo(asset: Galeria, proyecto: Project): boolean {
+    return asset.type.includes('video') && asset.project_id === proyecto.id;
   }
 
   public expandImage(img: string) {
