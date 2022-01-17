@@ -50,7 +50,7 @@ export class ServiciosPicturesComponent implements OnInit {
   public fileToUpload?: File[] = [];
   public acceptedFileTypes: boolean = true;
 
-  private contentCounter: number = 0;
+  private pictureCounter: number = 0;
   private pictures: TipoServicioDataPictures[] = [];
   private destroy$: Subject<boolean> = new Subject();
 
@@ -186,7 +186,7 @@ export class ServiciosPicturesComponent implements OnInit {
   private setTableData(serv: TipoServicio, totalDeServicios: number): void {
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe({
       next: (params) => {
-        this.contentCounter++;
+        this.pictureCounter++;
 
         this.categoriaDeServicio = this.categoriaDeServicio.filter(
           (categoria) => categoria.id === +params.servicioId
@@ -202,7 +202,7 @@ export class ServiciosPicturesComponent implements OnInit {
           );
         }
 
-        if (this.contentCounter === totalDeServicios) {
+        if (this.pictureCounter === totalDeServicios) {
           this.pictures?.forEach((picture) => {
             this.tableData.push({
               imagen: `${environment.API_IMAGE_URL}/${picture.picture}`,
@@ -219,7 +219,7 @@ export class ServiciosPicturesComponent implements OnInit {
     if (recargar) {
       this.resetsetControls();
       this.tableData = [];
-      this.contentCounter = 0;
+      this.pictureCounter = 0;
       this.categoriaDeServicio = [];
       this.pictures = [];
       this.isCreating = false;

@@ -37,7 +37,6 @@ export class ServiciosContenidosComponent implements OnInit {
   public crudAction: string = '';
   public categoriaDeServicio: ServicesData[] = [];
   public contentId!: number;
-  public creationImageError: string = '';
 
   private contentCounter: number = 0;
   private contents: TipoServicioDataContent[] = [];
