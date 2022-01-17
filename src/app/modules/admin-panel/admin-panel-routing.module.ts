@@ -65,14 +65,14 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'servicios/contenidos',
+        path: 'servicios/contenidos/:servicioId',
         loadChildren: () =>
           import(
             './pages/servicios-contenidos/servicios-contenidos.module'
           ).then((m) => m.ServiciosContenidosModule),
       },
       {
-        path: 'servicios/pictures',
+        path: 'servicios/pictures/:servicioId',
         loadChildren: () =>
           import('./pages/servicios-pictures/servicios-pictures.module').then(
             (m) => m.ServiciosPicturesModule

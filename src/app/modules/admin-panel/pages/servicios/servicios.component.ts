@@ -226,11 +226,11 @@ export class ServiciosComponent implements OnInit, OnDestroy {
   }
 
   public addAssets(id: number): void {
-    this.router.navigateByUrl('/admin/servicios/pictures')
+    this.router.navigateByUrl(`/admin/servicios/pictures/${id}`)
   }
 
   public addContents(id: number): void {
-    this.router.navigateByUrl('/admin/servicios/contenidos')
+    this.router.navigateByUrl(`/admin/servicios/contenidos/${id}`)
   }
 
   ngOnDestroy(): void {

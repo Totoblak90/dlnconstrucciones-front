@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ServiciosPicturesRoutingModule } from './servicios-pictures-routing.module';
 import { ServiciosPicturesComponent } from './servicios-pictures.component';
-
+import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,8 @@ import { ServiciosPicturesComponent } from './servicios-pictures.component';
   ],
   imports: [
     CommonModule,
-    ServiciosPicturesRoutingModule
+    ServiciosPicturesRoutingModule,
+    ComponentsModule
   ]
 })
 export class ServiciosPicturesModule { }

@@ -1,1 +1,114 @@
-<p>servicios-contenidos works!</p>
+<div class="row">
+  <div class="col" *ngIf="!isEditing && !isCreating">
+    <div class="card">
+      <div class="card-body">
+        <app-table
+          *ngIf="tableData"
+          [title]="'Servicios/contenidos'"
+          [filasTabla]="tableData"
+          [encabezadosTabla]="encabezadosTabla"
+          [totalSection]="tableData?.length!"
+          [noImage]="true"
+          (onRecargar)="recargarServiceContents($event)"
+          (onCreate)="crearContenido()"
+          (onEdit)="editarContenido($event)"
+          (onDelete)="borrarContenido($event)"
+        ></app-table>
+      </div>
+    </div>
+  </div>
+  <div class="col" *ngIf="isCreating || isEditing">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="primary-dark">{{ crudAction }} contenido de un servicio</h1>
+      </div>
+      <div class="card-body">
+        <form
+          class="form p-t-20 form-material"
+          [formGroup]="serviceContentsForm"
+          (ngSubmit)="formSubmit()"
+        >
+          <div class="card-body">
+            <div class="form-group">
+              <label *ngFor="let categoria of categoriaDeServicio"
+                >Categoría de servicio: {{ categoria.title }}</label
+              >
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Título"
+                      formControlName="subtitle"
+                    />
+                    <div class="p-2">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          serviceContentsForm.controls.subtitle.errors
+                            ?.minlength &&
+                          serviceContentsForm.controls.subtitle.touched
+                        "
+                        >Debe tener al menos 6 caracteres</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      id="exampleInputuname2"
+                      placeholder="Descripción"
+                      formControlName="text"
+                      rows="5"
+                    ></textarea>
+                    <div class="p-2">
+                      <span
+                        *ngIf="
+                          serviceContentsForm.controls.text.errors?.minlength &&
+                          serviceContentsForm.controls.text.touched
+                        "
+                        class="text-danger"
+                        >Debe tener al menos 10 caracteres</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              type="submit"
+              class="btn btn-success waves-effect waves-light m-r-10 bgc-primary-dark"
+            >
+              Confirmar
+            </button>
+            <button
+              type="button"
+              (click)="recargarServiceContents(true)"
+              class="btn btn-danger waves-effect waves-light m-r-10"
+            >
+              Volver
+            </button>
+          </div>
+          <div class="p-2">
+            <span
+              *ngIf="
+                serviceContentsForm.controls.text.errors?.required &&
+                serviceContentsForm.controls.text.touched
+              "
+              class="text-danger"
+              >Debes llenar al menos 1 de los dos campos</span
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { ServiciosContenidosRoutingModule } from './servicios-contenidos-routing.module';
 import { ServiciosContenidosComponent } from './servicios-contenidos.component';
+import { ComponentsModule } from '../../components/components.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,7 +13,9 @@ import { ServiciosContenidosComponent } from './servicios-contenidos.component';
   ],
   imports: [
     CommonModule,
-    ServiciosContenidosRoutingModule
+    ServiciosContenidosRoutingModule,
+    ComponentsModule,
+    ReactiveFormsModule
   ]
 })
 export class ServiciosContenidosModule { }

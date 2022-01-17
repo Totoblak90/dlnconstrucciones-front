@@ -3,6 +3,8 @@ export type AdminPanelCrudRoutes =
   | 'batches'
   | 'interests'
   | 'services'
+  | 'contents'
+  | 'pictures'
   | 'users'
   | 'types'
   | 'categories'

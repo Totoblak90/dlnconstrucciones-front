@@ -7,10 +7,9 @@ import { AdminPanelCrudRoutes } from '../interfaces/general.interface';
 import { editUserRoleReq } from '../interfaces/users.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminPanelCrudService {
-
   private headers: HttpHeaders = new HttpHeaders({
     'access-token': getToken(),
   });
@@ -25,9 +24,43 @@ export class AdminPanelCrudService {
    * @return {*}  {Observable<any>}
    * @memberof AdminPanelCrudService
    */
-  public create(payload: FormData, tabla: AdminPanelCrudRoutes): Observable<any> {
+  public create(
+    payload: FormData,
+    tabla: AdminPanelCrudRoutes
+  ): Observable<any> {
     return this.http.post<any>(
       `${environment.API_BASE_URL}/${tabla}/create`,
+      payload,
+      { headers: this.headers }
+    );
+  }
+
+  /**
+   * Crea un nuevo contenido o imagen en los servicios
+   *
+   * @param payload: FormData
+   * @param tabla: AdminPanelCrudRoutes
+   * @return {*}  {Observable<any>}
+   * @memberof AdminPanelCrudService
+   */
+  public createContentOrPictureInService(
+    payload: FormData,
+    tabla: AdminPanelCrudRoutes
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${environment.API_BASE_URL}/services/${tabla}/create`,
+      payload,
+      { headers: this.headers }
+    );
+  }
+
+  public edit(
+    id: number,
+    payload: FormData,
+    tabla: AdminPanelCrudRoutes
+  ): Observable<any> {
+    return this.http.patch<any>(
+      `${environment.API_BASE_URL}/${tabla}/edit/${id}`,
       payload,
       { headers: this.headers }
     );
@@ -38,33 +71,37 @@ export class AdminPanelCrudService {
    *
    * @param id: number
    * @param payload: FormData
-   * @param tabla: AdminPanelCrudRoutes
    * @return {*}  {Observable<any>}
    * @memberof AdminPanelCrudService
    */
-  public edit(id: number, payload: FormData, tabla: AdminPanelCrudRoutes): Observable<any> {
+  public editUserRole(id: number, payload: editUserRoleReq): Observable<any> {
     return this.http.patch<any>(
-      `${environment.API_BASE_URL}/${tabla}/edit/${id}`,
+      `${environment.API_BASE_URL}/users/role/${id}`,
       payload,
       { headers: this.headers }
     );
   }
 
-    /**
-   * Edita un registro en la tabla indicada
+  /**
+   * Edita un contenido o una imágen de un servicio
    *
    * @param id: number
    * @param payload: FormData
+   * @param tabla: AdminPanelCrudRoutes
    * @return {*}  {Observable<any>}
    * @memberof AdminPanelCrudService
    */
-     public editUserRole(id: number, payload: editUserRoleReq): Observable<any> {
-      return this.http.patch<any>(
-        `${environment.API_BASE_URL}/users/role/${id}`,
-        payload,
-        { headers: this.headers }
-      );
-    }
+  public editContentOrPictureInService(
+    id: number,
+    payload: FormData,
+    tabla: AdminPanelCrudRoutes
+  ): Observable<any> {
+    return this.http.patch<any>(
+      `${environment.API_BASE_URL}/services/${tabla}/edit/${id}`,
+      payload,
+      { headers: this.headers }
+    );
+  }
 
   /**
    * Elimina un registro en la tabla indicada
@@ -77,6 +114,21 @@ export class AdminPanelCrudService {
   public delete(id: number, tabla: AdminPanelCrudRoutes): Observable<any> {
     return this.http.delete<any>(
       `${environment.API_BASE_URL}/${tabla}/delete/${id}`,
+      { headers: this.headers }
+    );
+  }
+
+  /**
+   * Elimina un contenido o una imágen de un servicio
+   *
+   * @param id: number
+   * @param tabla: AdminPanelCrudRoutes
+   * @return {*}  {Observable<any>}
+   * @memberof AdminPanelCrudService
+   */
+  public deleteContentOrImageFromService(id: number, tabla: AdminPanelCrudRoutes): Observable<any> {
+    return this.http.delete<any>(
+      `${environment.API_BASE_URL}/services/${tabla}/delete/${id}`,
       { headers: this.headers }
     );
   }

@@ -53,6 +53,8 @@ export function alertFailureOrSuccessOnCRUDAction(
     | 'pago'
     | 'archivo'
     | 'servicio'
+    | 'contenido'
+    | 'imagen de servicio'
     | 'tipo de trabajo'
     | 'trabajo realizado'
     | 'usuario'
