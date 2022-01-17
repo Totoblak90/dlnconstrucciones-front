@@ -28,6 +28,11 @@
           (ngSubmit)="formSubmit()"
         >
           <div class="card-body">
+            <div class="form-group">
+              <label *ngFor="let categoria of categoriaDeServicio"
+                >Categoría de servicio: {{ categoria.title }}</label
+              >
+            </div>
             <div class="row justify-content-center">
               <div
                 *ngFor="let file of imageToShow"
