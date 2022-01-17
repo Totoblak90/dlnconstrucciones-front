@@ -27,7 +27,11 @@ import {
 export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   @HostBinding('class.admin-panel-container') someClass: Host = true;
 
-  public encabezadosTabla: string[] = ['Título', 'Descripción'];
+  public encabezadosTabla: string[] = [
+    'Título',
+    'Descripción',
+    'Tipo de trabajo',
+  ];
   public tableData: CuerpoTabla[] = [];
   public jobForm!: FormGroup;
   public isCreating: boolean = false;
@@ -137,6 +141,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
         imagen: `${environment.API_IMAGE_URL}/${j.image}`,
         item2: j.title ? j.title : 'Vacío',
         item3: j.description ? j.description : 'Vacío',
+        item4: job.data.title,
         id: j.id,
       });
       this.jobs.push(j);
