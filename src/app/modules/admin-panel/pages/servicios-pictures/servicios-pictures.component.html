@@ -1,1 +1,98 @@
-<p>servicios-pictures works!</p>
+<div class="row">
+  <div class="col" *ngIf="!isEditing && !isCreating">
+    <div class="card">
+      <div class="card-body">
+        <app-table
+          *ngIf="tableData"
+          [title]="'Imágenes de un servicio'"
+          [filasTabla]="tableData"
+          [encabezadosTabla]="encabezadosTabla"
+          [totalSection]="tableData?.length!"
+          (onRecargar)="recargarServicePictures($event)"
+          (onCreate)="crearPictures()"
+          (onEdit)="editarPictures($event)"
+          (onDelete)="borrarPictures($event)"
+        ></app-table>
+      </div>
+    </div>
+  </div>
+  <div class="col" *ngIf="isCreating || isEditing">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="primary-dark">{{ crudAction }} Servicios/Imágen</h1>
+      </div>
+      <div class="card-body">
+        <form
+          class="form p-t-20 form-material"
+          [formGroup]="servicePicturesForm"
+          (ngSubmit)="formSubmit()"
+        >
+          <div class="card-body">
+            <div class="row justify-content-center">
+              <div
+                *ngFor="let file of imageToShow"
+                class="col-md-4 mb-2"
+                (click)="openInput()"
+              >
+                <img
+                  class="img-responsive image-gallery"
+                  [src]="file"
+                  alt="Servicio realizado"
+                />
+              </div>
+              <ng-container
+                *ngIf="crudAction === 'Crear'; else isEditingTemplate"
+              >
+                <input
+                  [hidden]="true"
+                  #imageInput
+                  type="file"
+                  formControlName="image"
+                  (change)="showSelectedImage($event)"
+                  multiple
+                />
+                <div class="p-2 text-center">
+                  <span class="text-danger" *ngIf="creationImageError">{{
+                    creationImageError
+                  }}</span>
+                  <span class="text-danger" *ngIf="!acceptedFileTypes"
+                    >Los formatos aceptados son JPG, JPEG y PNG</span
+                  >
+                </div>
+              </ng-container>
+              <ng-template #isEditingTemplate>
+                <input
+                  [hidden]="true"
+                  #imageInput
+                  type="file"
+                  formControlName="image"
+                  (change)="showSelectedImage($event)"
+                />
+                <div class="p-2 text-center">
+                  <span class="text-danger" *ngIf="!acceptedFileTypes"
+                    >Los formatos aceptados son JPG, JPEG y PNG</span
+                  >
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              type="submit"
+              class="btn btn-success waves-effect waves-light m-r-10 bgc-primary-dark"
+            >
+              Confirmar
+            </button>
+            <button
+              type="button"
+              (click)="recargarServicePictures(true)"
+              class="btn btn-danger waves-effect waves-light m-r-10"
+            >
+              Volver
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
