@@ -18,6 +18,7 @@ import {
   noConnectionAlert,
   unknownErrorAlert,
   alertFailureOrSuccessOnCRUDAction,
+  customMessageAlert,
 } from '../../../../helpers/alerts';
 import {
   Services,
@@ -70,7 +71,7 @@ export class ServiciosPicturesComponent implements OnInit {
     });
   }
 
-  public showSelectedImage(e: any) {
+  public async showSelectedImage(e: any): Promise<void> {
     if (
       this.crudAction === 'Crear' &&
       !this.servicePicturesForm.controls.image.value
@@ -81,51 +82,55 @@ export class ServiciosPicturesComponent implements OnInit {
       this.creationImageError = '';
     }
 
-    if (this.crudAction === 'Crear') {
-      const files = Array.from(e.target?.files as FileList);
-      this.checkFilesType(files);
+    let files = Array.from(e.target?.files as FileList);
 
-      if (files.length && this.acceptedFileTypes) {
-        this.imageToShow = [];
-        this.fileToUpload = files;
-        this.fileToUpload.forEach((file) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = () => this.imageToShow.push(reader.result as string);
-        });
-      } else if (files.length && !this.acceptedFileTypes) {
-      } else {
-        this.imageToShow = ['../../../../../assets/no-image.png'];
-      }
-    } else {
-      const file = e.target?.files[0] as File;
-      this.acceptedFileTypes =
-        file?.type === 'image/jpg' ||
-        file?.type === 'image/jpeg' ||
-        file?.type === 'image/png';
+    files = await this.checkAmountOfFiles(files);
 
-      if (file && this.acceptedFileTypes) {
-        this.fileToUpload = [file];
+    this.acceptedFileTypes = await this.checkFilesType(files);
+
+    if (files.length && this.acceptedFileTypes) {
+      this.imageToShow = [];
+      this.fileToUpload = files;
+      this.fileToUpload.forEach((file) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = () => (this.imageToShow = [reader.result as string]);
-      } else {
-        this.imageToShow = ['../../../../../assets/no-image.png'];
-      }
+        reader.onload = () => this.imageToShow.push(reader.result as string);
+      });
+    } else if (files.length && !this.acceptedFileTypes) {
+    } else {
+      this.imageToShow = ['../../../../../assets/no-image.png'];
     }
   }
 
-  private checkFilesType(files: File[]): void {
-    files.forEach((file) => {
-      if (
-        file.type.includes('image/jpg') ||
-        file.type.includes('image/jpeg') ||
-        file.type.includes('image/png')
-      ) {
-        this.acceptedFileTypes = true;
-      } else {
-        this.acceptedFileTypes = false;
+  private checkAmountOfFiles(files: File[]): Promise<File[]> {
+    return new Promise((resolve) => {
+      if (files.length > 10) {
+        customMessageAlert(
+          'Atención',
+          'No se pueden subir más de 10 imágenes',
+          'OK',
+          'info'
+        );
+        files = files.slice(0, 10);
       }
+      resolve(files);
+    });
+  }
+
+  private checkFilesType(files: File[]): Promise<boolean> {
+    return new Promise((resolve) => {
+      let validator: boolean | 'valido' = 'valido';
+      files.forEach((file) => {
+        if (
+          file.type.includes('image/jpg') ||
+          file.type.includes('image/jpeg') ||
+          file.type.includes('image/png')
+        ) {
+        } else {
+          validator = false;
+        }
+      });
+      validator === 'valido' ? resolve(true) : resolve(false);
     });
   }
 
@@ -150,10 +155,15 @@ export class ServiciosPicturesComponent implements OnInit {
 
     this.servicePicturesForm.markAllAsTouched();
     if (this.servicePicturesForm.valid) {
-      let formData = {
-        serviceId: this.servicePicturesForm.controls.serviceId.value,
-        pictures: this.fileToUpload!,
-      };
+
+      const formData: FormData = new FormData();
+      formData.append(
+        'serviceId',
+        this.servicePicturesForm.controls.serviceId.value
+      );
+      this.fileToUpload?.forEach((file: File) => {
+        formData.append(`pictures`, file);
+      });
 
       this.crudAction === 'Crear'
         ? this.crearPicturesEnLaDb(formData)
@@ -240,7 +250,7 @@ export class ServiciosPicturesComponent implements OnInit {
     this.isEditing = false;
   }
 
-  private crearPicturesEnLaDb(formData: any) {
+  private crearPicturesEnLaDb(formData: FormData) {
     this.adminPanelCrudService
       .createContentOrPictureInService(formData, 'pictures')
       .pipe(takeUntil(this.destroy$))
@@ -269,7 +279,7 @@ export class ServiciosPicturesComponent implements OnInit {
     }
   }
 
-  private editarPicturesEnLaDb(formData: any) {
+  private editarPicturesEnLaDb(formData: FormData) {
     this.adminPanelCrudService
       .editContentOrPictureInService(this.pictureId, formData, 'pictures')
       .pipe(takeUntil(this.destroy$))
