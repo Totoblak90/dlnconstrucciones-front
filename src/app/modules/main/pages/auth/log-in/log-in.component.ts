@@ -11,7 +11,10 @@ import { Subject } from 'rxjs';
 import { User } from '../../../../../models/user.model';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { noConnectionAlert } from '../../../../../helpers/alerts';
+import {
+  noConnectionAlert,
+  customMessageAlert,
+} from '../../../../../helpers/alerts';
 import { UserStoreService } from '../../../../../services/user-store.service';
 
 @Component({
@@ -56,7 +59,12 @@ export class LogInComponent implements OnDestroy {
               : null;
             res?.meta?.status === 200
               ? this.guardarOAlertarUsuarioLogueado(res?.data?.user)
-              : this.alertUsuarioInexistente();
+              : customMessageAlert(
+                  '¡Lo sentimos!',
+                  'Credenciales incorrectas. Por favor validá la información ingresada.',
+                  'OK',
+                  'error'
+                );
           },
           (err) => noConnectionAlert(err)
         );
@@ -77,20 +85,6 @@ export class LogInComponent implements OnDestroy {
     };
     this.userStore.setUser(loggedUser);
     this.router.navigateByUrl('/main/auth/profile');
-  }
-
-  private alertUsuarioInexistente(): void {
-    Swal.fire({
-      title: '¡Lo sentimos!',
-      text: 'No tenemos un usuario registrado con ese email, podés registrart clickeando en el botón.',
-      showDenyButton: true,
-      confirmButtonText: 'Registrarse',
-      denyButtonText: `Cancelar`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.router.navigateByUrl('/main/auth/register');
-      }
-    });
   }
 
   public showPassword(e: HTMLInputElement): void {

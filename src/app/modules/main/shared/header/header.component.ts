@@ -105,17 +105,14 @@ export class HeaderComponent {
           this.menu.push(this._acreditarse);
         }
       }
-      console.log(this.user)
     });
   }
 
   public login(): void {
-    console.log('login')
     this.router.navigateByUrl('main/auth/login')
   }
 
   public register(): void {
-    console.log('register')
     this.router.navigateByUrl('main/auth/register')
   }
 

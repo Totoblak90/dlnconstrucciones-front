@@ -237,16 +237,15 @@
               </div>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" *ngIf="user?.role === 'master'">
             <label for="roleSelectInput">Rol del usuario*</label>
             <select
               formControlName="role"
               class="form-control custom-select"
-              id="roleSelectInput"s
+              id="roleSelectInput"
+              s
             >
-              <option [value]="'no'">
-                --Seleccionar el rol del usuario--
-              </option>
+              <option [value]="'no'">--Seleccionar el rol del usuario--</option>
               <option [value]="'admin'">Admin</option>
               <option [value]="'user'">Usuario final</option>
             </select>
@@ -254,9 +253,7 @@
             <div class="p-2">
               <span
                 class="text-danger"
-                *ngIf="
-                  registerForm.controls.role.errors?.notValue
-                "
+                *ngIf="registerForm.controls.role.errors?.notValue"
                 >Este dato es requerido</span
               >
             </div>
@@ -301,7 +298,8 @@
   <h4 class="primary-dark">¡Solo queda un paso más!</h4>
   <p class="primary">
     Revisá tu casilla de correo electrónico y hace click en el enlace que te
-    enviamos para validar tu cuenta
+    enviamos para validar tu cuenta. Luego de hacer click se abrirá una nueva
+    ventana donde podrás continuar con el registro.
   </p>
   <p class="primary">
     El correo puede tardar unos minutos. Si ves que no llega por favor revisa el
