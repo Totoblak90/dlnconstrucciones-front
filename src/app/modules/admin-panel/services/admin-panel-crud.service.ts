@@ -54,6 +54,15 @@ export class AdminPanelCrudService {
     );
   }
 
+  /**
+   * Edita un registro en la tabla indicada
+   *
+   * @param {number} id
+   * @param {FormData} payload
+   * @param {AdminPanelCrudRoutes} tabla
+   * @return {*}  {Observable<any>}
+   * @memberof AdminPanelCrudService
+   */
   public edit(
     id: number,
     payload: FormData,
@@ -67,7 +76,7 @@ export class AdminPanelCrudService {
   }
 
   /**
-   * Edita un registro en la tabla indicada
+   * Edita el rol de un usuario
    *
    * @param id: number
    * @param payload: FormData

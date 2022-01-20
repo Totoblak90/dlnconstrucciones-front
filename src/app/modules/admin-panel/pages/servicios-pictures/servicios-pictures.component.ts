@@ -48,7 +48,7 @@ export class ServiciosPicturesComponent implements OnInit {
   public pictureId!: number;
   public creationImageError: string = '';
   public imageToShow: string[] = ['../../../../../assets/no-image.png'];
-  public fileToUpload?: File[] = [];
+  public fileToUpload: File[] = [];
   public acceptedFileTypes: boolean = true;
 
   private pictureCounter: number = 0;
@@ -96,8 +96,8 @@ export class ServiciosPicturesComponent implements OnInit {
         reader.readAsDataURL(file);
         reader.onload = () => this.imageToShow.push(reader.result as string);
       });
-    } else if (files.length && !this.acceptedFileTypes) {
     } else {
+      this.fileToUpload = [];
       this.imageToShow = ['../../../../../assets/no-image.png'];
     }
   }
@@ -155,15 +155,16 @@ export class ServiciosPicturesComponent implements OnInit {
 
     this.servicePicturesForm.markAllAsTouched();
     if (this.servicePicturesForm.valid) {
-
       const formData: FormData = new FormData();
       formData.append(
         'serviceId',
         this.servicePicturesForm.controls.serviceId.value
       );
-      this.fileToUpload?.forEach((file: File) => {
-        formData.append(`pictures`, file);
-      });
+      if (this.fileToUpload?.length) {
+        this.fileToUpload?.forEach((file: File) => {
+          formData.append(`pictures`, file);
+        });
+      }
 
       this.crudAction === 'Crear'
         ? this.crearPicturesEnLaDb(formData)

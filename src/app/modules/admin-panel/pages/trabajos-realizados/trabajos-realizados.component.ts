@@ -1,4 +1,12 @@
-import { Component, Host, HostBinding, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Host,
+  HostBinding,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import {
   Job,
@@ -17,6 +25,7 @@ import {
   noConnectionAlert,
   unknownErrorAlert,
   alertFailureOrSuccessOnCRUDAction,
+  customMessageAlert,
 } from '../../../../helpers/alerts';
 
 @Component({
@@ -26,6 +35,7 @@ import {
 })
 export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   @HostBinding('class.admin-panel-container') someClass: Host = true;
+  @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
 
   public encabezadosTabla: string[] = [
     'Título',
@@ -37,8 +47,8 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
   public isCreating: boolean = false;
   public isEditing: boolean = false;
   public crudAction: string = '';
-  public imageToShow: string = '../../../../../assets/no-image.png';
-  public fileToUpload?: File;
+  public imageToShow: string[] = ['../../../../../assets/no-image.png'];
+  public fileToUpload: File[] = [];
   public acceptedFileTypes: boolean = true;
   public categoriaDeTrabajo: TypesOfJobsData[] = [];
   public trabajoID!: number;
@@ -64,6 +74,10 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
     });
   }
 
+  public openInput(): void {
+    this.imageInput.nativeElement.click();
+  }
+
   ngOnInit(): void {
     this.getTrabajos();
   }
@@ -81,14 +95,18 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       formData.append('title', this.jobForm.controls.title?.value);
       formData.append('description', this.jobForm.controls.description?.value);
       formData.append('type', this.jobForm.controls.type?.value);
-      this.fileToUpload && formData.append('image', this.fileToUpload!);
+      if (this.fileToUpload?.length) {
+        this.fileToUpload.forEach((file) => {
+          this.fileToUpload && formData.append('image', file);
+        });
+      }
       this.crudAction === 'Crear'
         ? this.crearTrabajoEnLaDb(formData)
         : this.editarTrabajoEnLaDb(formData);
     }
   }
 
-  public showSelectedImage(e: any) {
+  public async showSelectedImage(e: any): Promise<void> {
     if (this.crudAction === 'Crear' && !this.jobForm.controls.image.value) {
       this.creationImageError = 'La imágen es obligatoria';
       return;
@@ -96,21 +114,56 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       this.creationImageError = '';
     }
 
-    const file = e.target?.files[0];
+    let files = Array.from(e.target?.files as FileList);
 
-    this.acceptedFileTypes =
-      file.type === 'image/jpg' ||
-      file.type === 'image/jpeg' ||
-      file.type === 'image/png';
+    files = await this.checkAmountOfFiles(files);
 
-    if (file && this.acceptedFileTypes) {
-      this.fileToUpload = file;
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => (this.imageToShow = reader.result as string);
+    this.acceptedFileTypes = await this.checkFilesType(files);
+
+    if (files.length && this.acceptedFileTypes) {
+      this.imageToShow = [];
+      this.fileToUpload = files;
+      this.fileToUpload.forEach((file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => this.imageToShow.push(reader.result as string);
+      });
     } else {
-      this.imageToShow = '../../../../../assets/no-image.png';
+      this.fileToUpload = [];
+      this.imageToShow = ['../../../../../assets/no-image.png'];
     }
+  }
+
+  private checkAmountOfFiles(files: File[]): Promise<File[]> {
+    return new Promise((resolve) => {
+      if (files.length > 10) {
+        customMessageAlert(
+          'Atención',
+          'No se pueden subir más de 10 imágenes',
+          'OK',
+          'info'
+        );
+        files = files.slice(0, 10);
+      }
+      resolve(files);
+    });
+  }
+
+  private checkFilesType(files: File[]): Promise<boolean> {
+    return new Promise((resolve) => {
+      let validator: boolean | 'valido' = 'valido';
+      files.forEach((file) => {
+        if (
+          file.type.includes('image/jpg') ||
+          file.type.includes('image/jpeg') ||
+          file.type.includes('image/png')
+        ) {
+        } else {
+          validator = false;
+        }
+      });
+      validator === 'valido' ? resolve(true) : resolve(false);
+    });
   }
 
   private getTrabajos(): void {
@@ -153,6 +206,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       this.resetsetControls();
       this.tableData = [];
       this.categoriaDeTrabajo = [];
+      this.fileToUpload = [];
       this.jobs = [];
       this.isCreating = false;
       this.isEditing = false;
@@ -165,7 +219,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
     this.jobForm.controls.description.setValue('');
     this.jobForm.controls.type.setValue('');
     this.jobForm.controls.image.setValue('');
-    this.imageToShow = '../../../../../assets/no-image.png';
+    this.imageToShow = ['../../../../../assets/no-image.png'];
   }
 
   public crearTrabajoRealizado(): void {
@@ -200,7 +254,7 @@ export class TrabajosRealizadosComponent implements OnInit, OnDestroy {
       this.jobForm.controls.title.setValue(trabajo.title);
       this.jobForm.controls.description.setValue(trabajo.description);
       this.jobForm.controls.type.setValue(trabajo.types_id);
-      this.imageToShow = `${environment.API_IMAGE_URL}/${trabajo.image}`;
+      this.imageToShow = [`${environment.API_IMAGE_URL}/${trabajo.image}`];
     }
   }
 

@@ -29,20 +29,29 @@
         >
           <div class="card-body">
             <div class="row justify-content-center">
-              <div class="col-md-4 mb-2" (click)="imageInput.click()">
+              <div
+                *ngFor="let file of imageToShow"
+                class="col-md-4 mb-2"
+                (click)="openInput()"
+              >
                 <img
-                  class="img-responsive"
-                  [src]="imageToShow"
-                  alt="Trabajo realizado"
+                  class="img-responsive image-gallery"
+                  [src]="file"
+                  alt="Servicio realizado"
                 />
+              </div>
+              <ng-container
+                *ngIf="crudAction === 'Crear'; else isEditingTemplate"
+              >
                 <input
                   [hidden]="true"
                   #imageInput
                   type="file"
                   formControlName="image"
                   (change)="showSelectedImage($event)"
+                  multiple
                 />
-                <div class="p-2">
+                <div class="p-2 text-center">
                   <span class="text-danger" *ngIf="creationImageError">{{
                     creationImageError
                   }}</span>
@@ -50,7 +59,21 @@
                     >Los formatos aceptados son JPG, JPEG y PNG</span
                   >
                 </div>
-              </div>
+              </ng-container>
+              <ng-template #isEditingTemplate>
+                <input
+                  [hidden]="true"
+                  #imageInput
+                  type="file"
+                  formControlName="image"
+                  (change)="showSelectedImage($event)"
+                />
+                <div class="p-2 text-center">
+                  <span class="text-danger" *ngIf="!acceptedFileTypes"
+                    >Los formatos aceptados son JPG, JPEG y PNG</span
+                  >
+                </div>
+              </ng-template>
             </div>
             <div class="form-group">
               <label>Categoría de trabajo*</label>
@@ -74,7 +97,7 @@
                 >
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="crudAction === 'Editar'">
               <div class="col">
                 <div class="form-group">
                   <div class="input-group">
