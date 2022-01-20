@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
-import { User } from 'src/app/models/user.model';
+import { Component, OnInit } from '@angular/core';
 import { Menu } from 'src/app/modules/main/interfaces/header.interface';
-import { AuthService } from '../../../main/services/auth.service';
+import { UserStoreService } from '../../../../services/user-store.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header-admin',
   templateUrl: './header-admin.component.html',
   styleUrls: ['./header-admin.component.scss'],
 })
-export class HeaderAdminComponent {
+export class HeaderAdminComponent implements OnInit {
+  public user = this.userStore.loggedUser$;
+  public userAvatar: string | undefined;
+  public userName: string | undefined;
+  public userLastName: string | undefined;
   public showMenu: boolean = false;
   public menu: Menu[] = [
     {
@@ -73,19 +77,22 @@ export class HeaderAdminComponent {
     },
   ];
 
-  constructor(private authService: AuthService) {}
+  constructor(private userStore: UserStoreService) {}
 
-  public get user(): User {
-    if (this.authService.getUser().role !== 'master') {
-      this.menu = this.menu.filter(
-        (item) =>
-          item.description !== 'Proyectos' && item.description !== 'Usuarios'
-      );
-    }
-    return this.authService.getUser();
-  }
-
-  public getUserImg(): string {
-    return this.user ? this.user?.getAvatar() : '';
+  ngOnInit(): void {
+    this.user.subscribe((res) => {
+      if (res.id) {
+        if (res.role !== 'master') {
+          this.menu = this.menu.filter(
+            (item) =>
+              item.description !== 'Proyectos' &&
+              item.description !== 'Usuarios'
+          );
+        }
+        this.userName = res.nombre;
+        this.userLastName = res.apellido;
+        this.userAvatar = `${environment.API_IMAGE_URL}/users/${res.avatar}`;
+      }
+    });
   }
 }

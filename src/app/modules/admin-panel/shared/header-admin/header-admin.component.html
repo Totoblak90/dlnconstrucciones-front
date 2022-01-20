@@ -39,8 +39,8 @@
           *ngIf="user"
         >
           <a class="nav-link waves-effect waves-dark primary-dark"
-            ><img [src]="getUserImg()" alt="user" class="profile-pic" />
-            {{ user?.nombre }} {{ user?.apellido }}
+            ><img [src]="userAvatar" alt="user" class="profile-pic" />
+            {{ userName }} {{ userLastName }}
           </a>
         </li>
         <li role="separator" class="divider" *ngIf="user"></li>

@@ -16,6 +16,7 @@ import {
 import { RegisterRes } from '../../../interfaces/http/auth.interface';
 import { User } from 'src/app/models/user.model';
 import { Router } from '@angular/router';
+import { UserStoreService } from '../../../../../services/user-store.service';
 
 @Component({
   selector: 'app-register',
@@ -30,22 +31,28 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public userWantsToSeePassword: boolean = false;
   public repeatPasswordEye: string = 'fa fa-eye-slash';
   public userWantsToSeeRepeatPassword: boolean = false;
-  public get user(): User | undefined {
-    return this.authService.getUser();
-  }
+  public user: User | undefined;
   public registerForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private userStore: UserStoreService
   ) {
+    this.setUser();
     this.createForm();
   }
 
   ngOnInit(): void {
     this.validateTermsAndConditionsAreRequired();
     this.validateRoleIsRequired();
+  }
+
+  private setUser(): void {
+    this.userStore.loggedUser$.subscribe((res) => {
+      res.id ? (this.user = res) : (this.user = undefined);
+    });
   }
 
   private createForm(): void {

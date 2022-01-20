@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { ProjectsService } from '../../../../admin-panel/services/projects.service';
+import { UserStoreService } from '../../../../../services/user-store.service';
 import {
   unknownErrorAlert,
   noConnectionAlert,
@@ -14,6 +15,8 @@ import {
   IdentifyTokenOActualizarUsuario,
   UserData,
 } from '../../../interfaces/http/auth.interface';
+import { environment } from 'src/environments/environment';
+import { Project } from 'src/app/modules/admin-panel/interfaces/users.interface';
 
 @Component({
   selector: 'app-user-profile',
@@ -31,14 +34,39 @@ export class UserProfileComponent implements OnDestroy {
   public userWantsToSeePassword: boolean = false;
   public repeatPasswordEye: string = 'fa fa-eye-slash';
   public userWantsToSeeRepeatPassword: boolean = false;
+  public user: User | undefined;
+  public userAvatar: string | undefined;
+  public userName: string | undefined;
+  public userLastName: string | undefined;
+  public userEmail: string | undefined;
+  public userPhone: string | undefined;
+  public userProjects: Project[] | undefined;
 
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
     private projectsService: ProjectsService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private userStore: UserStoreService
   ) {
-    this.createForm();
+    this.setUserAndCreateForm();
+  }
+
+  private setUserAndCreateForm(): void {
+    this.userStore.loggedUser$.subscribe((res) => {
+      if (res.id) {
+        this.user = res;
+        this.userAvatar = `${environment.API_IMAGE_URL}/users/${res.avatar}`;
+        this.userName = res.nombre;
+        this.userLastName = res.apellido;
+        this.userEmail = res.email;
+        this.userPhone = res.phone;
+        this.userProjects = res.projects;
+        this.createForm();
+      } else {
+        this.createForm();
+      }
+    });
   }
 
   private createForm(): void {
@@ -134,10 +162,6 @@ export class UserProfileComponent implements OnDestroy {
       : (e.type = 'password');
   }
 
-  public get user(): User {
-    return this.authService.getUser();
-  }
-
   public cambiarFoto(e: any): void {
     const file: File = e.target.files[0];
     const formData: FormData = new FormData();
@@ -214,18 +238,18 @@ export class UserProfileComponent implements OnDestroy {
   }
 
   private modifyLoggedUser(usuario: UserData) {
-    const user: User = new User(
-      usuario?.id,
-      usuario?.first_name,
-      usuario?.last_name,
-      usuario?.email,
-      usuario?.role,
-      usuario?.dni,
-      usuario?.avatar,
-      usuario?.phone,
-      usuario?.Projects
-    );
-    this.authService.setUser(user);
+    const loggedUser: User = {
+      id: usuario.id,
+      nombre: usuario.first_name,
+      apellido: usuario.last_name,
+      email: usuario.email,
+      role: usuario.role,
+      dni: usuario.dni,
+      avatar: usuario.avatar,
+      phone: usuario.phone,
+      projects: usuario.Projects,
+    };
+    this.userStore.setUser(loggedUser);
     Swal.fire('¡Excelente!', 'Actualizamos tus datos sin problemas', 'success');
   }
 
@@ -268,7 +292,7 @@ export class UserProfileComponent implements OnDestroy {
   }
 
   public logout(): void {
-    this.authService.logout();
+    this.userStore.logout();
   }
 
   ngOnDestroy(): void {

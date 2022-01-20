@@ -6,7 +6,7 @@
         <div class="m-t-30 text-center">
           <img
             (click)="inputFoto.click()"
-            [src]="user.getAvatar()"
+            [src]="userAvatar"
             class="img-circle pointer"
             width="150"
           />
@@ -20,7 +20,7 @@
             class="d-none"
           />
           <h4 class="card-title m-t-10 primary-dark">
-            {{ user?.nombre }} {{ user.apellido }}
+            {{ userName }} {{ userLastName }}
           </h4>
         </div>
       </div>
@@ -29,9 +29,9 @@
       </div>
       <div class="card-body">
         <h4 class="text-muted">Email</h4>
-        <h6>{{ user?.email }}</h6>
-        <h4 [hidden]="!user?.phone" class="text-muted p-t-30 db">Teléfono</h4>
-        <h6 [hidden]="!user?.phone">{{ user?.phone }}</h6>
+        <h6>{{ userEmail }}</h6>
+        <h4 [hidden]="!userPhone" class="text-muted p-t-30 db">Teléfono</h4>
+        <h6 [hidden]="!userPhone">{{ userPhone }}</h6>
       </div>
     </div>
   </div>
@@ -95,24 +95,24 @@
                 <strong>Nombre completo</strong>
                 <br />
                 <p class="text-muted">
-                  {{ user?.nombre }} {{ user?.apellido }}
+                  {{ userName }} {{ userLastName }}
                 </p>
               </div>
               <div class="col-md-4 col-xs-6 b-r">
                 <strong>Teléfono</strong>
                 <br />
-                <p class="text-muted">{{ user?.phone }}</p>
+                <p class="text-muted">{{ userPhone }}</p>
               </div>
               <div class="col-md-4 col-xs-6">
                 <strong>Email</strong>
                 <br />
-                <p class="text-muted">{{ user?.email }}</p>
+                <p class="text-muted">{{ userEmail }}</p>
               </div>
             </div>
             <hr />
-            <ng-container *ngIf="user?.projects; else noProjects">
+            <ng-container *ngIf="userProjects; else noProjects">
               <app-proyects
-                [setProyectos]="user"
+                [setProyectos]="user!"
                 (onDownloadCashflow)="descargarCashflow($event)"
               ></app-proyects>
             </ng-container>

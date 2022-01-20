@@ -13,12 +13,7 @@
         <li *ngFor="let m of menu" class="nav-item dropdown d-none d-sm-block">
           <ng-container *ngIf="m.toggle">
             <a
-              class="
-                nav-link
-                dropdown-toggle
-                waves-effect waves-dark
-                primary-dark
-              "
+              class="nav-link dropdown-toggle waves-effect waves-dark primary-dark"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
@@ -42,19 +37,17 @@
         </li>
 
         <!-- Tarjeta de usuario-->
-        <li class="nav-item dropdown user-profile-card d-none d-sm-block" *ngIf="user">
+        <li
+          class="nav-item dropdown user-profile-card d-none d-sm-block"
+          *ngIf="user"
+        >
           <a
-            class="
-              nav-link
-              dropdown-toggle
-              waves-effect waves-dark
-              primary-dark
-            "
+            class="nav-link dropdown-toggle waves-effect waves-dark primary-dark"
             href=""
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-            ><img [src]="getUserImg()" alt="user" class="profile-pic" />
+            ><img [src]="userAvatar" alt="user" class="profile-pic" />
             {{ user?.nombre }} {{ user?.apellido }}
           </a>
           <div class="dropdown-menu dropdown-menu-right animated flipInY">
@@ -62,7 +55,7 @@
               <li>
                 <div class="dw-user-box">
                   <div class="u-img">
-                    <img [src]="getUserImg()" alt="user" />
+                    <img [src]="userAvatar" alt="user" />
                   </div>
                   <div class="u-text">
                     <h4>{{ user?.nombre }} {{ user?.apellido }}</h4>
@@ -103,12 +96,7 @@
 
         <li class="nav-item dropdown d-sm-none">
           <a
-            class="
-              nav-link
-              dropdown-toggle
-              waves-effect waves-dark
-              primary-dark
-            "
+            class="nav-link dropdown-toggle waves-effect waves-dark primary-dark"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
@@ -124,12 +112,7 @@
               >
                 <ng-container *ngIf="m.toggle && m.inMobile">
                   <a
-                    class="
-                      nav-link
-                      dropdown-toggle
-                      waves-effect waves-dark
-                      primary-dark
-                    "
+                    class="nav-link dropdown-toggle waves-effect waves-dark primary-dark"
                     [routerLink]="m.redirectTo"
                   >
                     {{ m.description }}</a
@@ -137,30 +120,22 @@
                 </ng-container>
               </li>
 
-              <li class="pointer" routerLink="/main/auth/login">
+              <li class="pointer">
                 <ng-container *ngIf="!user">
                   <a
-                    class="
-                      nav-link
-                      dropdown-toggle
-                      waves-effect waves-dark
-                      primary-dark
-                    "
+                    (click)="login()"
+                    class="nav-link dropdown-toggle waves-effect waves-dark primary-dark"
                   >
                     INICIAR SESIÓN</a
                   >
                 </ng-container>
               </li>
 
-              <li class="pointer" routerLink="/main/auth/register">
+              <li class="pointer">
                 <ng-container *ngIf="!user">
                   <a
-                    class="
-                      nav-link
-                      dropdown-toggle
-                      waves-effect waves-dark
-                      primary-dark
-                    "
+                    (click)="register()"
+                    class="nav-link dropdown-toggle waves-effect waves-dark primary-dark"
                   >
                     REGISTRARSE</a
                   >
@@ -173,17 +148,12 @@
         <!-- Tarjeta de usuario-->
         <li class="nav-item dropdown d-sm-none" *ngIf="user">
           <a
-            class="
-              nav-link
-              dropdown-toggle
-              waves-effect waves-dark
-              primary-dark
-            "
+            class="nav-link dropdown-toggle waves-effect waves-dark primary-dark"
             href=""
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-            ><img [src]="getUserImg()" alt="user" class="profile-pic" />
+            ><img [src]="userAvatar" alt="user" class="profile-pic" />
             {{ user?.nombre }} {{ user?.apellido }}
           </a>
           <div class="dropdown-menu dropdown-menu-right animated flipInY">
@@ -191,7 +161,7 @@
               <li>
                 <div class="dw-user-box">
                   <div class="u-img">
-                    <img [src]="getUserImg()" alt="user" />
+                    <img [src]="userAvatar" alt="user" />
                   </div>
                   <div class="u-text">
                     <h4>{{ user?.nombre }} {{ user?.apellido }}</h4>

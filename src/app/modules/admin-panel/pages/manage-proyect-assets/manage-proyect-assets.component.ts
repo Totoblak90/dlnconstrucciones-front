@@ -8,12 +8,10 @@ import {
   noConnectionAlert,
   unknownErrorAlert,
 } from 'src/app/helpers/alerts';
-import { environment } from 'src/environments/environment';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import {
   OneProjectRes,
-  Project,
   ProyectAssets,
 } from '../../interfaces/users.interface';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';

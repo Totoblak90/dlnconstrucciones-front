@@ -13,6 +13,7 @@ import {
 import { AuthService } from '../../../services/auth.service';
 import { unknownErrorAlert } from '../../../../../helpers/alerts';
 import { FullUser } from '../../../../admin-panel/interfaces/users.interface';
+import { UserStoreService } from '../../../../../services/user-store.service';
 
 @Component({
   selector: 'app-recuperar-contrasenia-paso-dos',
@@ -31,7 +32,8 @@ export class RecuperarContraseniaPasoDosComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private userStore: UserStoreService
   ) {
     this.createForm();
   }
@@ -131,18 +133,18 @@ export class RecuperarContraseniaPasoDosComponent {
   }
 
   private guardarOAlertarUsuarioLogueado(usuario: FullUser): void {
-    const loggedUser = new User(
-      usuario.id,
-      usuario.first_name,
-      usuario.last_name,
-      usuario.email,
-      usuario.role,
-      usuario.dni,
-      usuario.avatar,
-      usuario.phone,
-      usuario.Projects
-    );
-    this.authService.setUser(loggedUser);
+    const loggedUser: User = {
+      id: usuario.id,
+      nombre: usuario.first_name,
+      apellido: usuario.last_name,
+      email: usuario.email,
+      role: usuario.role,
+      dni: usuario.dni,
+      avatar: usuario.avatar,
+      phone: usuario.phone,
+      projects: usuario.Projects,
+    };
+    this.userStore.setUser(loggedUser);
     this.router.navigateByUrl('/main/auth/profile');
   }
 

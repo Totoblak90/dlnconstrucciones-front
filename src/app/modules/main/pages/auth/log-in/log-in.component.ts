@@ -12,6 +12,7 @@ import { User } from '../../../../../models/user.model';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { noConnectionAlert } from '../../../../../helpers/alerts';
+import { UserStoreService } from '../../../../../services/user-store.service';
 
 @Component({
   selector: 'app-log-in',
@@ -28,7 +29,8 @@ export class LogInComponent implements OnDestroy {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private userStore: UserStoreService
   ) {
     this.createForm();
   }
@@ -62,18 +64,18 @@ export class LogInComponent implements OnDestroy {
   }
 
   private guardarOAlertarUsuarioLogueado(usuario: UserData): void {
-    const loggedUser = new User(
-      usuario.id,
-      usuario.first_name,
-      usuario.last_name,
-      usuario.email,
-      usuario.role,
-      usuario.dni,
-      usuario.avatar,
-      usuario.phone,
-      usuario.Projects
-    );
-    this.authService.setUser(loggedUser);
+    const loggedUser: User = {
+      id: usuario.id,
+      nombre: usuario.first_name,
+      apellido: usuario.last_name,
+      email: usuario.email,
+      role: usuario.role,
+      dni: usuario.dni,
+      avatar: usuario.avatar,
+      phone: usuario.phone,
+      projects: usuario.Projects,
+    };
+    this.userStore.setUser(loggedUser);
     this.router.navigateByUrl('/main/auth/profile');
   }
 
@@ -100,7 +102,7 @@ export class LogInComponent implements OnDestroy {
   }
 
   public recuperarContrasenia(): void {
-    this.router.navigateByUrl('/main/auth/recuperar-contrasenia')
+    this.router.navigateByUrl('/main/auth/recuperar-contrasenia');
   }
 
   ngOnDestroy(): void {

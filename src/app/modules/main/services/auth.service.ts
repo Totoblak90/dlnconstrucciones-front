@@ -21,8 +21,6 @@ import { RestablecerContraseniaLastStep } from '../interfaces/http/auth.interfac
   providedIn: 'root',
 })
 export class AuthService {
-  private _loggedUser!: User;
-
   private headers: HttpHeaders = new HttpHeaders({
     'access-token': getToken(),
   });
@@ -164,25 +162,5 @@ export class AuthService {
   public logout(): void {
     localStorage.removeItem('access-token');
     window.location.reload();
-  }
-
-  /**
-   * Retorna el usuario logueado;
-   *
-   * @return {*}  User
-   * @memberof AuthService
-   */
-  public getUser(): User {
-    return this._loggedUser;
-  }
-
-  /**
-   * Setea la información en el usuario
-   *
-   * @param user: User
-   * @memberof AuthService
-   */
-  public setUser(user: User): void {
-    this._loggedUser = user;
   }
 }

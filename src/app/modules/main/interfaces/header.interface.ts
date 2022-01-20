@@ -6,4 +6,5 @@ export interface Menu {
   icon?: string;
   toggle: boolean;
   inMobile: boolean;
+  redirectWithFunction?: void;
 }

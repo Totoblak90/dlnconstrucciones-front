@@ -8,6 +8,7 @@ import {
   UserData,
 } from './modules/main/interfaces/http/auth.interface';
 import Swal from 'sweetalert2';
+import { UserStoreService } from './services/user-store.service';
 
 declare function customInitFunctions(): void;
 
@@ -17,7 +18,10 @@ declare function customInitFunctions(): void;
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private userStore: UserStoreService
+  ) {
     customInitFunctions();
     this.loguearUsuarioConToken();
   }
@@ -44,19 +48,18 @@ export class AppComponent {
     }
   }
 
-  private crearYSetearUsuario(user: UserData) {
-    const u: User = new User(
-      user?.id,
-      user?.first_name,
-      user?.last_name,
-      user?.email,
-      user?.role,
-      user?.dni,
-      user?.avatar,
-      user?.phone,
-      user?.Projects
-    );
-
-    u ? this.authService.setUser(u) : null;
+  private crearYSetearUsuario(usuario: UserData) {
+    const loggedUser: User = {
+      id: usuario.id,
+      nombre: usuario.first_name,
+      apellido: usuario.last_name,
+      email: usuario.email,
+      role: usuario.role,
+      dni: usuario.dni,
+      avatar: usuario.avatar,
+      phone: usuario.phone,
+      projects: usuario.Projects,
+    };
+    loggedUser ? this.userStore.setUser(loggedUser) : null;
   }
 }

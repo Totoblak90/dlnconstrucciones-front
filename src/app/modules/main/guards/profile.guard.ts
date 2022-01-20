@@ -10,13 +10,18 @@ import {
 } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from '../services/auth.service';
+import { UserStoreService } from '../../../services/user-store.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileGuard implements CanActivate, CanLoad {
-  private user: User = this.authService.getUser();
-  constructor(private router: Router, private authService: AuthService) {}
+  private user: User | undefined;
+  constructor(private router: Router, private userStore: UserStoreService) {
+    this.userStore.loggedUser$.subscribe((res) =>
+      res.id ? (this.user = res) : (this.user = undefined)
+    );
+  }
 
   canActivate(
     route: ActivatedRouteSnapshot,

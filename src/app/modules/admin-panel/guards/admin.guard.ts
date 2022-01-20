@@ -9,22 +9,32 @@ import {
   UrlSegment,
 } from '@angular/router';
 import { User } from 'src/app/models/user.model';
-import { AuthService } from '../../main/services/auth.service';
+import { UserStoreService } from '../../../services/user-store.service';
+import { Observable } from 'rxjs';
+import { userRole } from '../../main/interfaces/http/auth.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminGuard implements CanActivate, CanLoad {
-  user: User = this.authService.getUser();
+  private user: Observable<User>;
+  private userRole!: userRole;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private userStore: UserStoreService) {
+    this.user = this.userStore.loggedUser$;
+    this.user.subscribe((res) => {
+      if (res.role) {
+        this.userRole = res.role;
+      }
+    });
+  }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
     if (
       localStorage.getItem('access-token') &&
-      (this.user?.role === 'admin' || this.user?.role === 'master')
+      (this.userRole === 'admin' || this.userRole === 'master')
     ) {
       return true;
     }
@@ -32,10 +42,9 @@ export class AdminGuard implements CanActivate, CanLoad {
     return false;
   }
   canLoad(route: Route, segments: UrlSegment[]): boolean {
-    console.log(this.user)
     if (
       localStorage.getItem('access-token') &&
-      (this.user?.role === 'admin' || this.user?.role === 'master')
+      (this.userRole === 'admin' || this.userRole === 'master')
     ) {
       return true;
     }

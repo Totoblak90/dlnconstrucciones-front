@@ -12,6 +12,7 @@ import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { userRole } from '../../../main/interfaces/http/auth.interface';
 import { AuthService } from '../../../main/services/auth.service';
+import { UserStoreService } from '../../../../services/user-store.service';
 import {
   customMessageAlert,
   alertFailureOrSuccessOnCRUDAction,
@@ -27,6 +28,8 @@ import {
 export class UsersComponent implements OnInit {
   @HostBinding('class.admin-panel-container') someClass: Host = true;
 
+  public user = this.userStore.loggedUser$;
+  public activeUserRole: userRole | undefined;
   public users: User[] = [];
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = ['Nombre', 'Email', 'Teléfono', 'Rol'];
@@ -35,16 +38,12 @@ export class UsersComponent implements OnInit {
   private userID!: number;
   private destroy$: Subject<boolean> = new Subject();
 
-  public get activeUserRole(): userRole {
-    return this.authService.getUser().role;
-  }
-
   constructor(
     private usersService: UsersService,
     private router: Router,
     private adminPanelCrudService: AdminPanelCrudService,
     private fb: FormBuilder,
-    private authService: AuthService
+    private userStore: UserStoreService
   ) {
     this.createForm();
   }
@@ -56,6 +55,9 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user.subscribe((res) => {
+      this.activeUserRole = res.role;
+    });
     this.loadUsers();
   }
 
@@ -94,13 +96,6 @@ export class UsersComponent implements OnInit {
         phone: user.phone,
         avatar: user.avatar,
         project: user.Projects,
-        getAvatar: () => {
-          let imageUrl = '';
-          user.avatar
-            ? (imageUrl = `${environment.API_IMAGE_URL}/users/${user.avatar}`)
-            : (imageUrl = `assets/no-image.png`);
-          return imageUrl;
-        },
       };
     });
   }
@@ -108,7 +103,7 @@ export class UsersComponent implements OnInit {
   private mapUsersForTable() {
     this.tableData = this.users.map((user) => {
       return {
-        imagen: user.getAvatar(),
+        imagen: `${environment.API_IMAGE_URL}/users/${user.avatar}`,
         item2: `${user.nombre} ${user.apellido}`,
         item3: user.email ? user.email : 'Vacío',
         item4: user.phone ? user.phone : 'Vacío',

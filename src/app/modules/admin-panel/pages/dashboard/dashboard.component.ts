@@ -3,7 +3,6 @@ import { Subject } from 'rxjs';
 import { UsersService } from '../../services/users.service';
 import { takeUntil } from 'rxjs/operators';
 import { AllUsersRes } from '../../interfaces/users.interface';
-import Swal from 'sweetalert2';
 import { HttpService } from '../../../../services/http.service';
 import {
   Batch,
@@ -21,6 +20,7 @@ import {
 } from 'src/app/modules/main/interfaces/http/jobs.interface';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from '../../../main/services/auth.service';
+import { UserStoreService } from '../../../../services/user-store.service';
 import {
   noConnectionAlert,
   customMessageAlert,
@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private usersService: UsersService,
     private httpService: HttpService,
-    private authService: AuthService
+    private userStore: UserStoreService
   ) {
     this.getLoggedUser();
   }
@@ -58,7 +58,9 @@ export class DashboardComponent implements OnInit {
   }
 
   private getLoggedUser(): void {
-    this.user = this.authService.getUser();
+    this.userStore.loggedUser$.subscribe((res) => {
+      this.user = res;
+    });
   }
 
   private getAllUsers(): void {

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { Menu } from '../../interfaces/header.interface';
 import { User } from 'src/app/models/user.model';
+import { UserStoreService } from '../../../../services/user-store.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -84,28 +85,41 @@ export class HeaderComponent {
     ],
   };
 
-  constructor(private authService: AuthService, private router: Router) {}
+  public user: User | undefined;
+  public userAvatar: string | undefined;
 
-  public get user(): User {
-    if (this.authService.getUser()) {
-      this.menu = this.menu.filter(
-        (menuItems) => menuItems.description !== 'CUENTA'
-      );
-    } else {
-      if (
-        !this.menu.find((menuItem) => menuItem.description === 'CUENTA')
-      ) {
-        this.menu.push(this._acreditarse);
-      }
-    }
-    return this.authService.getUser();
+  constructor(private userStore: UserStoreService, private router: Router) {
+    this.setComponentFunctionality();
   }
 
-  public getUserImg(): string {
-    return this.user ? this.user?.getAvatar() : '';
+  private setComponentFunctionality(): void {
+    this.userStore.loggedUser$.subscribe((res) => {
+      res.id ? (this.user = res) : (this.user = undefined);
+      if (this.user) {
+        this.userAvatar = `${environment.API_IMAGE_URL}/users/${this.user.avatar}`;
+        this.menu = this.menu.filter(
+          (menuItems) => menuItems.description !== 'CUENTA'
+        );
+      } else {
+        if (!this.menu.find((menuItem) => menuItem.description === 'CUENTA')) {
+          this.menu.push(this._acreditarse);
+        }
+      }
+      console.log(this.user)
+    });
+  }
+
+  public login(): void {
+    console.log('login')
+    this.router.navigateByUrl('main/auth/login')
+  }
+
+  public register(): void {
+    console.log('register')
+    this.router.navigateByUrl('main/auth/register')
   }
 
   public logout(): void {
-    this.authService.logout();
+    this.userStore.logout();
   }
 }
