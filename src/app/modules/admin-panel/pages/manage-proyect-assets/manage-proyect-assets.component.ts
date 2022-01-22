@@ -1,19 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Host,
+  HostBinding,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
   alertFailureOrSuccessOnCRUDAction,
+  customMessageAlert,
   noConnectionAlert,
   unknownErrorAlert,
 } from 'src/app/helpers/alerts';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
-import {
-  OneProjectRes,
-  ProyectAssets,
-} from '../../interfaces/users.interface';
+import { OneProjectRes, ProyectAssets } from '../../interfaces/users.interface';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { ProjectsService } from '../../services/projects.service';
 
@@ -23,6 +28,9 @@ import { ProjectsService } from '../../services/projects.service';
   styleUrls: ['./manage-proyect-assets.component.scss'],
 })
 export class ManageProyectAssetsComponent implements OnInit {
+  @HostBinding('class.admin-panel-container') someClass: Host = true;
+  @ViewChild('imageInput') imageInput!: ElementRef<HTMLInputElement>;
+
   public assets: ProyectAssets[] = [];
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = [];
@@ -31,8 +39,8 @@ export class ManageProyectAssetsComponent implements OnInit {
   public crudAction: string = '';
   public assetsForm!: FormGroup;
   public assetId!: number;
-  public imageToShow: string = '../../../../../assets/no-image.png';
-  public fileToUpload?: File | null;
+  public imageToShow: string[] = ['../../../../../assets/no-image.png'];
+  public fileToUpload: File[] = [];
   public acceptedFileTypes: boolean = true;
   public creationImageError: string = '';
   private projectID!: number;
@@ -59,7 +67,11 @@ export class ManageProyectAssetsComponent implements OnInit {
     });
   }
 
-  public showSelectedImage(e: any) {
+  public openInput(): void {
+    this.imageInput.nativeElement.click();
+  }
+
+  public async showSelectedImage(e: any): Promise<void> {
     if (!this.assetsForm.controls.asset?.value) {
       this.creationImageError = 'El archivo es obligatorio';
       return;
@@ -67,31 +79,65 @@ export class ManageProyectAssetsComponent implements OnInit {
       this.creationImageError = '';
     }
 
-    const file = e.target?.files[0];
+    let files = Array.from(e.target?.files as FileList);
 
-    this.acceptedFileTypes =
-      file.type === 'image/jpg' ||
-      file.type === 'image/jpeg' ||
-      file.type === 'image/png' ||
-      file.type === 'video/mp4' ||
-      file.type === 'video/avi' ||
-      file.type === 'video/mov' ||
-      file.type === 'video/wmv' ||
-      file.type === 'video/mkv';
+    files = await this.checkAmountOfFiles(files);
 
-    if (file && this.acceptedFileTypes) {
-      this.fileToUpload = file;
-      if (file.type.includes('image')) {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => (this.imageToShow = reader.result as string);
-      } else {
-        this.imageToShow = '../../../../../assets/no-image-video.jpg';
-      }
+    this.acceptedFileTypes = await this.checkFilesType(files);
+
+    if (files.length && this.acceptedFileTypes) {
+      this.imageToShow = [];
+      this.fileToUpload = files;
+      files.forEach((file) => {
+        if (file.type.includes('image')) {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => this.imageToShow.push(reader.result as string);
+        } else {
+          this.imageToShow.push('../../../../../assets/no-image-video.jpg');
+        }
+      });
     } else {
-      this.imageToShow = '../../../../../assets/no-image.png';
-      this.fileToUpload = null;
+      this.imageToShow = ['../../../../../assets/no-image.png'];
+      this.fileToUpload = [];
     }
+  }
+
+  private checkAmountOfFiles(files: File[]): Promise<File[]> {
+    return new Promise((resolve) => {
+      if (files.length > 10) {
+        customMessageAlert(
+          'Atención',
+          'No se pueden subir más de 10 archivos',
+          'OK',
+          'info'
+        );
+        files = files.slice(0, 10);
+      }
+      resolve(files);
+    });
+  }
+
+  private checkFilesType(files: File[]): Promise<boolean> {
+    return new Promise((resolve) => {
+      let validator: boolean | 'valido' = 'valido';
+      files.forEach((file) => {
+        if (
+          file.type.includes('image/jpg') ||
+          file.type.includes('image/jpeg') ||
+          file.type.includes('image/png') ||
+          file.type.includes('video/mp4') ||
+          file.type.includes('video/avi') ||
+          file.type.includes('video/mov') ||
+          file.type.includes('video/wmv') ||
+          file.type.includes('video/mkv')
+        ) {
+        } else {
+          validator = false;
+        }
+      });
+      validator === 'valido' ? resolve(true) : resolve(false);
+    });
   }
 
   public formSubmit(): void {
@@ -106,9 +152,11 @@ export class ManageProyectAssetsComponent implements OnInit {
 
     if (this.assetsForm.valid) {
       const formData: FormData = new FormData();
-      if (this.fileToUpload) {
-        formData.append('asset', this.fileToUpload!);
+      if (this.fileToUpload.length) {
         formData.append('projects_id', this.projectID.toString());
+        this.fileToUpload.forEach((file) => {
+          formData.append('asset', file);
+        });
         this.crudAction === 'Crear'
           ? this.crearAssetEnLaDb(formData)
           : this.editarAssetEnLaDb(formData);
@@ -170,8 +218,8 @@ export class ManageProyectAssetsComponent implements OnInit {
       this.assets = [];
       this.isCreating = false;
       this.isEditing = false;
-      this.fileToUpload = null;
-      this.imageToShow = '../../../../../assets/no-image.png';
+      this.fileToUpload = [];
+      this.imageToShow = ['../../../../../assets/no-image.png'];
       this.getAssets();
     }
   }

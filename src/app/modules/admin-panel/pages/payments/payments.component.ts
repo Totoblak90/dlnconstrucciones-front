@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Host, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
 import { takeUntil, finalize } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -25,6 +25,8 @@ import {
   styleUrls: ['./payments.component.scss'],
 })
 export class PaymentsComponent implements OnInit, OnDestroy {
+  @HostBinding('class.admin-panel-container') someClass: Host = true;
+
   public payments: ProyectPayments[] = [];
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = ['Comprobante', 'Total', 'Fecha'];
@@ -99,9 +101,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   private getProject(): void {
     this.projectsService
       .getOneProject(this.projectID)
-      .pipe(
-        takeUntil(this.destroy$),
-      )
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res: OneProjectRes) => {
           if (res?.meta?.status.toString().includes('20')) {
