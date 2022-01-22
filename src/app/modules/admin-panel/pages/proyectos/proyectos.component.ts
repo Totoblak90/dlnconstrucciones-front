@@ -51,7 +51,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   public fileToUpload: File | null = null;
   public acceptedFileTypes: boolean = true;
   public projectID!: number;
-
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(

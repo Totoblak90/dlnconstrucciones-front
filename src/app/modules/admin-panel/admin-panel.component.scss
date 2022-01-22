@@ -1,11 +1,9 @@
 .flex {
   width: 100%;
   display: flex;
-  .navigation-bar {
-    flex-grow: 0.2;
-  }
-  .content-admin {
-    flex-grow: 0.7;
+  div {
+    width: 100%;
+    margin-top: 10vh;
   }
 }
 

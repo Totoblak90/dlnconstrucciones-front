@@ -1,20 +1,25 @@
+
 <div class="navbar-actions">
   <button
     *ngIf="showMenu"
-    class="btn primary-dark"
+    class="btn text-white bgc-primary-dark"
     (click)="showMenu = !showMenu"
   >
     <i class="ti-close"></i>
   </button>
   <button
     *ngIf="!showMenu"
-    class="btn primary-dark"
+    class="btn text-white bgc-primary-dark"
     (click)="showMenu = !showMenu"
   >
     <i class="ti-menu"></i>
   </button>
 </div>
-<header class="topbar" *ngIf="showMenu">
+<header
+  class="topbar"
+  *ngIf="showMenu"
+  [class]="showMenu ? 'position-absolute' : ''"
+>
   <nav class="navbar top-navbar navbar-expand-md navbar-light">
     <div class="navbar-collapse flex-column">
       <ul class="navbar-nav my-lg-0 flex-column">
@@ -44,32 +49,20 @@
           </a>
         </li>
         <li role="separator" class="divider" *ngIf="user"></li>
-        <li *ngFor="let m of menu" class="nav-item dropdown">
-          <ng-container *ngIf="m.toggle">
-            <a
-              class="nav-link dropdown-toggle waves-effect waves-dark primary-dark"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              [routerLink]="m.redirectTo"
-            >
-              {{ m.description }}
-            </a>
-            <div
-              *ngIf="m.moreOptions"
-              class="dropdown-menu dropdown-menu-right animated fadeIn"
-            >
-              <ul>
-                <li *ngFor="let subMenu of m.subMenu">
-                  <a [routerLink]="subMenu.redirectTo">
-                    <div class="mail-contnet">
-                      <h5 class="primary-dark">{{ subMenu.description }}</h5>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </ng-container>
+        <li
+          *ngFor="let m of menu"
+          class="nav-item dropdown"
+          [routerLink]="m.redirectTo"
+          (click)="showMenu = !showMenu"
+        >
+          <a
+            class="nav-link dropdown-toggle waves-effect waves-dark primary-dark menu-routers"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {{ m.description }}
+          </a>
         </li>
       </ul>
     </div>
