@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Menu } from '../../interfaces/header.interface';
 import { User } from 'src/app/models/user.model';
 import { UserStoreService } from '../../../../services/user-store.service';
 import { environment } from 'src/environments/environment';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnDestroy {
   public menu: Menu[] = [
     {
       description: 'INICIO',
@@ -62,6 +64,8 @@ export class HeaderComponent {
     },
   ];
 
+  private destroy$: Subject<boolean> = new Subject();
+
   private _acreditarse: Menu = {
     description: 'CUENTA',
     moreOptions: true,
@@ -93,30 +97,39 @@ export class HeaderComponent {
   }
 
   private setComponentFunctionality(): void {
-    this.userStore.loggedUser$.subscribe((res) => {
-      res.id ? (this.user = res) : (this.user = undefined);
-      if (this.user) {
-        this.userAvatar = `${environment.API_IMAGE_URL}/users/${this.user.avatar}`;
-        this.menu = this.menu.filter(
-          (menuItems) => menuItems.description !== 'CUENTA'
-        );
-      } else {
-        if (!this.menu.find((menuItem) => menuItem.description === 'CUENTA')) {
-          this.menu.push(this._acreditarse);
+    this.userStore.loggedUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        res.id ? (this.user = res) : (this.user = undefined);
+        if (this.user) {
+          this.userAvatar = `${environment.API_IMAGE_URL}/users/${this.user.avatar}`;
+          this.menu = this.menu.filter(
+            (menuItems) => menuItems.description !== 'CUENTA'
+          );
+        } else {
+          if (
+            !this.menu.find((menuItem) => menuItem.description === 'CUENTA')
+          ) {
+            this.menu.push(this._acreditarse);
+          }
         }
-      }
-    });
+      });
   }
 
   public login(): void {
-    this.router.navigateByUrl('main/auth/login')
+    this.router.navigateByUrl('main/auth/login');
   }
 
   public register(): void {
-    this.router.navigateByUrl('main/auth/register')
+    this.router.navigateByUrl('main/auth/register');
   }
 
   public logout(): void {
     this.userStore.logout();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }
