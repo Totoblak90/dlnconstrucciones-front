@@ -22,6 +22,11 @@ import { OneProjectRes, ProyectAssets } from '../../interfaces/users.interface';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { ProjectsService } from '../../services/projects.service';
 
+interface imageToShowObj {
+  path: string;
+  type: string;
+}
+
 @Component({
   selector: 'app-manage-proyect-assets',
   templateUrl: './manage-proyect-assets.component.html',
@@ -39,7 +44,12 @@ export class ManageProyectAssetsComponent implements OnInit {
   public crudAction: string = '';
   public assetsForm!: FormGroup;
   public assetId!: number;
-  public imageToShow: string[] = ['../../../../../assets/no-image.png'];
+  public imageToShow: imageToShowObj[] = [
+    {
+      path: '../../../../../assets/no-image.png',
+      type: 'image/png',
+    },
+  ];
   public fileToUpload: File[] = [];
   public acceptedFileTypes: boolean = true;
   public creationImageError: string = '';
@@ -89,30 +99,48 @@ export class ManageProyectAssetsComponent implements OnInit {
       this.imageToShow = [];
       this.fileToUpload = files;
       files.forEach((file) => {
-        if (file.type.includes('image')) {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = () => this.imageToShow.push(reader.result as string);
-        } else {
-          this.imageToShow.push('../../../../../assets/no-image-video.jpg');
-        }
+        // if (file.type.includes('image')) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () =>
+          this.imageToShow.push({
+            path: reader.result as string,
+            type: file.type,
+          });
+        // } else {
+        //   this.imageToShow.push('../../../../../assets/no-image-video.jpg');
+        // }
       });
     } else {
-      this.imageToShow = ['../../../../../assets/no-image.png'];
+      this.imageToShow = [
+        {
+          path: '../../../../../assets/no-image.png',
+          type: 'image/png',
+        },
+      ];
       this.fileToUpload = [];
     }
   }
 
   private checkAmountOfFiles(files: File[]): Promise<File[]> {
+    let filesHaveVideo: boolean = false;
+    let acceptedLength: number = 10;
+    files.forEach((file) => {
+      file.type.includes('video') ? (filesHaveVideo = true) : null;
+    });
+
+    if (filesHaveVideo) {
+      acceptedLength = 5;
+    }
     return new Promise((resolve) => {
-      if (files.length > 10) {
+      if (files.length > acceptedLength) {
         customMessageAlert(
           'Atención',
-          'No se pueden subir más de 10 archivos',
+          `No se pueden subir mas de ${acceptedLength} archivos`,
           'OK',
           'info'
         );
-        files = files.slice(0, 10);
+        files = files.slice(0, acceptedLength);
       }
       resolve(files);
     });
@@ -219,7 +247,12 @@ export class ManageProyectAssetsComponent implements OnInit {
       this.isCreating = false;
       this.isEditing = false;
       this.fileToUpload = [];
-      this.imageToShow = ['../../../../../assets/no-image.png'];
+      this.imageToShow = [
+        {
+          path: '../../../../../assets/no-image.png',
+          type: 'image/png',
+        },
+      ];
       this.getAssets();
     }
   }

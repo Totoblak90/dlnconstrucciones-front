@@ -34,11 +34,27 @@
                 class="col-md-4 text-center mb-2"
                 (click)="openInput()"
               >
-                <img
-                  class="img-responsive image-gallery"
-                  [src]="file"
-                  alt="Servicio realizado"
-                />
+                <ng-container
+                  *ngIf="file.type.includes('image'); else videoTemplate"
+                >
+                  <img
+                    class="img-responsive image-gallery"
+                    [src]="file.path"
+                    alt="Proyecto"
+                  />
+                </ng-container>
+                <ng-template #videoTemplate>
+                  <div class="embed-responsive embed-responsive-21by9">
+                    <video
+                      class="embed-responsive-item w-100"
+                      [src]="file.path"
+                      [autoplay]="false"
+                      [muted]="true"
+                      [loop]="true"
+                      [controls]="true"
+                    ></video>
+                  </div>
+                </ng-template>
               </div>
               <ng-container
                 *ngIf="crudAction === 'Crear'; else isEditingTemplate"
