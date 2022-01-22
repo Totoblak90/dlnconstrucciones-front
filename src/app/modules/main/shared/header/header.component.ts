@@ -70,14 +70,14 @@ export class HeaderComponent {
     subMenu: [
       {
         description: 'INICIAR SESIÓN',
-        redirectTo: '/auth/login',
+        redirectTo: '/main/auth/login',
         toggle: true,
         icon: 'ti-user',
         inMobile: true,
       },
       {
         description: 'REGISTRARSE',
-        redirectTo: '/auth/register',
+        redirectTo: '/main/auth/register',
         toggle: true,
         icon: 'ti-plus',
         inMobile: true,
