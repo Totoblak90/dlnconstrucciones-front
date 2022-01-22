@@ -19,12 +19,10 @@ import {
   TypesOfJobs,
 } from 'src/app/modules/main/interfaces/http/jobs.interface';
 import { User } from 'src/app/models/user.model';
-import { AuthService } from '../../../main/services/auth.service';
 import { UserStoreService } from '../../../../services/user-store.service';
 import {
   noConnectionAlert,
   customMessageAlert,
-  unknownErrorAlert,
 } from '../../../../helpers/alerts';
 
 @Component({
@@ -58,9 +56,11 @@ export class DashboardComponent implements OnInit {
   }
 
   private getLoggedUser(): void {
-    this.userStore.loggedUser$.subscribe((res) => {
-      this.user = res;
-    });
+    this.userStore.loggedUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.user = res;
+      });
   }
 
   private getAllUsers(): void {

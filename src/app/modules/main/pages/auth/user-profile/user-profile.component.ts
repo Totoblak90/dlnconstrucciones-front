@@ -53,20 +53,22 @@ export class UserProfileComponent implements OnDestroy {
   }
 
   private setUserAndCreateForm(): void {
-    this.userStore.loggedUser$.subscribe((res) => {
-      if (res.id) {
-        this.user = res;
-        this.userAvatar = `${environment.API_IMAGE_URL}/users/${res.avatar}`;
-        this.userName = res.nombre;
-        this.userLastName = res.apellido;
-        this.userEmail = res.email;
-        this.userPhone = res.phone;
-        this.userProjects = res.projects;
-        this.createForm();
-      } else {
-        this.createForm();
-      }
-    });
+    this.userStore.loggedUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res.id) {
+          this.user = res;
+          this.userAvatar = `${environment.API_IMAGE_URL}/users/${res.avatar}`;
+          this.userName = res.nombre;
+          this.userLastName = res.apellido;
+          this.userEmail = res.email;
+          this.userPhone = res.phone;
+          this.userProjects = res.projects;
+          this.createForm();
+        } else {
+          this.createForm();
+        }
+      });
   }
 
   private createForm(): void {

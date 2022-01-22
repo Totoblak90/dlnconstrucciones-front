@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Menu } from 'src/app/modules/main/interfaces/header.interface';
 import { UserStoreService } from '../../../../services/user-store.service';
 import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header-admin',
   templateUrl: './header-admin.component.html',
   styleUrls: ['./header-admin.component.scss'],
 })
-export class HeaderAdminComponent implements OnInit {
+export class HeaderAdminComponent implements OnInit, OnDestroy {
   public user = this.userStore.loggedUser$;
   public userAvatar: string | undefined;
   public userName: string | undefined;
@@ -77,10 +79,16 @@ export class HeaderAdminComponent implements OnInit {
     },
   ];
 
+  private destroy$: Subject<boolean> = new Subject();
+
   constructor(private userStore: UserStoreService) {}
 
   ngOnInit(): void {
-    this.user.subscribe((res) => {
+    this.getAndSetUserAndMenu();
+  }
+
+  private getAndSetUserAndMenu(): void {
+    this.user.pipe(takeUntil(this.destroy$)).subscribe((res) => {
       if (res.id) {
         if (res.role !== 'master') {
           this.menu = this.menu.filter(
@@ -94,5 +102,10 @@ export class HeaderAdminComponent implements OnInit {
         this.userAvatar = `${environment.API_IMAGE_URL}/users/${res.avatar}`;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

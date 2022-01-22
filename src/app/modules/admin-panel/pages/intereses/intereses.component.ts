@@ -2,7 +2,7 @@ import { Component, Host, HostBinding, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { HttpService } from '../../../../services/http.service';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import {
   Interests,
   InterestsData,

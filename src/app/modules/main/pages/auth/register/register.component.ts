@@ -50,9 +50,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   private setUser(): void {
-    this.userStore.loggedUser$.subscribe((res) => {
-      res.id ? (this.user = res) : (this.user = undefined);
-    });
+    this.userStore.loggedUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        res.id ? (this.user = res) : (this.user = undefined);
+      });
   }
 
   private createForm(): void {

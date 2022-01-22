@@ -1,6 +1,6 @@
 import { Component, Host, HostBinding, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
 import { UsersService } from '../../services/users.service';
 import Swal from 'sweetalert2';
@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { userRole } from '../../../main/interfaces/http/auth.interface';
-import { AuthService } from '../../../main/services/auth.service';
 import { UserStoreService } from '../../../../services/user-store.service';
 import {
   customMessageAlert,
@@ -55,10 +54,14 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user.subscribe((res) => {
-      this.activeUserRole = res.role;
-    });
+    this.getLoggedUser();
     this.loadUsers();
+  }
+
+  private getLoggedUser(): void {
+    this.user
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => (this.activeUserRole = res.role));
   }
 
   public formSubmit(): void {

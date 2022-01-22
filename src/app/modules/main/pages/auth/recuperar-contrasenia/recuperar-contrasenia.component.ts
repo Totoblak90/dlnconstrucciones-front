@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
@@ -7,15 +7,17 @@ import {
   customMessageAlertWithActions,
   noConnectionAlert,
 } from '../../../../../helpers/alerts';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-recuperar-contrasenia',
   templateUrl: './recuperar-contrasenia.component.html',
   styleUrls: ['./recuperar-contrasenia.component.scss'],
 })
-export class RecuperarContraseniaComponent {
+export class RecuperarContraseniaComponent implements OnDestroy {
   public forgotPasswordForm!: FormGroup;
   private emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+  private destroy$: Subject<boolean> = new Subject();
 
   constructor(
     private fb: FormBuilder,
@@ -59,5 +61,10 @@ export class RecuperarContraseniaComponent {
     } else {
       unknownErrorAlert();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }
