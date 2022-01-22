@@ -14,6 +14,7 @@ export class UserStoreService {
     nombre: '',
     role: 'user',
   };
+
   private loggedUser: BehaviorSubject<User> = new BehaviorSubject(this._user);
   public loggedUser$ = this.loggedUser.asObservable();
 

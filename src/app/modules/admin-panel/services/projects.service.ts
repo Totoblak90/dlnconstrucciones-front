@@ -1,8 +1,7 @@
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import {  HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { getToken } from '../../main/helpers/functions.helper';
 import { AdminPanelCrudRoutes } from '../interfaces/general.interface';
 import { ProjectPaymentsReq } from '../interfaces/projects.interface';
 import { AllProjectsRes, OneProjectRes } from '../interfaces/users.interface';
@@ -11,10 +10,6 @@ import { AllProjectsRes, OneProjectRes } from '../interfaces/users.interface';
   providedIn: 'root',
 })
 export class ProjectsService {
-  private headers: HttpHeaders = new HttpHeaders({
-    'access-token': getToken(),
-  });
-
   constructor(private http: HttpClient) {}
 
   /**
@@ -25,10 +20,7 @@ export class ProjectsService {
    */
   public getAllProjects(): Observable<AllProjectsRes> {
     return this.http.get<AllProjectsRes>(
-      `${environment.API_BASE_URL}/projects`,
-      {
-        headers: this.headers,
-      }
+      `${environment.API_BASE_URL}/projects`
     );
   }
 
@@ -40,10 +32,7 @@ export class ProjectsService {
    */
   public getOneProject(projectId: number): Observable<OneProjectRes> {
     return this.http.get<OneProjectRes>(
-      `${environment.API_BASE_URL}/projects/${projectId}`,
-      {
-        headers: this.headers,
-      }
+      `${environment.API_BASE_URL}/projects/${projectId}`
     );
   }
 
@@ -61,8 +50,7 @@ export class ProjectsService {
   ): Observable<any> {
     return this.http.post<any>(
       `${environment.API_BASE_URL}/${tabla}/create`,
-      payload,
-      { headers: this.headers }
+      payload
     );
   }
 
@@ -81,8 +69,7 @@ export class ProjectsService {
   ): Observable<any> {
     return this.http.patch<any>(
       `${environment.API_BASE_URL}/${tabla}/edit/${id}`,
-      payload,
-      { headers: this.headers }
+      payload
     );
   }
 
@@ -96,7 +83,7 @@ export class ProjectsService {
   public getCashflow(cashflowName: string): Observable<Blob> {
     return this.http.get(
       `${environment.API_BASE_URL}/projects/cashflow/${cashflowName}`,
-      { headers: this.headers, responseType: 'blob' }
+      { responseType: 'blob' }
     );
   }
 
@@ -110,7 +97,7 @@ export class ProjectsService {
   public getAssetsDeUnProyecto(fileName: string): Observable<Blob> {
     return this.http.get(
       `${environment.API_BASE_URL}/projects/assets/${fileName}`,
-      { headers: this.headers, responseType: 'blob' }
-    )
+      { responseType: 'blob' }
+    );
   }
 }

@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SpinnerModule } from './shared/spinner/spinner.module';
 import { SpinnerInterceptor } from './shared/interceptors/spinner.interceptor';
+import { TokenInterceptor } from './shared/interceptors/token-interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,11 @@ import { SpinnerInterceptor } from './shared/interceptors/spinner.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: SpinnerInterceptor,
       multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
     },
   ],
   bootstrap: [AppComponent],

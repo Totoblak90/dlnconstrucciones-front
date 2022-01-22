@@ -21,9 +21,6 @@ import { RestablecerContraseniaLastStep } from '../interfaces/http/auth.interfac
   providedIn: 'root',
 })
 export class AuthService {
-  private headers: HttpHeaders = new HttpHeaders({
-    'access-token': getToken(),
-  });
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
@@ -40,7 +37,6 @@ export class AuthService {
     return this.httpClient.post<IdentifyTokenOActualizarUsuario>(
       `${environment.API_BASE_URL}/users/identify`,
       token,
-      { headers: this.headers }
     );
   }
 
@@ -83,7 +79,6 @@ export class AuthService {
     return this.httpClient.post<RegisterRes>(
       `${environment.API_BASE_URL}/users/enroll`,
       payload,
-      { headers: this.headers }
     );
   }
 
@@ -100,7 +95,6 @@ export class AuthService {
     return this.httpClient.post<IdentifyTokenOActualizarUsuario>(
       `${environment.API_BASE_URL}/users/profile`,
       payload,
-      { headers: this.headers }
     );
   }
 
@@ -117,7 +111,6 @@ export class AuthService {
     return this.httpClient.post<IdentifyTokenOActualizarUsuario>(
       `${environment.API_BASE_URL}/users/avatar`,
       formData,
-      { headers: this.headers }
     );
   }
 

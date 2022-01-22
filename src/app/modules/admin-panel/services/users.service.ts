@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { getToken } from '../../main/helpers/functions.helper';
 import {
-  AllProjectsRes,
   AllUsersRes,
-  OneProjectRes,
-  Project,
 } from '../interfaces/users.interface';
 
 @Injectable({
@@ -16,10 +12,6 @@ import {
 export class UsersService {
   constructor(private http: HttpClient) {}
 
-  private headers: HttpHeaders = new HttpHeaders({
-    'access-token': getToken(),
-  });
-
   /**
    * Obtiene una lista de todos los usuarios registrados en la app con su información completa.
    *
@@ -27,8 +19,6 @@ export class UsersService {
    * @memberof UsersService
    */
   public getAllUsers(): Observable<AllUsersRes> {
-    return this.http.get<AllUsersRes>(`${environment.API_BASE_URL}/users`, {
-      headers: this.headers,
-    });
+    return this.http.get<AllUsersRes>(`${environment.API_BASE_URL}/users`);
   }
 }
