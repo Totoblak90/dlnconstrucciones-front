@@ -43,17 +43,13 @@
                     id="userSelectInput"
                   >
                     <option [value]="null">--Seleccionar un usuario--</option>
-                    <option
-                      *ngFor="let project of filteredProjects"
-                      [value]="project.Users?.id!"
-                    >
+                    <option *ngFor="let user of selectData" [value]="user?.id!">
                       {{
-
-                        project.Users?.first_name! +
+                        user?.first_name! +
                           " " +
-                          project.Users?.last_name! +
+                          user?.last_name! +
                           " / email: " +
-                          project.Users?.email!
+                          user?.email!
                       }}
                     </option>
                   </select>

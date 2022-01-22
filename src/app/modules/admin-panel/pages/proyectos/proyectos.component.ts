@@ -2,18 +2,28 @@ import { Component, Host, HostBinding, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Swal, { SweetAlertResult } from 'sweetalert2';
-import { Project } from '../../interfaces/users.interface';
+import {
+  AllUsersRes,
+  FullUser,
+  Project,
+} from '../../interfaces/users.interface';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { CurrencyPipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProjectsService } from '../../services/projects.service';
+import { UsersService } from '../../services/users.service';
 import {
   alertFailureOrSuccessOnCRUDAction,
   noConnectionAlert,
   unknownErrorAlert,
 } from '../../../../helpers/alerts';
+
+type UserSelectData = Pick<
+  FullUser,
+  'id' | 'first_name' | 'last_name' | 'email'
+>;
 
 @Component({
   selector: 'app-proyectos',
@@ -23,6 +33,7 @@ import {
 export class ProyectosComponent implements OnInit, OnDestroy {
   @HostBinding('class.admin-panel-container') someClass: Host = true;
 
+  public selectData: UserSelectData[] = [];
   public projects: Project[] = [];
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = [
@@ -41,10 +52,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   public acceptedFileTypes: boolean = true;
   public projectID!: number;
 
-  public get filteredProjects(): Project[] {
-    return this.getFilteredProyectArray();
-  }
-
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(
@@ -52,7 +59,8 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     private currencyPipe: CurrencyPipe,
     private fb: FormBuilder,
     private router: Router,
-    private projectService: ProjectsService
+    private projectService: ProjectsService,
+    private usersService: UsersService
   ) {
     this.createForm();
   }
@@ -69,44 +77,27 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getProyects();
+    this.getSelectData();
   }
 
-  private getFilteredProyectArray(): Project[] {
-    // Creo una referencia a la propiedad de la clase que tiene los proyectos
-    // Para no modificar directamente esa propuedad
-    const projects: Project[] = this.projects;
-    // Creo una constante a la cual le voy a ir agregando los proyectos que pasen cierta condición
-    // Y es lo que voy a devolver
-    const filteredProjects: Project[] = [];
-    // Creo un objeto que me permite ir contando la
-    // Cantidad de veces que se repite un user id en el array de proyectos
-    let obj: any = {};
-
-    // Recorro el array de proyectos
-    projects?.forEach((proj: Project) => {
-      // Verifico que en el objeto no haya una propiedad con el id del usuario
-      if (!obj[`user_id_${proj.users_id}`]) {
-        // Si la propiedad no existe la creo y le asigno el valor 1
-        obj[`user_id_${proj.users_id}`] = 1;
-        // Y agrego al array de proyectos filtrados ese proyecto
-        filteredProjects.push(proj);
-      }
-      // Si la propiedad existe no hago nada por que no necesito el proyecto
-    });
-
-    // Ordeno el array nuevo alfabéticamente según el nombre de la persona
-    filteredProjects.sort((project1, project2) => {
-      if (project1?.Users?.first_name! > project2?.Users?.first_name!) {
-        return 1;
-      } else if (project1?.Users?.first_name! < project2?.Users?.first_name!) {
-        return -1;
-      }
-      return 0;
-    });
-
-    // Retorno el array. La idea es que usar simplemente el id del usuario, el nombre y el apellido
-    // Por ende el resto de la data no me importa y puedo sacar un proyecto entero del array
-    return filteredProjects;
+  private getSelectData(): void {
+    this.usersService
+      .getAllUsers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          res?.data?.forEach((user: FullUser) => {
+            const data: UserSelectData = {
+              id: user.id,
+              email: user.email,
+              first_name: user.first_name,
+              last_name: user.last_name,
+            };
+            this.selectData.push(data);
+          });
+        },
+        error: (err) => unknownErrorAlert(err),
+      });
   }
 
   public formSubmit(): void {
