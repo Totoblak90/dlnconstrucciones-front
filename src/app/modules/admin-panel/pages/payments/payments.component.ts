@@ -29,9 +29,19 @@ export class PaymentsComponent implements OnInit, OnDestroy {
 
   public payments: ProyectPayments[] = [];
   public tableData: CuerpoTabla[] = [];
-  public encabezadosTabla: string[] = ['Comprobante', 'Total', 'Fecha'];
+  public encabezadosTabla: string[] = [
+    'Descripción',
+    'Detalle de pago',
+    'Fecha',
+    'Factura',
+    'Subtotal',
+    'IVA',
+    'Total',
+    'Cotización USD',
+    'Total en USD',
+  ];
   public formasDePago: string[] = ['Efectivo', 'Transferencia'];
-  public monedas: string[] = ['Peso', 'Dolar'];
+  public monedas: string[] = ['ARS', 'USD'];
   public isCreating: boolean = false;
   public isEditing: boolean = false;
   public crudAction: string = '';
@@ -63,8 +73,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
             +this.paymentsForm?.controls?.amount?.value +
             (+this.paymentsForm?.controls?.amount?.value * 21) / 100)
         : (result = +this.paymentsForm?.controls?.amount?.value);
-      this.paymentsForm.controls.total.setValue(result);
     }
+    this.paymentsForm.controls.total.setValue(result);
     return result;
   }
 
@@ -108,6 +118,11 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         amount: this.paymentsForm.controls.amount.value,
         datetime: fechaDelPago,
         receipt: this.paymentsForm.controls.receipt.value,
+        coin: this.paymentsForm.controls.coin.value,
+        cotizacionUsd: this.paymentsForm.controls.cotizacionUsd.value,
+        description: this.paymentsForm.controls.description.value,
+        iva: this.paymentsForm.controls.iva.value === 'true',
+        wayToPay: this.paymentsForm.controls.wayToPay.value,
       };
 
       this.crudAction === 'Crear'
@@ -130,6 +145,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   private validatePaymentAmount(amount: number): void {
     if (amount && this.project.balance < amount) {
       this.paymentsForm.controls.amount?.setErrors({ invalidAmount: true });
+    } else {
+      this.paymentsForm.controls.amount?.setErrors(null);
     }
   }
 
@@ -155,9 +172,15 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     this.payments.forEach((payment: ProyectPayments) =>
       this.tableData.push({
         id: payment.id,
-        item2: payment.receipt,
-        item3: payment.amount.toString(),
-        item4: payment.datetime.substring(0, 10),
+        item2: payment.description,
+        item3: payment.wayToPay,
+        item4: payment.datetime?.substring(0, 10),
+        item6: payment.receipt?.toString(),
+        item7: payment.amount?.toString(),
+        item8: payment.iva ? 'Si' : 'No',
+        item9: payment.subTotal?.toString(),
+        item10: payment.cotizacionUsd?.toString(),
+        item11: payment.totalUsd?.toString()
       })
     );
   }
@@ -217,6 +240,11 @@ export class PaymentsComponent implements OnInit, OnDestroy {
       this.paymentsForm.controls.amount.setValue(pago.amount);
       this.paymentsForm.controls.receipt.setValue(pago.receipt);
       this.paymentsForm.controls.datetime.setValue(fechaDePago);
+      this.paymentsForm.controls.coin.setValue(pago.coin);
+      this.paymentsForm.controls.cotizacionUsd.setValue(pago.cotizacionUsd);
+      this.paymentsForm.controls.description.setValue(pago.description);
+      this.paymentsForm.controls.iva.setValue(pago.iva);
+      this.paymentsForm.controls.wayToPay.setValue(pago.wayToPay);
     }
   }
 

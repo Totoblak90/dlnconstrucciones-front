@@ -3,6 +3,11 @@ export interface ProjectPaymentsReq {
   amount: number;
   receipt: string;
   datetime: string;
+  description: string;
+  wayToPay: string;
+  coin: string;
+  iva: boolean,
+  cotizacionUsd: number;
 }
 
 export interface Galeria {

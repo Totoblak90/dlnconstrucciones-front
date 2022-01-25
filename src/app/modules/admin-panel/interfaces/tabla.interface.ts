@@ -10,6 +10,11 @@ export interface CuerpoTabla {
   item8?: string;
   item9?: string;
   item10?: string;
+  item11?: string;
+  item12?: string;
+  item13?: string;
+  item14?: string;
+  item15?: string;
   tipoDeArchivo?: string;
 }
 

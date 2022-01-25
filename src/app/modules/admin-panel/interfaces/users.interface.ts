@@ -73,6 +73,13 @@ export interface ProyectPayments {
   projects_id: number;
   receipt: string;
   updated_at: string;
+  coin: string;
+  cotizacionUsd: number;
+  description: string;
+  iva: boolean;
+  wayToPay: string;
+  subTotal: number;
+  totalUsd: number;
 }
 
 export interface editUserRoleReq {

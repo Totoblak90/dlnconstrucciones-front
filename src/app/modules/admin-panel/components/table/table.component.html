@@ -168,6 +168,24 @@
                     {{ cuerpo.item10 | slice: 0:100
                     }}{{ cuerpo.item10?.length! > 100 ? "..." : "" }}
                   </td>
+                  <td
+                    class="primary-dark"
+                    *ngIf="cuerpo.item11"
+                    [class.pointer]="cuerpo.item11.length > 100"
+                    (click)="verMas(cuerpo.item11)"
+                  >
+                    {{ cuerpo.item11 | slice: 0:100
+                    }}{{ cuerpo.item11?.length! > 100 ? "..." : "" }}
+                  </td>
+                  <td
+                    class="primary-dark"
+                    *ngIf="cuerpo.item12"
+                    [class.pointer]="cuerpo.item12.length > 100"
+                    (click)="verMas(cuerpo.item12)"
+                  >
+                    {{ cuerpo.item12 | slice: 0:100
+                    }}{{ cuerpo.item12?.length! > 100 ? "..." : "" }}
+                  </td>
                   <td class="text-nowrap text-center actions">
                     <a class="pointer" (click)="edit(cuerpo.id)">
                       <i class="fa fa-pencil text-danger primary-dark"></i>
