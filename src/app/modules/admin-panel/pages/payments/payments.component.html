@@ -32,15 +32,33 @@
             <div class="row">
               <div class="col">
                 <div class="form-group">
-                  <label *ngIf="crudAction === 'Editar'" for="comprobanteInput"
-                    >Número de comprobante*</label
-                  >
+                  <label for="descripcionInput">Descripción*</label>
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="descripcionInput"
+                      formControlName="description"
+                    />
+                    <div class="p-2">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          paymentsForm.controls.description.errors?.required &&
+                          paymentsForm.controls.description.touched
+                        "
+                        >Este campo es requerido</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="comprobanteInput">Número de comprobante*</label>
                   <div class="input-group">
                     <input
                       type="text"
                       class="form-control"
                       id="comprobanteInput"
-                      placeholder="Número de comprobante"
                       formControlName="receipt"
                     />
                     <div class="p-2">
@@ -56,17 +74,87 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label *ngIf="crudAction === 'Editar'" for="amountInput"
-                    >Monto del pago*</label
+                  <label for="fechaPagoInput">Fecha del pago*</label>
+                  <div class="input-group">
+                    <input
+                      type="datetime-local"
+                      class="form-control"
+                      formControlName="datetime"
+                      id="fechaPagoInput"
+                    />
+                    <div class="p-2">
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          paymentsForm.controls.datetime.errors?.required &&
+                          paymentsForm.controls.datetime.touched
+                        "
+                        >Este campo es requerido</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="formaDePagoSelectInput">Forma de pago*</label>
+                  <select
+                    formControlName="wayToPay"
+                    class="form-control custom-select"
+                    id="formaDePagoSelectInput"
                   >
+                    <option [value]="null">
+                      --Seleccionar forma de pago--
+                    </option>
+                    <option
+                      *ngFor="let formaDePago of formasDePago"
+                      [value]="formaDePago"
+                    >
+                      {{ formaDePago }}
+                    </option>
+                  </select>
+                  <div class="p-2">
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        paymentsForm.controls.wayToPay.errors?.required &&
+                        paymentsForm.controls.wayToPay.touched
+                      "
+                      >Este dato es requerido</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="formaDePagoSelectInput">Moneda de pago*</label>
+                  <select
+                    formControlName="coin"
+                    class="form-control custom-select"
+                    id="formaDePagoSelectInput"
+                  >
+                    <option [value]="null">
+                      --Seleccionar moneda de pago--
+                    </option>
+                    <option *ngFor="let moneda of monedas" [value]="moneda">
+                      {{ moneda }}
+                    </option>
+                  </select>
+                  <div class="p-2">
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        paymentsForm.controls.coin.errors?.required &&
+                        paymentsForm.controls.coin.touched
+                      "
+                      >Este dato es requerido</span
+                    >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="amountInput">Monto del pago*</label>
                   <div class="input-group">
                     <input
                       type="number"
                       class="form-control"
-                      placeholder="Monto del pago"
                       formControlName="amount"
                       id="amountInput"
-                      (change)="checkAmountInputValue()"
                     />
                     <div class="p-2">
                       <span
@@ -97,28 +185,65 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label *ngIf="crudAction === 'Editar'" for="fechaPagoInput"
-                    >Fecha del pago*</label
-                  >
+                  <label for="ivaSelectInput">IVA*</label>
                   <div class="input-group">
-                    <input
-                      type="datetime-local"
-                      class="form-control"
-                      placeholder="Fecha del pago"
-                      formControlName="datetime"
-                      id="fechaPagoInput"
-                    />
+                    <select
+                      formControlName="iva"
+                      class="form-control custom-select"
+                      id="ivaSelectInput"
+                    >
+                      <option [value]="false">No</option>
+                      <option [value]="true">Si</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label
+                    >Subtotal:
+                    {{
+                      subTotal | currency
+                    }}</label
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="cotizacionInput">Cotización*</label>
+                  <div class="input-group">
+                    <div
+                      class="d-flex flex-row justify-content-start w-100 align-items-center"
+                    >
+                      <i class="ti ti-money"></i>
+                      <input
+                        type="number"
+                        class="form-control w-75"
+                        formControlName="cotizacionUsd"
+                        id="cotizacionInput"
+                      />
+                    </div>
                     <div class="p-2">
                       <span
                         class="text-danger"
                         *ngIf="
-                          paymentsForm.controls.datetime.errors?.required &&
-                          paymentsForm.controls.datetime.touched
+                          paymentsForm.controls.cotizacionUsd.errors
+                            ?.required &&
+                          paymentsForm.controls.cotizacionUsd.touched
                         "
                         >Este campo es requerido</span
                       >
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                          paymentsForm.controls.cotizacionUsd.errors?.min &&
+                          paymentsForm.controls.cotizacionUsd.touched
+                        "
+                        >El valor debe ser mayor a 0</span
+                      >
                     </div>
                   </div>
+                </div>
+                <div class="form-group">
+                  <label
+                    >Total en dólares: {{ totalEnDolares | currency }}</label
+                  >
                 </div>
               </div>
             </div>

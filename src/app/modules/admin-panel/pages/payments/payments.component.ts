@@ -30,6 +30,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   public payments: ProyectPayments[] = [];
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = ['Comprobante', 'Total', 'Fecha'];
+  public formasDePago: string[] = ['Efectivo', 'Transferencia'];
+  public monedas: string[] = ['Peso', 'Dolar'];
   public isCreating: boolean = false;
   public isEditing: boolean = false;
   public crudAction: string = '';
@@ -39,6 +41,32 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   private project!: Project;
   private projectID!: number;
   private destroy$: Subject<boolean> = new Subject();
+
+  public get totalEnDolares(): number {
+    let result = 0;
+    if (
+      +this.paymentsForm?.controls?.total?.value &&
+      +this.paymentsForm.controls.cotizacionUsd.value
+    ) {
+      result =
+        +this.paymentsForm.controls.total.value /
+        +this.paymentsForm.controls.cotizacionUsd.value;
+    }
+    return result;
+  }
+
+  public get subTotal(): number {
+    let result = 0;
+    if (this.paymentsForm?.controls?.amount?.value) {
+      this.paymentsForm.controls.iva.value === 'true'
+        ? (result =
+            +this.paymentsForm?.controls?.amount?.value +
+            (+this.paymentsForm?.controls?.amount?.value * 21) / 100)
+        : (result = +this.paymentsForm?.controls?.amount?.value);
+      this.paymentsForm.controls.total.setValue(result);
+    }
+    return result;
+  }
 
   constructor(
     private router: Router,
@@ -60,19 +88,13 @@ export class PaymentsComponent implements OnInit, OnDestroy {
       amount: [null, [Validators.required, Validators.min(1)]],
       receipt: ['', [Validators.required]],
       datetime: [null, Validators.required],
+      description: ['', Validators.required],
+      wayToPay: [null, Validators.required],
+      coin: [null, Validators.required],
+      iva: [false],
+      cotizacionUsd: [1, [Validators.required, Validators.min(1)]],
+      total: [null, Validators.required],
     });
-  }
-
-  public checkAmountInputValue(): void {
-    this.paymentsForm.controls.amount?.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => this.validatePaymentAmount(res));
-  }
-
-  private validatePaymentAmount(amount: number): void {
-    if (this.project.balance < amount) {
-      this.paymentsForm.controls.amount?.setErrors({ invalidAmount: true });
-    }
   }
 
   public formSubmit(): void {
@@ -96,6 +118,19 @@ export class PaymentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getProject();
+    this.checkAmountValue();
+  }
+
+  private checkAmountValue(): void {
+    this.paymentsForm.controls.total?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => this.validatePaymentAmount(res));
+  }
+
+  private validatePaymentAmount(amount: number): void {
+    if (amount && this.project.balance < amount) {
+      this.paymentsForm.controls.amount?.setErrors({ invalidAmount: true });
+    }
   }
 
   private getProject(): void {
