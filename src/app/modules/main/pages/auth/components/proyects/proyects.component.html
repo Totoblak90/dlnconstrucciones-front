@@ -46,15 +46,23 @@
                     class="text-nowrap primary-dark"
                     *ngFor="let encabezado of encabezados"
                   >
-                    {{ encabezado | titlecase }}
+                    {{ encabezado }}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let payment of proyecto.Payments">
-                  <td>#{{ payment.receipt }}</td>
+                  <td>{{ payment.description }}</td>
+                  <td>{{ payment.wayToPay }}</td>
+                  <td>{{ payment.description }}</td>
                   <td>{{ payment.datetime | date: "dd/MM/yyyy" }}</td>
+                  <td>#{{ payment.receipt }}</td>
+                  <td>{{ payment.coin }}</td>
                   <td>{{ payment.amount | currency }}</td>
+                  <td>{{ payment.iva ? "Si" : "No" }}</td>
+                  <td>{{ payment.subTotal | currency }}</td>
+                  <td>{{ payment.cotizacionUsd | currency }}</td>
+                  <td>{{ payment.totalUsd | currency }}</td>
                 </tr>
               </tbody>
             </table>

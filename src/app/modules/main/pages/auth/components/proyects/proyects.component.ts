@@ -3,10 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { User } from '../../../../../../models/user.model';
-import {
-  Project,
-  ProyectAssets,
-} from '../../../../../admin-panel/interfaces/users.interface';
+import { Project } from '../../../../../admin-panel/interfaces/users.interface';
 import { ProjectsService } from '../../../../../admin-panel/services/projects.service';
 import { unknownErrorAlert } from '../../../../../../helpers/alerts';
 import { Galeria } from '../../../../../admin-panel/interfaces/projects.interface';
@@ -24,7 +21,18 @@ export class ProyectsComponent implements OnInit {
   }
   @Output() public onDownloadCashflow: EventEmitter<string> =
     new EventEmitter();
-
+  public encabezados: string[] = [
+    'Descripción',
+    'Detalle de pago',
+    'Fecha',
+    'Factura',
+    'Subtotal',
+    'Moneda',
+    'IVA',
+    'Total',
+    'Cotización USD',
+    'Total en USD',
+  ];
   public proyectos: Project[] = [];
   public assets: Galeria[] = [];
   private destroy$: Subject<boolean> = new Subject();
@@ -33,36 +41,6 @@ export class ProyectsComponent implements OnInit {
 
   ngOnInit(): void {
     this.setAssets();
-  }
-
-  public get encabezados(): string[] {
-    let propiedadesDePayments: string[] = [];
-    const encabezados = [];
-
-    this.proyectos?.forEach((pr) =>
-      pr.Payments?.forEach((pay) => (propiedadesDePayments = Object.keys(pay)))
-    );
-    if (propiedadesDePayments?.length) {
-      for (const item of propiedadesDePayments) {
-        switch (item) {
-          case 'amount':
-            encabezados.push('Monto');
-            break;
-          case 'receipt':
-            encabezados.push('Comprobante');
-            break;
-          case 'datetime':
-            encabezados.push('Fecha');
-            break;
-          default:
-            break;
-        }
-      }
-    }
-
-    encabezados.sort();
-
-    return encabezados;
   }
 
   public get progressBarStyle(): string[] {
