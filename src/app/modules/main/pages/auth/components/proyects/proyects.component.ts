@@ -26,8 +26,8 @@ export class ProyectsComponent implements OnInit {
     'Detalle de pago',
     'Fecha',
     'Factura',
-    'Subtotal',
     'Moneda',
+    'Subtotal',
     'IVA',
     'Total',
     'Cotización USD',
@@ -40,6 +40,7 @@ export class ProyectsComponent implements OnInit {
   constructor(private projectsService: ProjectsService) {}
 
   ngOnInit(): void {
+    console.log(this.proyectos);
     this.setAssets();
   }
 

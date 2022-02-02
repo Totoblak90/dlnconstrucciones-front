@@ -53,8 +53,7 @@
               <tbody>
                 <tr *ngFor="let payment of proyecto.Payments">
                   <td>{{ payment.description }}</td>
-                  <td>{{ payment.wayToPay }}</td>
-                  <td>{{ payment.description }}</td>
+                  <td>{{ payment.wayToPay ? "Efectivo" : "Transferencia" }}</td>
                   <td>{{ payment.datetime | date: "dd/MM/yyyy" }}</td>
                   <td>#{{ payment.receipt }}</td>
                   <td>{{ payment.coin }}</td>
