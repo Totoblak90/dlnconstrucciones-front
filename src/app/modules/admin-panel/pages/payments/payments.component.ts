@@ -13,6 +13,7 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 import { ProjectsService } from '../../services/projects.service';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { ProjectPaymentsReq } from '../../interfaces/projects.interface';
+import { CurrencyPipe } from '@angular/common';
 import {
   alertFailureOrSuccessOnCRUDAction,
   unknownErrorAlert,
@@ -23,6 +24,7 @@ import {
   selector: 'app-payments',
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.scss'],
+  providers: [CurrencyPipe],
 })
 export class PaymentsComponent implements OnInit, OnDestroy {
   @HostBinding('class.admin-panel-container') someClass: Host = true;
@@ -34,6 +36,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     'Detalle de pago',
     'Fecha',
     'Factura',
+    'Moneda',
     'Subtotal',
     'IVA',
     'Total',
@@ -70,7 +73,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     if (this.paymentsForm?.controls?.amount?.value) {
       this.paymentsForm.controls.iva.value === 'true'
         ? (result =
-            +this.paymentsForm?.controls?.amount?.value +
+            +this.paymentsForm?.controls?.amount?.value -
             (+this.paymentsForm?.controls?.amount?.value * 21) / 100)
         : (result = +this.paymentsForm?.controls?.amount?.value);
     }
@@ -82,7 +85,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     private router: Router,
     private projectsService: ProjectsService,
     private fb: FormBuilder,
-    private adminPanelCrudService: AdminPanelCrudService
+    private adminPanelCrudService: AdminPanelCrudService,
+    private currencyPipe: CurrencyPipe
   ) {
     this.getprojectId();
     if (this.projectID) this.createForm();
@@ -119,11 +123,14 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         datetime: fechaDelPago,
         receipt: this.paymentsForm.controls.receipt.value,
         coin: this.paymentsForm.controls.coin.value,
-        cotizacionUsd: this.paymentsForm.controls.cotizacionUsd.value,
         description: this.paymentsForm.controls.description.value,
         iva: this.paymentsForm.controls.iva.value === 'true',
         wayToPay: this.paymentsForm.controls.wayToPay.value,
       };
+
+      if (this.paymentsForm.controls.coin.value === 'ARS') {
+        form.cotizacionUsd = this.paymentsForm.controls.cotizacionUsd.value;
+      }
 
       this.crudAction === 'Crear'
         ? this.crearPagoEnLaDb(form)
@@ -134,20 +141,44 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getProject();
     this.checkAmountValue();
+    this.checkCotizacionValue();
+  }
+
+  private checkCotizacionValue(): void {
+    this.paymentsForm.controls.coin.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res === 'USD' || !res) {
+          this.paymentsForm.controls.cotizacionUsd.setValue(1);
+        }
+      });
   }
 
   private checkAmountValue(): void {
     this.paymentsForm.controls.total?.valueChanges
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => this.validatePaymentAmount(res));
+      .subscribe((res) => this.validatePaymentAmount());
   }
 
-  private validatePaymentAmount(amount: number): void {
-    if (amount && this.project.balance < amount) {
+  private validatePaymentAmount(): void {
+    if (this.totalEnDolares && this.project.balance < this.totalEnDolares) {
       this.paymentsForm.controls.amount?.setErrors({ invalidAmount: true });
     } else {
       this.paymentsForm.controls.amount?.setErrors(null);
     }
+  }
+
+  public setCoinFormatAcordingToPaymentMethod(
+    value: string,
+    coinType: string
+  ): string {
+    if (coinType === 'ARS') {
+      value = this.currencyPipe.transform(value)!;
+    } else {
+      value = this.currencyPipe.transform(value, 'USD', 'code')!;
+      value = value.substring(0, 3) + ' ' + value.substring(3, value.length);
+    }
+    return value;
   }
 
   private getProject(): void {
@@ -175,14 +206,52 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         item2: payment.description,
         item3: payment.wayToPay,
         item4: payment.datetime?.substring(0, 10),
-        item6: payment.receipt?.toString(),
-        item7: payment.amount?.toString(),
-        item8: payment.iva ? 'Si' : 'No',
-        item9: payment.subTotal?.toString(),
-        item10: payment.cotizacionUsd?.toString(),
-        item11: payment.totalUsd?.toString()
+        item6: payment.receipt,
+        item7: payment.coin,
+        item8: this.setCoinFormatAcordingToPaymentMethod(
+          payment.amount.toString(),
+          payment.coin
+        ),
+        item9: payment.iva === 'true' ? 'Si' : 'No',
+        item10: payment.subTotal
+          ? this.setCoinFormatAcordingToPaymentMethod(
+              payment.subTotal.toString(),
+              payment.coin
+            )
+          : this.setCoinFormatAcordingToPaymentMethod(
+              payment.amount?.toString(),
+              payment.coin
+            ),
+        item11: payment.cotizacionUsd
+          ? this.currencyPipe.transform(payment.cotizacionUsd?.toString())!
+          : this.currencyPipe.transform(1)!,
+        item12: this.setDolarCodeFormat(payment.totalUsd?.toString()),
       })
     );
+  }
+
+  public setDolarCodeFormat(value: string | undefined): string {
+    value = this.currencyPipe.transform(value, 'USD', 'code')!;
+
+    value = value.substring(0, 3) + ' ' + value.substring(3, value.length);
+
+    return value!;
+  }
+
+  public setFormatAcordingToPaymentMethod(
+    value: string,
+    coinCode: string
+  ): string {
+    if (coinCode === 'USD') {
+      value = this.currencyPipe.transform(value, 'USD', 'code')!;
+    } else {
+      value = this.currencyPipe.transform(value)!;
+    }
+
+    if (value.includes('USD')) {
+      value = value.substring(0, 3) + ' ' + value.substring(3, value.length);
+    }
+    return value;
   }
 
   public recargarPagos(recargar: boolean): void {
@@ -200,6 +269,12 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     this.paymentsForm.controls.amount?.setValue(null);
     this.paymentsForm.controls.receipt?.setValue('');
     this.paymentsForm.controls.datetime?.setValue(null);
+    this.paymentsForm.controls.description?.setValue('');
+    this.paymentsForm.controls.wayToPay?.setValue(null);
+    this.paymentsForm.controls.coin?.setValue(null);
+    this.paymentsForm.controls.iva?.setValue(false);
+    this.paymentsForm.controls.cotizacionUsd?.setValue(1);
+    this.paymentsForm.controls.total?.setValue(null);
   }
 
   public crearPagos(): void {

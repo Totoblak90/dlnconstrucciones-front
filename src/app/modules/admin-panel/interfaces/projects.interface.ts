@@ -6,8 +6,8 @@ export interface ProjectPaymentsReq {
   description: string;
   wayToPay: string;
   coin: string;
-  iva: boolean,
-  cotizacionUsd: number;
+  iva: boolean;
+  cotizacionUsd?: number;
 }
 
 export interface Galeria {

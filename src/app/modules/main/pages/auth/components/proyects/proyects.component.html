@@ -53,15 +53,42 @@
               <tbody>
                 <tr *ngFor="let payment of proyecto.Payments">
                   <td>{{ payment.description }}</td>
-                  <td>{{ payment.wayToPay ? "Efectivo" : "Transferencia" }}</td>
+                  <td>{{ payment.wayToPay }}</td>
                   <td>{{ payment.datetime | date: "dd/MM/yyyy" }}</td>
                   <td>#{{ payment.receipt }}</td>
                   <td>{{ payment.coin }}</td>
-                  <td>{{ payment.amount | currency }}</td>
-                  <td>{{ payment.iva ? "Si" : "No" }}</td>
-                  <td>{{ payment.subTotal | currency }}</td>
-                  <td>{{ payment.cotizacionUsd | currency }}</td>
-                  <td>{{ payment.totalUsd | currency }}</td>
+                  <td>
+                    {{
+                      setFormatAcordingToPaymentMethod(
+                        payment.amount.toString(),
+                        payment.coin
+                      )
+                    }}
+                  </td>
+                  <td>{{ payment.iva === "true" ? "Si" : "No" }}</td>
+                  <td>
+                    {{
+                      payment.subTotal
+                        ? setFormatAcordingToPaymentMethod(
+                            payment.subTotal.toString(),
+                            payment.coin
+                          )
+                        : setFormatAcordingToPaymentMethod(
+                            payment.amount.toString(),
+                            payment.coin
+                          )
+                    }}
+                  </td>
+                  <td>
+                    {{
+                      payment.cotizacionUsd
+                        ? (payment.cotizacionUsd | currency)
+                        : "-"
+                    }}
+                  </td>
+                  <td>
+                    {{ setDolarCodeFormat(payment.totalUsd?.toString()) }}
+                  </td>
                 </tr>
               </tbody>
             </table>

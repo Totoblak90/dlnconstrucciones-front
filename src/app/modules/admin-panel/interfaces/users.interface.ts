@@ -76,7 +76,7 @@ export interface ProyectPayments {
   coin: string;
   cotizacionUsd: number;
   description: string;
-  iva: boolean;
+  iva: string;
   wayToPay: string;
   subTotal: number;
   totalUsd: number;

@@ -7,11 +7,13 @@ import { Project } from '../../../../../admin-panel/interfaces/users.interface';
 import { ProjectsService } from '../../../../../admin-panel/services/projects.service';
 import { unknownErrorAlert } from '../../../../../../helpers/alerts';
 import { Galeria } from '../../../../../admin-panel/interfaces/projects.interface';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-proyects',
   templateUrl: './proyects.component.html',
   styleUrls: ['./proyects.component.scss'],
+  providers: [CurrencyPipe],
 })
 export class ProyectsComponent implements OnInit {
   @Input() public set setProyectos(user: User) {
@@ -37,10 +39,12 @@ export class ProyectsComponent implements OnInit {
   public assets: Galeria[] = [];
   private destroy$: Subject<boolean> = new Subject();
 
-  constructor(private projectsService: ProjectsService) {}
+  constructor(
+    private projectsService: ProjectsService,
+    private currencyPipe: CurrencyPipe
+  ) {}
 
   ngOnInit(): void {
-    console.log(this.proyectos);
     this.setAssets();
   }
 
@@ -60,6 +64,30 @@ export class ProyectsComponent implements OnInit {
       porcentajes.push(num);
     });
     return porcentajes;
+  }
+
+  public setDolarCodeFormat(value: string | undefined): string {
+    value = this.currencyPipe.transform(value, 'USD', 'code')!;
+
+    value = value.substring(0, 3) + ' ' + value.substring(3, value.length);
+
+    return value!;
+  }
+
+  public setFormatAcordingToPaymentMethod(
+    value: string,
+    coinCode: string
+  ): string {
+    if (coinCode === 'USD') {
+      value = this.currencyPipe.transform(value, 'USD', 'code')!;
+    } else {
+      value = this.currencyPipe.transform(value)!;
+    }
+
+    if (value.includes('USD')) {
+      value = value.substring(0, 3) + ' ' + value.substring(3, value.length);
+    }
+    return value;
   }
 
   private setPorcentaje(total: number, pagado: number): number {
