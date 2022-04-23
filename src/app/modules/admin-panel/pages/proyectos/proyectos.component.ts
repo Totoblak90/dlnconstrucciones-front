@@ -19,6 +19,7 @@ import {
   noConnectionAlert,
   unknownErrorAlert,
 } from '../../../../helpers/alerts';
+import { CreateOrEditProyectReq } from '../../interfaces/projects.interface';
 
 type UserSelectData = Pick<
   FullUser,
@@ -39,6 +40,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   public encabezadosTabla: string[] = [
     'Nombre del proyecto',
     'Anotaciones',
+    'Moneda del proyecto',
     'Total',
     'Debe',
     'Cashflow',
@@ -70,6 +72,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       description: ['', [Validators.minLength(10)]],
       total: [null, [Validators.required, Validators.min(0)]],
       cashflow: [undefined],
+      coin: [undefined, Validators.required],
       user: [null, Validators.required],
     });
   }
@@ -118,9 +121,17 @@ export class ProyectosComponent implements OnInit, OnDestroy {
           )
         : null;
 
+      const proyectReq: CreateOrEditProyectReq = {
+        coin: this.proyectForm.controls.coin.value,
+        description: this.proyectForm.controls.description?.value,
+        title: this.proyectForm.controls.title?.value,
+        total: +this.proyectForm.controls.total?.value,
+        user: this.proyectForm.controls.user?.value!,
+      };
+
       this.crudAction === 'Crear'
-        ? this.crearProyectoEnLaDb(formData)
-        : this.editarProyectoEnLaDb(formData);
+        ? this.crearProyectoEnLaDb(proyectReq)
+        : this.editarProyectoEnLaDb(proyectReq);
     }
   }
 
@@ -162,13 +173,14 @@ export class ProyectosComponent implements OnInit, OnDestroy {
           proyecto.title ||
           `Proyecto usuario: ${proyecto.Users?.first_name} ${proyecto.Users?.last_name}`,
         item3: proyecto.description || '-',
-        item4: proyecto.total ? this.setCurrencyFormat(proyecto.total) : 'NULL',
-        item6:
+        item4: proyecto.coin.toString(),
+        item6: proyecto.total ? this.setCurrencyFormat(proyecto.total) : 'NULL',
+        item7:
           proyecto.balance !== null || proyecto.balance !== undefined
             ? this.setCurrencyFormat(proyecto.balance)
             : 'NULL',
-        item7: proyecto.cashflow ? 'Si' : 'No',
-        item8: `${proyecto.Users?.first_name} ${proyecto.Users?.last_name}`,
+        item8: proyecto.Cashflow?.length ? 'Si' : 'No',
+        item9: `${proyecto.Users?.first_name} ${proyecto.Users?.last_name}`,
       })
     );
   }
@@ -201,12 +213,13 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     this.isEditing = false;
   }
 
-  public crearProyectoEnLaDb(formData: FormData): void {
+  public crearProyectoEnLaDb(formData: CreateOrEditProyectReq): void {
     this.adminPanelCrudService
-      .create(formData, 'projects')
+      .createWithJSON(formData, 'projects')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
+          console.log(res);
           this.recargarProyectos(true);
           alertFailureOrSuccessOnCRUDAction(res, 'creó', 'proyecto');
         },
@@ -233,9 +246,9 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     }
   }
 
-  public editarProyectoEnLaDb(formData: FormData): void {
+  public editarProyectoEnLaDb(formData: CreateOrEditProyectReq): void {
     this.adminPanelCrudService
-      .edit(this.projectID, formData, 'projects')
+      .editWthJSON(this.projectID, formData, 'projects')
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res: any) => {

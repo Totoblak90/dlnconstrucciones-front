@@ -41,17 +41,18 @@ export interface OneProjectRes {
 export interface Project {
   Assets: ProyectAssets[];
   balance: number;
-  cashflow: any;
   description: string;
   id: number;
   Payments?: ProyectPayments[];
   title: string;
   total: number;
+  coin: number;
   Users?: FullUser;
   users_id: number;
   created_at: string;
   updated_at: string;
   deleted_at: null | string;
+  Cashflow?: string[];
 }
 
 export interface ProyectAssets {

@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AdminPanelCrudRoutes } from '../interfaces/general.interface';
+import { AdminPanelCrudRoutes } from '../interfaces/crud-routes.interface';
+import { CreateOrEditProyectReq } from '../interfaces/projects.interface';
 import { editUserRoleReq } from '../interfaces/users.interface';
 
 @Injectable({
@@ -21,6 +22,24 @@ export class AdminPanelCrudService {
    */
   public create(
     payload: FormData,
+    tabla: AdminPanelCrudRoutes
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${environment.API_BASE_URL}/${tabla}/create`,
+      payload
+    );
+  }
+
+  /**
+   * Crea un nuevo registro en la tabla indicada
+   *
+   * @param payload: CreateOrEditProyectReq
+   * @param tabla: AdminPanelCrudRoutes
+   * @return {*}  {Observable<any>}
+   * @memberof AdminPanelCrudService
+   */
+  public createWithJSON(
+    payload: CreateOrEditProyectReq,
     tabla: AdminPanelCrudRoutes
   ): Observable<any> {
     return this.http.post<any>(
@@ -59,6 +78,26 @@ export class AdminPanelCrudService {
   public edit(
     id: number,
     payload: FormData,
+    tabla: AdminPanelCrudRoutes
+  ): Observable<any> {
+    return this.http.patch<any>(
+      `${environment.API_BASE_URL}/${tabla}/edit/${id}`,
+      payload
+    );
+  }
+
+  /**
+   * Edita un registro en la tabla indicada
+   *
+   * @param {number} id
+   * @param {CreateOrEditProyectReq} payload
+   * @param {AdminPanelCrudRoutes} tabla
+   * @return {*}  {Observable<any>}
+   * @memberof AdminPanelCrudService
+   */
+  public editWthJSON(
+    id: number,
+    payload: CreateOrEditProyectReq,
     tabla: AdminPanelCrudRoutes
   ): Observable<any> {
     return this.http.patch<any>(

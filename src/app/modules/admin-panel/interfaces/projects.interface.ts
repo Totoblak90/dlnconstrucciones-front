@@ -1,3 +1,11 @@
+export interface CreateOrEditProyectReq {
+  user: number;
+  coin: string;
+  total: number;
+  title: string;
+  description: string;
+}
+
 export interface ProjectPaymentsReq {
   projects_id: number;
   amount: number;

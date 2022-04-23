@@ -10,4 +10,5 @@ export type AdminPanelCrudRoutes =
   | 'categories'
   | 'projects'
   | 'payments'
-  | 'assets';
+  | 'assets'
+  | 'cashflow';
