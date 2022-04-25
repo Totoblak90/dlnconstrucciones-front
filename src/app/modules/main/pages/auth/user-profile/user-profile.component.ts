@@ -270,7 +270,7 @@ export class UserProfileComponent implements OnDestroy {
           const newBlob = new Blob([res], { type: res.type });
 
           const data = window.URL.createObjectURL(newBlob);
-          const fileName = 'Cashflow';
+          const fileName = cashflow;
           let link = this.renderer.createElement('a');
           link.href = data;
           link.download = fileName;

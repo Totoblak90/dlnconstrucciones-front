@@ -82,12 +82,16 @@
       </div>
     </div>
   </div>
-  <div *ngIf="proyecto.Cashflows?.length" class="cashflow m-t-5 b-b-5">
-    <button *ngFor="let cashflow of proyecto.Cashflows" class="btn bgc-primary-dark text-white"
-      (click)="descargarCashFlow(cashflow.cashflow)">
-      <i class="ti ti-file"></i> Descargar cashflow
-    </button>
-  </div>
+  <ng-container *ngIf="proyecto.Cashflows?.length">
+    <p class="text-nowrap primary-dark mt-3">Archivos para descargar</p>
+    <div class="cashflows-container mt-3">
+      <div *ngFor="let file of proyecto.Cashflows" class="cashflows-container__card pointer"
+        (click)="descargarCashFlow(file.cashflow)">
+        <img [src]="setFileToDownloadIcon(file.cashflow)" alt="Icono">
+        <p>{{ file.cashflow }}</p>
+      </div>
+    </div>
+  </ng-container>
   <div *ngIf="assets.length" class="row proyect-carrousel m-t-5 b-b-5">
     <h6>Galería:</h6>
     <hr />

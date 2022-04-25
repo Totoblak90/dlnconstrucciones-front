@@ -150,4 +150,20 @@ export class ProyectsComponent implements OnInit {
       },
     });
   }
+
+  public setFileToDownloadIcon(filename: string): string {
+    if (filename.includes('.pdf')) return '../../../../../assets/pdficon.png';
+    else if (filename.includes('.xls') || filename.includes('.xlsx'))
+      return '../../../../../assets/excelicon.png';
+    else if (filename.includes('.doc') || filename.includes('.docx'))
+      return '../../../../../assets/word.png';
+    else if (
+      filename.includes('.png') ||
+      filename.includes('.jpg') ||
+      filename.includes('.jpeg')
+    )
+      return '../../../../../assets/mediafile.png';
+
+    return '';
+  }
 }
