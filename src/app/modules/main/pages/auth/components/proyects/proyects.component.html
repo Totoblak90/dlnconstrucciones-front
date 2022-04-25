@@ -1,6 +1,6 @@
 <h4 class="font-medium m-t-30">Proyectos:</h4>
 <hr />
-<div class="mb-5" *ngFor="let proyecto of proyectos; let i = index">
+<div class="mb-5 project" *ngFor="let proyecto of proyectos; let i = index">
   <h4 class="m-t-30 primary-dark">
     {{ proyecto.title ? proyecto.title : "Proyecto sin título" }}
     <span class="pull-right">{{ porcentaje[i] }}%</span>
@@ -95,13 +95,13 @@
   <div *ngIf="proyecto.Assets.length" class="row proyect-carrousel mt-5 b-b-5">
     <h6 class="primary-dark mt-3">Galería: {{ proyecto.title }}</h6>
     <hr />
-    <div class="card-group">
-      <div *ngFor="let a of assets" class="col-lg-4 col-md-6" [class]="
+    <div class="gallery">
+      <div *ngFor="let a of assets" [class]="
           showGalleryCard(a, proyecto) ? 'display-block' : 'display-none'
         ">
-        <div class="card m-0 p-0">
+        <div class="gallery__card ">
           <div *ngIf="showGalleryImage(a, proyecto)">
-            <img class="img-responsive" [src]="a.base64" alt="Construcción" />
+            <img class="" [src]="a.base64" alt="Construcción" />
           </div>
           <div class="embed-responsive embed-responsive-21by9" *ngIf="showGalleryVideo(a, proyecto)">
             <video class="embed-responsive-item" [src]="a.base64" [autoplay]="false" [muted]="true" [loop]="true"
