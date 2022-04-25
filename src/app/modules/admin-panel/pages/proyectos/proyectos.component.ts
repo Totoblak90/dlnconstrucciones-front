@@ -1,12 +1,8 @@
 import { Component, Host, HostBinding, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import Swal, { SweetAlertResult } from 'sweetalert2';
-import {
-  AllUsersRes,
-  FullUser,
-  Project,
-} from '../../interfaces/users.interface';
+import Swal, { SweetAlertResult, SweetAlertIcon } from 'sweetalert2';
+import { FullUser, Project } from '../../interfaces/users.interface';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { CurrencyPipe } from '@angular/common';
@@ -20,6 +16,16 @@ import {
   unknownErrorAlert,
 } from '../../../../helpers/alerts';
 import { CreateOrEditProyectReq } from '../../interfaces/projects.interface';
+import { CashflowsService } from '../../services/cashflows.service';
+import { Cashflow } from '../../interfaces/cashflows.interface';
+
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: 'btn bgc-primary-dark text-white',
+    cancelButton: 'btn btn-danger',
+  },
+  buttonsStyling: false,
+});
 
 type UserSelectData = Pick<
   FullUser,
@@ -36,6 +42,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
   public selectData: UserSelectData[] = [];
   public projects: Project[] = [];
+  public cashflows: Cashflow[] = [];
   public tableData: CuerpoTabla[] = [];
   public encabezadosTabla: string[] = [
     'Nombre del proyecto',
@@ -43,7 +50,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     'Moneda del proyecto',
     'Total',
     'Debe',
-    'Cashflow',
+    'Archivos',
     'Usuario',
   ];
   public isCreating: boolean = false;
@@ -53,6 +60,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   public fileToUpload: File | null = null;
   public acceptedFileTypes: boolean = true;
   public projectID!: number;
+  public formatosNoAceptadosEnEditarCashflow: boolean = false;
   private destroy$: Subject<boolean> = new Subject();
 
   constructor(
@@ -61,7 +69,8 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private router: Router,
     private projectService: ProjectsService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private cashflowService: CashflowsService
   ) {
     this.createForm();
   }
@@ -69,10 +78,10 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.proyectForm = this.fb.group({
       title: [undefined, [Validators.required, Validators.minLength(6)]],
-      description: ['', [Validators.minLength(10)]],
+      description: ['', [Validators.minLength(10), Validators.required]],
       total: [null, [Validators.required, Validators.min(0)]],
       cashflow: [undefined],
-      coin: [undefined, Validators.required],
+      coin: [null, Validators.required],
       user: [null, Validators.required],
     });
   }
@@ -105,22 +114,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   public formSubmit(): void {
     this.proyectForm.markAllAsTouched();
     if (this.proyectForm.valid) {
-      const formData: FormData = new FormData();
-      formData.append('title', this.proyectForm.controls.title?.value);
-      formData.append('total', this.proyectForm.controls.total?.value);
-      formData.append('user', this.proyectForm.controls.user?.value!);
-
-      this.fileToUpload
-        ? formData.append('cashflow', this.fileToUpload!)
-        : null;
-
-      this.proyectForm.controls.description?.value
-        ? formData.append(
-            'description',
-            this.proyectForm.controls.description?.value
-          )
-        : null;
-
       const proyectReq: CreateOrEditProyectReq = {
         coin: this.proyectForm.controls.coin.value,
         description: this.proyectForm.controls.description?.value,
@@ -137,17 +130,25 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
   public validateCashflowExtension(e: any): void {
     const file: File = e.target?.files[0];
+
     this.acceptedFileTypes =
       file.type ===
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
-      file.type === 'application/pdf';
+      file.type === 'application/pdf' ||
+      file.type === 'application/msword' ||
+      file.type ===
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+      file.type === 'application/vnd.ms-excel' ||
+      file.type === 'image/jpg' ||
+      file.type === 'image/jpeg' ||
+      file.type === 'image/png';
 
     this.acceptedFileTypes
       ? (this.fileToUpload = file)
       : (this.fileToUpload = null);
   }
 
-  private getProyects(): void {
+  private getProyects(projectID?: number): void {
     this.projectService
       .getAllProjects()
       .pipe(takeUntil(this.destroy$))
@@ -155,6 +156,15 @@ export class ProyectosComponent implements OnInit, OnDestroy {
         (res) => {
           if (res?.meta?.status.toString().includes('20')) {
             this.projects = res?.data;
+            this.projects.forEach((p) => {
+              if (projectID) {
+                if (p.id === projectID) {
+                  this.cashflows = p.Cashflows!;
+                }
+              } else {
+                this.cashflows = p.Cashflows!;
+              }
+            });
             this.setTableData();
           } else {
             unknownErrorAlert(res);
@@ -179,7 +189,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
           proyecto.balance !== null || proyecto.balance !== undefined
             ? this.setCurrencyFormat(proyecto.balance)
             : 'NULL',
-        item8: proyecto.Cashflow?.length ? 'Si' : 'No',
+        item8: proyecto.Cashflows?.length.toString(),
         item9: `${proyecto.Users?.first_name} ${proyecto.Users?.last_name}`,
       })
     );
@@ -205,6 +215,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     this.proyectForm.controls.total?.setValue('');
     this.proyectForm.controls.description?.setValue('');
     this.proyectForm.controls.user?.setValue('');
+    this.proyectForm.controls.coin?.setValue('');
   }
 
   public crearProyecto(): void {
@@ -219,15 +230,46 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (res) => {
-          console.log(res);
-          this.recargarProyectos(true);
-          alertFailureOrSuccessOnCRUDAction(res, 'creó', 'proyecto');
+          if (this.fileToUpload) {
+            this.createCashflow(res.data.id);
+          } else {
+            this.recargarProyectos(true);
+            alertFailureOrSuccessOnCRUDAction(res, 'creó', 'proyecto');
+          }
         },
         (err) => {
           this.recargarProyectos(true);
           noConnectionAlert(err);
         }
       );
+  }
+
+  public createCashflow(projectID: number): void {
+    const formData = new FormData();
+    formData.append('cashflow', this.fileToUpload!);
+    formData.append('projects_id', projectID.toString());
+
+    this.cashflowService
+      .createCashflow(formData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.recargarProyectos(true);
+          swalWithBootstrapButtons.fire(
+            '¡Excelente!',
+            'El proyecto y el archivo se crearon correctamente',
+            'success'
+          );
+        },
+        error: (err) => {
+          this.recargarProyectos(true);
+          swalWithBootstrapButtons.fire(
+            'Malas noticias!',
+            'El proyecto se creó correctamente pero el archivo no se pudo guardar como esperabamos ;(',
+            'error'
+          );
+        },
+      });
   }
 
   public editarProyecto(id: number): void {
@@ -237,12 +279,23 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     const proyecto: Project | undefined = this.projects.find(
       (proj) => proj.id === id
     );
+    this.cashflows = proyecto?.Cashflows!;
     if (proyecto) {
+      this.formatosNoAceptadosEnEditarCashflow = false;
       this.projectID = id;
       this.proyectForm.controls.title.setValue(proyecto.title);
-      this.proyectForm.controls.title.setValue(proyecto.description);
+      this.proyectForm.controls.description.setValue(proyecto.description);
       this.proyectForm.controls.total.setValue(proyecto.total);
+      // Saco los decimales del total para mostrar el input ---------------------
+      this.proyectForm.controls.total.setValue(
+        this.proyectForm.controls.total.value.substring(
+          0,
+          this.proyectForm.controls.total.value.length - 3
+        )
+      );
+      // ------------------------------------------------------------------------
       this.proyectForm.controls.user.setValue(proyecto.Users?.id);
+      this.proyectForm.controls.coin.setValue(proyecto.coin);
     }
   }
 
@@ -298,20 +351,112 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     });
   }
 
-  private alertFailureOrSuccess(status: number): void {
-    if (status === 200 || status === 201) {
-      Swal.fire(
-        '¡Excelente!',
-        'El proyecto se eliminó correctamente',
-        'success'
-      );
-    } else {
-      Swal.fire(
-        '¡Lo sentimos!',
-        'No pudimos cargar la información, por favor recarga la página',
-        'error'
-      );
+  public addCashflowOnEdit(projectID: number, input: HTMLInputElement): void {
+    if (input.files?.length) {
+      const acceptedFileTypes =
+        input.files[0].type ===
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+        input.files[0].type === 'application/pdf' ||
+        input.files[0].type === 'application/msword' ||
+        input.files[0].type ===
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+        input.files[0].type === 'application/vnd.ms-excel' ||
+        input.files[0].type === 'image/jpg' ||
+        input.files[0].type === 'image/jpeg' ||
+        input.files[0].type === 'image/png';
+
+      const formData = new FormData();
+      formData.append('projects_id', projectID.toString());
+      formData.append('cashflow', input.files ? input.files[0] : '');
+
+      if (acceptedFileTypes) {
+        this.formatosNoAceptadosEnEditarCashflow = false;
+        this.cashflowService
+          .createCashflow(formData)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (res) => {
+              this.getProyects(projectID);
+              alertFailureOrSuccessOnCRUDAction(res, 'creó', 'cashflow');
+            },
+            error: (err) => {
+              alertFailureOrSuccessOnCRUDAction(err, 'creó', 'cashflow');
+            },
+          });
+      } else {
+        this.formatosNoAceptadosEnEditarCashflow = true;
+      }
     }
+  }
+
+  public editSelectedCashflow(
+    input: HTMLInputElement,
+    cashflowId: number
+  ): void {
+    if (input.files?.length) {
+      const acceptedFileTypes =
+        input.files[0].type ===
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+        input.files[0].type === 'application/pdf' ||
+        input.files[0].type === 'application/msword' ||
+        input.files[0].type ===
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+        input.files[0].type === 'application/vnd.ms-excel' ||
+        input.files[0].type === 'image/jpg' ||
+        input.files[0].type === 'image/jpeg' ||
+        input.files[0].type === 'image/png';
+
+      const formData = new FormData();
+      formData.append('projects_id', this.projectID.toString());
+      formData.append('cashflow', input.files ? input.files[0] : '');
+
+      if (acceptedFileTypes) {
+        this.formatosNoAceptadosEnEditarCashflow = false;
+        this.cashflowService
+          .editCashflow(formData, cashflowId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (res) => {
+              this.getProyects(this.projectID);
+              alertFailureOrSuccessOnCRUDAction(res, 'editó', 'cashflow');
+            },
+            error: (err) =>
+              alertFailureOrSuccessOnCRUDAction(err, 'editó', 'cashflow'),
+          });
+      } else {
+        this.formatosNoAceptadosEnEditarCashflow = true;
+      }
+    }
+  }
+
+  public deleteCashflow(cashflowId: number): void {
+    this.cashflowService
+      .deleteCashflow(cashflowId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.getProyects(this.projectID);
+          alertFailureOrSuccessOnCRUDAction(res, 'borró', 'cashflow');
+        },
+        error: (err) =>
+          alertFailureOrSuccessOnCRUDAction(err, 'borró', 'cashflow'),
+      });
+  }
+
+  public setImageIconOnEditCashflow(filename: string): string {
+    if (filename.includes('.pdf')) return '../../../../../assets/pdficon.png';
+    else if (filename.includes('.xls') || filename.includes('.xlsx'))
+      return '../../../../../assets/excelicon.png';
+    else if (filename.includes('.doc') || filename.includes('.docx'))
+      return '../../../../../assets/word.png';
+    else if (
+      filename.includes('.png') ||
+      filename.includes('.jpg') ||
+      filename.includes('.jpeg')
+    )
+      return '../../../../../assets/mediafile.png';
+
+    return '';
   }
 
   ngOnDestroy(): void {

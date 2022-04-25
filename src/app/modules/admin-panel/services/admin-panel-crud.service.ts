@@ -3,7 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AdminPanelCrudRoutes } from '../interfaces/crud-routes.interface';
-import { CreateOrEditProyectReq } from '../interfaces/projects.interface';
+import {
+  CreateOrEditProyectReq,
+  CreateProyectRes,
+} from '../interfaces/projects.interface';
 import { editUserRoleReq } from '../interfaces/users.interface';
 
 @Injectable({
@@ -41,8 +44,8 @@ export class AdminPanelCrudService {
   public createWithJSON(
     payload: CreateOrEditProyectReq,
     tabla: AdminPanelCrudRoutes
-  ): Observable<any> {
-    return this.http.post<any>(
+  ): Observable<CreateProyectRes> {
+    return this.http.post<CreateProyectRes>(
       `${environment.API_BASE_URL}/${tabla}/create`,
       payload
     );

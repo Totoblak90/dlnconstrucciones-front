@@ -82,9 +82,9 @@
       </div>
     </div>
   </div>
-  <div *ngIf="proyecto.Cashflow?.length" class="cashflow m-t-5 b-b-5">
-    <button *ngFor="let cashflow of proyecto.Cashflow" class="btn bgc-primary-dark text-white"
-      (click)="descargarCashFlow(cashflow)">
+  <div *ngIf="proyecto.Cashflows?.length" class="cashflow m-t-5 b-b-5">
+    <button *ngFor="let cashflow of proyecto.Cashflows" class="btn bgc-primary-dark text-white"
+      (click)="descargarCashFlow(cashflow.cashflow)">
       <i class="ti ti-file"></i> Descargar cashflow
     </button>
   </div>

@@ -59,6 +59,7 @@ export function alertFailureOrSuccessOnCRUDAction(
     | 'trabajo realizado'
     | 'usuario'
     | 'zona'
+    | 'cashflow'
 ): void {
   if (data?.meta?.status?.toString().includes('20')) {
     customMessageAlert(

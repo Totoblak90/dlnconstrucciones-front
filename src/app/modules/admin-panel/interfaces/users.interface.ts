@@ -1,5 +1,6 @@
 import { userRole } from '../../main/interfaces/http/auth.interface';
 import { Meta } from '../../main/interfaces/http/batches.interface';
+import { Cashflow } from './cashflows.interface';
 
 export interface AllUsersRes {
   meta: Meta;
@@ -52,7 +53,7 @@ export interface Project {
   created_at: string;
   updated_at: string;
   deleted_at: null | string;
-  Cashflow?: string[];
+  Cashflows?: Cashflow[];
 }
 
 export interface ProyectAssets {

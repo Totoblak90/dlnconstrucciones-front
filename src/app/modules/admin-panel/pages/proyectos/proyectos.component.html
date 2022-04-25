@@ -65,6 +65,12 @@
                       formControlName="description" cols="30" rows="5"></textarea>
                     <div class="p-2">
                       <span class="text-danger" *ngIf="
+                            proyectForm.controls.description.errors?.required &&
+                            proyectForm.controls.description.touched
+                          ">Este campo es requerido</span>
+                    </div>
+                    <div class="p-2">
+                      <span class="text-danger" *ngIf="
                           proyectForm.controls.description.errors?.minlength &&
                           proyectForm.controls.description.touched
                         ">Debe tener al menos 10 caracteres</span>
@@ -103,14 +109,51 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label *ngIf="crudAction === 'Editar'" for="cashFlowInput">Cashflow</label>
-                  <div class="input-group">
-                    <input type="file" class="form-control" placeholder="Cashflow" formControlName="cashflow"
-                      id="cashFlowInput" (change)="validateCashflowExtension($event)" />
-                    <div class="p-2">
-                      <span class="text-danger" *ngIf="!acceptedFileTypes">Los formatos aceptados son PDF o XLSX</span>
+                  <ng-container *ngIf="crudAction === 'Editar';else creatingCashflowTemplate">
+                    <label for="cashFlowInput">Cashflow</label>
+                    <i class="ti ti-plus text-danger primary-dark pointer" (click)="addCashflowOnEditInput.click()"></i>
+                    <input type="file" id="addCashflowOnEdit" #addCashflowOnEditInput
+                      (change)="addCashflowOnEdit(projectID, addCashflowOnEditInput)">
+                    <span class="text-danger" *ngIf="formatosNoAceptadosEnEditarCashflow">Los formatos aceptados son
+                      PDF, PNG, JPG, JPEG,
+                      DOC, DOCX, XLS o XLSX</span>
+                    <ng-container *ngIf="cashflows?.length">
+                      <div class="cashflows">
+                        <div *ngFor="let cashflow of cashflows" class="cashflows__child">
+                          <div class="cashflows__child--icon">
+                            <img [src]="setImageIconOnEditCashflow(cashflow.cashflow)" alt="Icono de un archivo"
+                              class="pointer" (click)="inputOnEditSelectedCashflow.click()">
+                            <p (click)="inputOnEditSelectedCashflow.click()" class="pointer">{{cashflow.cashflow}}</p>
+                            <i class="fa fa-trash text-danger primary-dark pointer"
+                              (click)="deleteCashflow(cashflow.id)"></i>
+                            <input type="file" #inputOnEditSelectedCashflow
+                              (change)="editSelectedCashflow(inputOnEditSelectedCashflow, cashflow.id)">
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <!-- <ng-template #notCashflowsOnEdit>
+                      <div class="input-group">
+                        <input type="file" class="form-control" placeholder="Cashflow" formControlName="cashflow"
+                          id="cashFlowInput" (change)="validateCashflowExtension($event)" />
+                        <div class="p-2">
+                          <span class="text-danger" *ngIf="!acceptedFileTypes">Los formatos aceptados son PDF, XLS,
+                            XLSX,
+                            DOC, DOCX, JPG, JPEG o PNG</span>
+                        </div>
+                      </div>
+                    </ng-template> -->
+                  </ng-container>
+                  <ng-template #creatingCashflowTemplate>
+                    <div class="input-group">
+                      <input type="file" class="form-control" placeholder="Cashflow" formControlName="cashflow"
+                        id="cashFlowInput" (change)="validateCashflowExtension($event)" />
+                      <div class="p-2">
+                        <span class="text-danger" *ngIf="!acceptedFileTypes">Los formatos aceptados son PDF, XLS, XLSX,
+                          DOC, DOCX, JPG, JPEG o PNG</span>
+                      </div>
                     </div>
-                  </div>
+                  </ng-template>
                 </div>
               </div>
             </div>

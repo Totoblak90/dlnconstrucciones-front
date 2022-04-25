@@ -1,0 +1,38 @@
+.ti-plus {
+  margin-left: 5px;
+}
+.cashflows {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  row-gap: 5px;
+  margin-top: 15px;
+  @media (max-width: 1400px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+  &__child {
+    width: 100%;
+    &--icon {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      img {
+        max-width: 50px;
+      }
+      input {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+#addCashflowOnEdit {
+  opacity: 0;
+}
