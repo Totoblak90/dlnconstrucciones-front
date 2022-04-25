@@ -3,13 +3,8 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <input
-            type="text"
-            class="form-control primary-dark"
-            placeholder="Buscar en la tabla"
-            (keyup)="search(searchInput.value)"
-            #searchInput
-          />
+          <input type="text" class="form-control primary-dark" placeholder="Buscar en la tabla"
+            (keyup)="search(searchInput.value)" #searchInput />
         </div>
       </div>
     </div>
@@ -35,10 +30,7 @@
               </ng-template>
             </div>
             <div class="title-section-actions">
-              <button
-                class="btn bgc-primary-dark text-white"
-                (click)="create()"
-              >
+              <button class="btn bgc-primary-dark text-white" (click)="create()">
                 Crear {{ title }}
               </button>
             </div>
@@ -51,10 +43,7 @@
                   <th *ngIf="!noImage" class="text-nowrap primary-dark w100">
                     Imágen / Avatar
                   </th>
-                  <th
-                    *ngFor="let encabezado of encabezadosTabla"
-                    class="primary-dark"
-                  >
+                  <th *ngFor="let encabezado of encabezadosTabla" class="primary-dark">
                     {{ encabezado }}
                   </th>
                   <th class="text-nowrap primary-dark w100">Acciones</th>
@@ -63,126 +52,70 @@
               <tbody>
                 <tr *ngFor="let cuerpo of filasTabla">
                   <td *ngIf="!noImage" class="text-center">
-                    <ng-container
-                      *ngIf="
+                    <ng-container *ngIf="
                         !cuerpo.tipoDeArchivo ||
                           cuerpo.tipoDeArchivo?.includes('image');
                         else videoTemplate
-                      "
-                    >
-                      <img
-                        [src]="cuerpo.imagen"
-                        alt="Avatar"
-                        class="avatar pointer"
-                        (click)="expandirImagen(cuerpo.imagen!)"
-                      />
+                      ">
+                      <img [src]="cuerpo.imagen" alt="Avatar" class="avatar pointer"
+                        (click)="expandirImagen(cuerpo.imagen!)" />
                     </ng-container>
                     <ng-template class="" #videoTemplate>
-                      <video
-                        class="embed-responsive-item w-100"
-                        [src]="cuerpo.imagen"
-                        [autoplay]="false"
-                        [muted]="true"
-                        [loop]="true"
-                        [controls]="true"
-                      ></video>
+                      <video class="embed-responsive-item" [src]="cuerpo.imagen" [autoplay]="false" [muted]="true"
+                        [loop]="true" [controls]="true"></video>
                     </ng-template>
                   </td>
-                  <td
-                    class="primary-dark"
-                    *ngIf="cuerpo.item2"
-                    [class.pointer]="cuerpo.item2.length > 100"
-                    (click)="verMas(cuerpo.item2)"
-                  >
+                  <td class="primary-dark" *ngIf="cuerpo.item2" [class.pointer]="cuerpo.item2.length > 100"
+                    (click)="verMas(cuerpo.item2)">
                     {{ cuerpo.item2 | slice: 0:100
                     }}{{ cuerpo.item2?.length! > 100 ? "..." : "" }}
                   </td>
-                  <td
-                    class="primary-dark"
-                    *ngIf="cuerpo.item3"
-                    [class.pointer]="cuerpo.item3.length > 100"
-                    (click)="verMas(cuerpo.item3)"
-                  >
+                  <td class="primary-dark" *ngIf="cuerpo.item3" [class.pointer]="cuerpo.item3.length > 100"
+                    (click)="verMas(cuerpo.item3)">
                     {{ cuerpo.item3 | slice: 0:100
                     }}{{ cuerpo.item3?.length! > 100 ? "..." : "" }}
                   </td>
-                  <td
-                    class="primary-dark"
-                    *ngIf="cuerpo.item4"
-                    [class.pointer]="cuerpo.item4.length > 100"
-                    (click)="verMas(cuerpo.item4)"
-                  >
+                  <td class="primary-dark" *ngIf="cuerpo.item4" [class.pointer]="cuerpo.item4.length > 100"
+                    (click)="verMas(cuerpo.item4)">
                     {{ cuerpo.item4 | slice: 0:100
                     }}{{ cuerpo.item4?.length! > 100 ? "..." : "" }}
                   </td>
-                  <td
-                    class="primary-dark"
-                    *ngIf="cuerpo.linkVerMas"
-                    [class.pointer]="+cuerpo.linkVerMas.value > 100"
-                    [routerLink]="cuerpo.linkVerMas.route"
-                  >
+                  <td class="primary-dark" *ngIf="cuerpo.linkVerMas" [class.pointer]="+cuerpo.linkVerMas.value > 100"
+                    [routerLink]="cuerpo.linkVerMas.route">
                     {{ cuerpo.linkVerMas.value }}
                   </td>
-                  <td
-                    class="primary-dark"
-                    *ngIf="cuerpo.item6"
-                    [class.pointer]="cuerpo.item6.length > 100"
-                    (click)="verMas(cuerpo.item6)"
-                  >
+                  <td class="primary-dark" *ngIf="cuerpo.item6" [class.pointer]="cuerpo.item6.length > 100"
+                    (click)="verMas(cuerpo.item6)">
                     {{ cuerpo.item6 | slice: 0:100
                     }}{{ cuerpo.item6?.length! > 100 ? "..." : "" }}
                   </td>
-                  <td
-                    class="primary-dark"
-                    *ngIf="cuerpo.item7"
-                    [class.pointer]="cuerpo.item7.length > 100"
-                    (click)="verMas(cuerpo.item7)"
-                  >
+                  <td class="primary-dark" *ngIf="cuerpo.item7" [class.pointer]="cuerpo.item7.length > 100"
+                    (click)="verMas(cuerpo.item7)">
                     {{ cuerpo.item7 | slice: 0:100
                     }}{{ cuerpo.item7?.length! > 100 ? "..." : "" }}
                   </td>
-                  <td
-                    class="primary-dark"
-                    *ngIf="cuerpo.item8"
-                    [class.pointer]="cuerpo.item8.length > 100"
-                    (click)="verMas(cuerpo.item8)"
-                  >
+                  <td class="primary-dark" *ngIf="cuerpo.item8" [class.pointer]="cuerpo.item8.length > 100"
+                    (click)="verMas(cuerpo.item8)">
                     {{ cuerpo.item8 | slice: 0:100
                     }}{{ cuerpo.item8?.length! > 100 ? "..." : "" }}
                   </td>
-                  <td
-                    class="primary-dark"
-                    *ngIf="cuerpo.item9"
-                    [class.pointer]="cuerpo.item9.length > 100"
-                    (click)="verMas(cuerpo.item9)"
-                  >
+                  <td class="primary-dark" *ngIf="cuerpo.item9" [class.pointer]="cuerpo.item9.length > 100"
+                    (click)="verMas(cuerpo.item9)">
                     {{ cuerpo.item9 | slice: 0:100
                     }}{{ cuerpo.item9?.length! > 100 ? "..." : "" }}
                   </td>
-                  <td
-                    class="primary-dark"
-                    *ngIf="cuerpo.item10"
-                    [class.pointer]="cuerpo.item10.length > 100"
-                    (click)="verMas(cuerpo.item10)"
-                  >
+                  <td class="primary-dark" *ngIf="cuerpo.item10" [class.pointer]="cuerpo.item10.length > 100"
+                    (click)="verMas(cuerpo.item10)">
                     {{ cuerpo.item10 | slice: 0:100
                     }}{{ cuerpo.item10?.length! > 100 ? "..." : "" }}
                   </td>
-                  <td
-                    class="primary-dark"
-                    *ngIf="cuerpo.item11"
-                    [class.pointer]="cuerpo.item11.length > 100"
-                    (click)="verMas(cuerpo.item11)"
-                  >
+                  <td class="primary-dark" *ngIf="cuerpo.item11" [class.pointer]="cuerpo.item11.length > 100"
+                    (click)="verMas(cuerpo.item11)">
                     {{ cuerpo.item11 | slice: 0:100
                     }}{{ cuerpo.item11?.length! > 100 ? "..." : "" }}
                   </td>
-                  <td
-                    class="primary-dark"
-                    *ngIf="cuerpo.item12"
-                    [class.pointer]="cuerpo.item12.length > 100"
-                    (click)="verMas(cuerpo.item12)"
-                  >
+                  <td class="primary-dark" *ngIf="cuerpo.item12" [class.pointer]="cuerpo.item12.length > 100"
+                    (click)="verMas(cuerpo.item12)">
                     {{ cuerpo.item12 | slice: 0:100
                     }}{{ cuerpo.item12?.length! > 100 ? "..." : "" }}
                   </td>
@@ -193,25 +126,13 @@
                     <a class="pointer" (click)="delete(cuerpo.id)">
                       <i class="fa fa-close text-danger primary-dark"></i>
                     </a>
-                    <a
-                      *ngIf="addPayments"
-                      class="pointer"
-                      (click)="addPayment(cuerpo.id)"
-                    >
+                    <a *ngIf="addPayments" class="pointer" (click)="addPayment(cuerpo.id)">
                       <i class="ti ti-money text-danger primary-dark"></i>
                     </a>
-                    <a
-                      *ngIf="addAssets"
-                      class="pointer"
-                      (click)="addAsset(cuerpo.id)"
-                    >
+                    <a *ngIf="addAssets" class="pointer" (click)="addAsset(cuerpo.id)">
                       <i class="ti ti-image text-danger primary-dark"></i>
                     </a>
-                    <a
-                      *ngIf="addContents"
-                      class="pointer"
-                      (click)="addContent(cuerpo.id)"
-                    >
+                    <a *ngIf="addContents" class="pointer" (click)="addContent(cuerpo.id)">
                       <i class="ti ti-book text-danger primary-dark"></i>
                     </a>
                   </td>
