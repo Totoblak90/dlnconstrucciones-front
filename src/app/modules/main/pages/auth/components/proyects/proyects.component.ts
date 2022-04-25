@@ -100,6 +100,22 @@ export class ProyectsComponent implements OnInit {
     this.onDownloadCashflow.emit(cashflow);
   }
 
+  public setFileToDownloadIcon(filename: string): string {
+    if (filename.includes('.pdf')) return '../../../../../assets/pdficon.png';
+    else if (filename.includes('.xls') || filename.includes('.xlsx'))
+      return '../../../../../assets/excelicon.png';
+    else if (filename.includes('.doc') || filename.includes('.docx'))
+      return '../../../../../assets/word.png';
+    else if (
+      filename.includes('.png') ||
+      filename.includes('.jpg') ||
+      filename.includes('.jpeg')
+    )
+      return '../../../../../assets/mediafile.png';
+
+    return '';
+  }
+
   private setAssets(): void {
     this.proyectos?.forEach((proj) => {
       proj.Assets.forEach((asset) => {
@@ -149,21 +165,5 @@ export class ProyectsComponent implements OnInit {
         popup: 'animate__animated animate__fadeOutUp',
       },
     });
-  }
-
-  public setFileToDownloadIcon(filename: string): string {
-    if (filename.includes('.pdf')) return '../../../../../assets/pdficon.png';
-    else if (filename.includes('.xls') || filename.includes('.xlsx'))
-      return '../../../../../assets/excelicon.png';
-    else if (filename.includes('.doc') || filename.includes('.docx'))
-      return '../../../../../assets/word.png';
-    else if (
-      filename.includes('.png') ||
-      filename.includes('.jpg') ||
-      filename.includes('.jpeg')
-    )
-      return '../../../../../assets/mediafile.png';
-
-    return '';
   }
 }

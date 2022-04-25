@@ -1,10 +1,10 @@
 <h4 class="font-medium m-t-30">Proyectos:</h4>
 <hr />
-<div *ngFor="let proyecto of proyectos; let i = index">
-  <h5 class="m-t-30 primary-dark">
+<div class="mb-5" *ngFor="let proyecto of proyectos; let i = index">
+  <h4 class="m-t-30 primary-dark">
     {{ proyecto.title ? proyecto.title : "Proyecto sin título" }}
     <span class="pull-right">{{ porcentaje[i] }}%</span>
-  </h5>
+  </h4>
   <div class="progress">
     <div class="progress-bar bgc-primary-dark" role="progressbar" aria-valuenow="80" aria-valuemin="0"
       aria-valuemax="100" [style]="progressBarStyle[i]"></div>
@@ -83,17 +83,17 @@
     </div>
   </div>
   <ng-container *ngIf="proyecto.Cashflows?.length">
-    <p class="text-nowrap primary-dark mt-3">Archivos para descargar</p>
+    <h6 class="primary-dark mt-3">Archivos para descargar: {{ proyecto.title }}</h6>
     <div class="cashflows-container mt-3">
       <div *ngFor="let file of proyecto.Cashflows" class="cashflows-container__card pointer"
         (click)="descargarCashFlow(file.cashflow)">
         <img [src]="setFileToDownloadIcon(file.cashflow)" alt="Icono">
-        <p>{{ file.cashflow }}</p>
+        <p>{{ file.cashflow | slice: 0 : file.cashflow.lastIndexOf('_') }}</p>
       </div>
     </div>
   </ng-container>
-  <div *ngIf="assets.length" class="row proyect-carrousel m-t-5 b-b-5">
-    <h6>Galería:</h6>
+  <div *ngIf="proyecto.Assets.length" class="row proyect-carrousel mt-5 b-b-5">
+    <h6 class="primary-dark mt-3">Galería: {{ proyecto.title }}</h6>
     <hr />
     <div class="card-group">
       <div *ngFor="let a of assets" class="col-lg-4 col-md-6" [class]="

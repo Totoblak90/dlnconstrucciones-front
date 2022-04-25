@@ -8,6 +8,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SpinnerModule } from './shared/spinner/spinner.module';
 import { SpinnerInterceptor } from './shared/interceptors/spinner.interceptor';
 import { TokenInterceptor } from './shared/interceptors/token-interceptor';
+import { PipesModule } from './pipes/pipes.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { TokenInterceptor } from './shared/interceptors/token-interceptor';
     BrowserAnimationsModule,
     HttpClientModule,
     SpinnerModule,
+    PipesModule,
   ],
   providers: [
     {
@@ -27,7 +29,7 @@ import { TokenInterceptor } from './shared/interceptors/token-interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
-      multi: true
+      multi: true,
     },
   ],
   bootstrap: [AppComponent],
