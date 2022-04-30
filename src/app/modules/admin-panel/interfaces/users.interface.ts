@@ -47,7 +47,7 @@ export interface Project {
   Payments?: ProyectPayments[];
   title: string;
   total: number;
-  coin: number;
+  coin: string;
   Users?: FullUser;
   users_id: number;
   created_at: string;

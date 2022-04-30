@@ -119,6 +119,11 @@
                     {{ cuerpo.item12 | slice: 0:100
                     }}{{ cuerpo.item12?.length! > 100 ? "..." : "" }}
                   </td>
+                  <td class="primary-dark" *ngIf="cuerpo.item12" [class.pointer]="cuerpo.item12.length > 100"
+                    (click)="verMas(cuerpo.item12)">
+                    {{ cuerpo.item13 | slice: 0:100
+                    }}{{ cuerpo.item13?.length! > 100 ? "..." : "" }}
+                  </td>
                   <td class="text-nowrap text-center actions">
                     <a class="pointer" (click)="edit(cuerpo.id)">
                       <i class="fa fa-pencil text-danger primary-dark"></i>

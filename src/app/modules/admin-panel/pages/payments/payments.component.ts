@@ -36,7 +36,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     'Detalle de pago',
     'Fecha',
     'Factura',
-    'Moneda',
+    'Moneda del proyecto',
+    'Moneda de pago',
     'Subtotal',
     'IVA',
     'Total',
@@ -51,21 +52,45 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   public paymentsForm!: FormGroup;
   public pagoId!: number;
   public invalidPaymentMsg: string = '';
-  private project!: Project;
+  public project!: Project;
   private projectID!: number;
   private destroy$: Subject<boolean> = new Subject();
 
-  public get totalEnDolares(): number {
-    let result = 0;
+  public get total(): number {
     if (
       +this.paymentsForm?.controls?.total?.value &&
-      +this.paymentsForm.controls.cotizacionUsd.value
+      +this.paymentsForm?.controls?.cotizacionUsd?.value
     ) {
-      result =
-        +this.paymentsForm.controls.total.value /
-        +this.paymentsForm.controls.cotizacionUsd.value;
+      if (
+        this.project?.coin === 'ARS' &&
+        this.paymentsForm.controls.coin.value === 'ARS'
+      ) {
+        return +this.paymentsForm.controls.total.value;
+      } else if (
+        this.project?.coin === 'ARS' &&
+        this.paymentsForm.controls.coin.value === 'USD'
+      ) {
+        return (
+          +this.paymentsForm.controls.total.value *
+          +this.paymentsForm.controls.cotizacionUsd.value
+        );
+      } else if (
+        this.project?.coin === 'USD' &&
+        this.paymentsForm.controls.coin.value === 'USD'
+      ) {
+        return +this.paymentsForm.controls.total.value;
+      } else if (
+        this.project?.coin === 'USD' &&
+        this.paymentsForm.controls.coin.value === 'ARS'
+      ) {
+        return (
+          +this.paymentsForm.controls.total.value /
+          +this.paymentsForm.controls.cotizacionUsd.value
+        );
+      }
+      return 1;
     }
-    return result;
+    return 1;
   }
 
   public get subTotal(): number {
@@ -102,7 +127,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
       amount: [null, [Validators.required, Validators.min(1)]],
       receipt: ['', [Validators.required]],
       datetime: [null, Validators.required],
-      description: ['', Validators.required],
+      description: ['', [Validators.required, Validators.minLength(10)]],
       wayToPay: [null, Validators.required],
       coin: [null, Validators.required],
       iva: [false],
@@ -126,11 +151,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         description: this.paymentsForm.controls.description.value,
         iva: this.paymentsForm.controls.iva.value === 'true',
         wayToPay: this.paymentsForm.controls.wayToPay.value,
+        cotizacionUsd: +this.paymentsForm.controls.cotizacionUsd.value,
       };
-
-      if (this.paymentsForm.controls.coin.value === 'ARS') {
-        form.cotizacionUsd = this.paymentsForm.controls.cotizacionUsd.value;
-      }
 
       this.crudAction === 'Crear'
         ? this.crearPagoEnLaDb(form)
@@ -141,17 +163,6 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getProject();
     this.checkAmountValue();
-    this.checkCotizacionValue();
-  }
-
-  private checkCotizacionValue(): void {
-    this.paymentsForm.controls.coin.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res === 'USD' || !res) {
-          this.paymentsForm.controls.cotizacionUsd.setValue(1);
-        }
-      });
   }
 
   private checkAmountValue(): void {
@@ -161,7 +172,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   }
 
   private validatePaymentAmount(): void {
-    if (this.totalEnDolares && this.project.balance < this.totalEnDolares) {
+    if (this.total && this.project?.balance < this.total) {
       this.paymentsForm.controls.amount?.setErrors({ invalidAmount: true });
     } else {
       this.paymentsForm.controls.amount?.setErrors(null);
@@ -207,13 +218,14 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         item3: payment.wayToPay,
         item4: payment.datetime?.substring(0, 10),
         item6: payment.receipt,
-        item7: payment.coin,
-        item8: this.setCoinFormatAcordingToPaymentMethod(
+        item7: this.project.coin,
+        item8: payment.coin,
+        item9: this.setCoinFormatAcordingToPaymentMethod(
           payment.amount.toString(),
           payment.coin
         ),
-        item9: payment.iva === 'true' ? 'Si' : 'No',
-        item10: payment.subTotal
+        item10: payment.iva === 'true' ? 'Si' : 'No',
+        item11: payment.subTotal
           ? this.setCoinFormatAcordingToPaymentMethod(
               payment.subTotal.toString(),
               payment.coin
@@ -222,10 +234,10 @@ export class PaymentsComponent implements OnInit, OnDestroy {
               payment.amount?.toString(),
               payment.coin
             ),
-        item11: payment.cotizacionUsd
+        item12: payment.cotizacionUsd
           ? this.currencyPipe.transform(payment.cotizacionUsd?.toString())!
           : this.currencyPipe.transform(1)!,
-        item12: this.setDolarCodeFormat(payment.totalUsd?.toString()),
+        item13: this.setDolarCodeFormat(payment.totalUsd?.toString()),
       })
     );
   }
