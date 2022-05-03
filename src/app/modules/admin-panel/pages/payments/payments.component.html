@@ -3,9 +3,9 @@
     <div class="card">
       <div class="card-body">
         <app-table *ngIf="payments && tableData" title="Pagos" [encabezadosTabla]="encabezadosTabla"
-          [filasTabla]="tableData" [totalSection]="payments?.length!" [noImage]="true"
+          [filasTabla]="tableData" [totalSection]="payments?.length!" [noImage]="true" [showRouterControls]="true"
           (onRecargar)="recargarPagos($event)" (onCreate)="crearPagos()" (onEdit)="editarPagos($event)"
-          (onDelete)="borrarPagos($event)"></app-table>
+          (onDelete)="borrarPagos($event)" (onStepBack)="stepBack()"></app-table>
       </div>
     </div>
   </div>

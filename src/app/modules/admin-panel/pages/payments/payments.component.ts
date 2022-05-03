@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Host, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
-import { takeUntil, finalize } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { CuerpoTabla } from '../../interfaces/tabla.interface';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
@@ -13,7 +13,7 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 import { ProjectsService } from '../../services/projects.service';
 import { AdminPanelCrudService } from '../../services/admin-panel-crud.service';
 import { ProjectPaymentsReq } from '../../interfaces/projects.interface';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, Location } from '@angular/common';
 import {
   alertFailureOrSuccessOnCRUDAction,
   unknownErrorAlert,
@@ -111,7 +111,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     private projectsService: ProjectsService,
     private fb: FormBuilder,
     private adminPanelCrudService: AdminPanelCrudService,
-    private currencyPipe: CurrencyPipe
+    private currencyPipe: CurrencyPipe,
+    private location: Location
   ) {
     this.getprojectId();
     if (this.projectID) this.createForm();
@@ -395,6 +396,10 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         },
         (err) => unknownErrorAlert(err)
       );
+  }
+
+  public stepBack(): void {
+    this.location.back();
   }
 
   ngOnDestroy(): void {

@@ -15,6 +15,7 @@ export class TableComponent {
   @Output() private onAddPayments: EventEmitter<number> = new EventEmitter();
   @Output() private onAddAssets: EventEmitter<number> = new EventEmitter();
   @Output() private onAddContents: EventEmitter<number> = new EventEmitter();
+  @Output() private onStepBack: EventEmitter<boolean> = new EventEmitter();
 
   @Input() public title: string = '';
   @Input() public totalSection: number = 0;
@@ -24,6 +25,7 @@ export class TableComponent {
   @Input() public addAssets?: boolean = false;
   @Input() public addPayments?: boolean = false;
   @Input() public addContents?: boolean = false;
+  @Input() public showRouterControls: boolean = false;
 
   public searching: boolean = false;
   public searchingResults: number = 0;
@@ -126,5 +128,9 @@ export class TableComponent {
       );
     });
     this.searchingResults = this.filasTabla.length;
+  }
+
+  public stepBack(): void {
+    this.onStepBack.emit(true);
   }
 }

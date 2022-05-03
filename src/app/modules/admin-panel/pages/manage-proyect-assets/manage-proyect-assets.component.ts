@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -60,7 +61,8 @@ export class ManageProyectAssetsComponent implements OnInit {
     private router: Router,
     private projectsService: ProjectsService,
     private fb: FormBuilder,
-    private adminPanelCrudService: AdminPanelCrudService
+    private adminPanelCrudService: AdminPanelCrudService,
+    private location: Location
   ) {
     this.getprojectId();
     if (this.projectID) this.createForm();
@@ -107,9 +109,6 @@ export class ManageProyectAssetsComponent implements OnInit {
             path: reader.result as string,
             type: file.type,
           });
-        // } else {
-        //   this.imageToShow.push('../../../../../assets/no-image-video.jpg');
-        // }
       });
     } else {
       this.imageToShow = [
@@ -334,5 +333,9 @@ export class ManageProyectAssetsComponent implements OnInit {
           noConnectionAlert(err);
         }
       );
+  }
+
+  public stepBack(): void {
+    this.location.back();
   }
 }

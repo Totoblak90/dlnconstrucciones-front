@@ -2,17 +2,10 @@
   <div class="col" *ngIf="!isEditing && !isCreating">
     <div class="card">
       <div class="card-body">
-        <app-table
-          *ngIf="assets && tableData"
-          title="Galería"
-          [encabezadosTabla]="encabezadosTabla"
-          [filasTabla]="tableData"
-          [totalSection]="assets?.length!"
-          (onRecargar)="recargarAssets($event)"
-          (onCreate)="crearAsset()"
-          (onEdit)="editarAssets($event)"
-          (onDelete)="borrarAsset($event)"
-        ></app-table>
+        <app-table *ngIf="assets && tableData" title="Galería" [encabezadosTabla]="encabezadosTabla"
+          [filasTabla]="tableData" [totalSection]="assets?.length!" [showRouterControls]="true"
+          (onRecargar)="recargarAssets($event)" (onCreate)="crearAsset()" (onEdit)="editarAssets($event)"
+          (onDelete)="borrarAsset($event)" (onStepBack)="stepBack()"></app-table>
       </div>
     </div>
   </div>
@@ -22,88 +15,44 @@
         <h1 class="primary-dark">{{ crudAction }} Galería</h1>
       </div>
       <div class="card-body">
-        <form
-          class="form p-t-20 form-material"
-          [formGroup]="assetsForm"
-          (ngSubmit)="formSubmit()"
-        >
+        <form class="form p-t-20 form-material" [formGroup]="assetsForm" (ngSubmit)="formSubmit()">
           <div class="card-body">
             <div class="row justify-content-center">
-              <div
-                *ngFor="let file of imageToShow"
-                class="col-md-4 text-center mb-2"
-                (click)="openInput()"
-              >
-                <ng-container
-                  *ngIf="file.type.includes('image'); else videoTemplate"
-                >
-                  <img
-                    class="img-responsive image-gallery"
-                    [src]="file.path"
-                    alt="Proyecto"
-                  />
+              <div *ngFor="let file of imageToShow" class="col-md-4 text-center mb-2" (click)="openInput()">
+                <ng-container *ngIf="file.type.includes('image'); else videoTemplate">
+                  <img class="img-responsive image-gallery" [src]="file.path" alt="Proyecto" />
                 </ng-container>
                 <ng-template #videoTemplate>
                   <div class="embed-responsive embed-responsive-21by9">
-                    <video
-                      class="embed-responsive-item w-100"
-                      [src]="file.path"
-                      [autoplay]="false"
-                      [muted]="true"
-                      [loop]="true"
-                      [controls]="true"
-                    ></video>
+                    <video class="embed-responsive-item w-100" [src]="file.path" [autoplay]="false" [muted]="true"
+                      [loop]="true" [controls]="true"></video>
                   </div>
                 </ng-template>
               </div>
-              <ng-container
-                *ngIf="crudAction === 'Crear'; else isEditingTemplate"
-              >
-                <input
-                  [hidden]="true"
-                  #imageInput
-                  type="file"
-                  formControlName="asset"
-                  (change)="showSelectedImage($event)"
-                  multiple
-                />
+              <ng-container *ngIf="crudAction === 'Crear'; else isEditingTemplate">
+                <input [hidden]="true" #imageInput type="file" formControlName="asset"
+                  (change)="showSelectedImage($event)" multiple />
                 <div class="p-2 text-center">
                   <span class="text-danger" *ngIf="creationImageError">{{
                     creationImageError
                   }}</span>
-                  <span class="text-danger" *ngIf="!acceptedFileTypes"
-                    >Los formatos aceptados son JPG, JPEG y PNG</span
-                  >
+                  <span class="text-danger" *ngIf="!acceptedFileTypes">Los formatos aceptados son JPG, JPEG y PNG</span>
                 </div>
               </ng-container>
               <ng-template #isEditingTemplate>
-                <input
-                  [hidden]="true"
-                  #imageInput
-                  type="file"
-                  formControlName="asset"
-                  (change)="showSelectedImage($event)"
-                />
+                <input [hidden]="true" #imageInput type="file" formControlName="asset"
+                  (change)="showSelectedImage($event)" />
                 <div class="p-2 text-center">
-                  <span class="text-danger" *ngIf="!acceptedFileTypes"
-                    >Los formatos aceptados son JPG, JPEG y PNG</span
-                  >
+                  <span class="text-danger" *ngIf="!acceptedFileTypes">Los formatos aceptados son JPG, JPEG y PNG</span>
                 </div>
               </ng-template>
             </div>
           </div>
           <div class="card-footer text-center">
-            <button
-              type="submit"
-              class="btn btn-success waves-effect waves-light m-r-10 bgc-primary-dark"
-            >
+            <button type="submit" class="btn btn-success waves-effect waves-light m-r-10 bgc-primary-dark">
               Confirmar
             </button>
-            <button
-              type="button"
-              (click)="recargarAssets(true)"
-              class="btn btn-danger waves-effect waves-light m-r-10"
-            >
+            <button type="button" (click)="recargarAssets(true)" class="btn btn-danger waves-effect waves-light m-r-10">
               Volver
             </button>
           </div>
