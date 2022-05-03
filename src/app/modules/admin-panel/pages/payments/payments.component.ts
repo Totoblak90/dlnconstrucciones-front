@@ -42,7 +42,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     'IVA',
     'Total',
     'Cotización USD',
-    'Total en USD',
+    'Total',
   ];
   public formasDePago: string[] = ['Efectivo', 'Transferencia'];
   public monedas: string[] = ['ARS', 'USD'];
@@ -201,6 +201,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
           if (res?.meta?.status.toString().includes('20')) {
             this.project = res.data;
             this.payments = res?.data?.Payments!;
+            this.setEncabezadosTabla();
             this.setTableData();
           } else {
             unknownErrorAlert(res);
@@ -208,6 +209,13 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         },
         (err) => noConnectionAlert(err)
       );
+  }
+
+  private setEncabezadosTabla(): void {
+    this.project.coin === 'ARS'
+      ? (this.encabezadosTabla[this.encabezadosTabla.length - 1] += ' en pesos')
+      : (this.encabezadosTabla[this.encabezadosTabla.length - 1] +=
+          ' en dólares');
   }
 
   private setTableData(): void {
@@ -237,17 +245,31 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         item12: payment.cotizacionUsd
           ? this.currencyPipe.transform(payment.cotizacionUsd?.toString())!
           : this.currencyPipe.transform(1)!,
-        item13: this.setDolarCodeFormat(payment.totalUsd?.toString()),
+        item13: this.setDolarCodeFormatAndTotalValue(
+          payment.totalUsd?.toString(),
+          +payment.cotizacionUsd
+        ),
       })
     );
   }
 
-  public setDolarCodeFormat(value: string | undefined): string {
-    value = this.currencyPipe.transform(value, 'USD', 'code')!;
+  public setDolarCodeFormatAndTotalValue(
+    value: string | number | undefined,
+    paymentCotizacionUsd: number
+  ): string {
+    // El value siempre viene en dólares convertido según la cotización por eso en pesos siempre hay que multiplicar
+    // Sin importar el caso
 
-    value = value.substring(0, 3) + ' ' + value.substring(3, value.length);
+    if (this.project.coin === 'ARS') {
+      value = +value! * +paymentCotizacionUsd;
+      value = this.currencyPipe.transform(value, 'ARS', 'code')!;
+      value = value.substring(0, 3) + ' ' + value.substring(3, value.length);
+    } else {
+      value = this.currencyPipe.transform(value, 'USD', 'code')!;
+      value = value.substring(0, 3) + ' ' + value.substring(3, value.length);
+    }
 
-    return value!;
+    return value?.toString()!;
   }
 
   public setFormatAcordingToPaymentMethod(
