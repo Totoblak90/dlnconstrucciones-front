@@ -28,12 +28,11 @@ export class ProyectsComponent implements OnInit {
     'Detalle de pago',
     'Fecha',
     'Factura',
-    'Moneda',
+    'Moneda del pago',
     'Subtotal',
     'IVA',
     'Total',
     'Cotización USD',
-    'Total en USD',
   ];
   public proyectos: Project[] = [];
   public assets: Galeria[] = [];
@@ -66,12 +65,36 @@ export class ProyectsComponent implements OnInit {
     return porcentajes;
   }
 
-  public setDolarCodeFormat(value: string | undefined): string {
-    value = this.currencyPipe.transform(value, 'USD', 'code')!;
-
-    value = value.substring(0, 3) + ' ' + value.substring(3, value.length);
+  public setDolarCodeFormatAndTotalValue(
+    value: string | undefined,
+    proyectCoin: string,
+    cotizacionPago: string
+  ): string {
+    // El total siempre viene en dólares y convertido según la cotización
+    if (proyectCoin === 'ARS') {
+      value = (+value! * +cotizacionPago).toString();
+      value = this.currencyPipe.transform(value, 'ARS', 'code')!;
+      value = value.substring(0, 3) + ' ' + value.substring(3, value.length);
+    } else {
+      value = this.currencyPipe.transform(value, 'USD', 'code')!;
+      value = value.substring(0, 3) + ' ' + value.substring(3, value.length);
+    }
 
     return value!;
+  }
+
+  public setCotizacionUsd(
+    paymentCoin: string,
+    proyectCoin: string,
+    cotizacionUsd: number
+  ): number | string {
+    if (
+      (paymentCoin === 'ARS' && proyectCoin === 'ARS') ||
+      (paymentCoin === 'USD' && proyectCoin === 'USD')
+    ) {
+      return '-';
+    }
+    return cotizacionUsd;
   }
 
   public setFormatAcordingToPaymentMethod(
